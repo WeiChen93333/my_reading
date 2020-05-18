@@ -20,6 +20,7 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #my-reading
+  overflow hidden
   overflow-x auto
   #header  
     height 40px

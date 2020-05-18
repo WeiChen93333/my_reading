@@ -2,7 +2,7 @@
   <div id="word-collection" @click.self="hideWordCollection">
     <div class="content">
       <transition name="toggle" mode="out-in">
-        <div class="view" v-if="currentDisplay" key="view">
+        <div class="view" v-if="viewVisible" key="view">
           <div class="words">
             <label v-for="(item, index) in wordCollection" :key="index">          
               <input type="checkbox" :value="item" v-model="selectedWords"> {{item}}
@@ -17,53 +17,70 @@
               @click.native="addToWordBase"></mo-button>
           </div> 
         </div>
-        <div class="memory" v-else key="memory">
-          <transition-group tag="ul" class="card-box">
-            <li class="card" 
-              v-for="(item, index) in wordCollection" :key="index"
-              @click="showDetail(item)">
-              <span v-if="wordInfo.word !== item">{{item}}</span>
-              <template v-else>
-                <div class="word">{{wordInfo.word}}</div>
-                <div class="meaning"
-                  v-for="(item1, index1) in wordInfo.meanings" :key="index1">
-                  <p class="explanation">{{item1.explanation}}</p>
-                  <p class="sentence" :class="{property: item2.includes('[part of speech]')}"
-                    v-for="(item2, index2) in item1.sentences" :key="index2"
-                    >{{item2}}</p>
-                </div>
-              </template>
-            </li>
-          </transition-group>          
+        <div class="memory" v-else key="memory">        
+          <div class="card"              
+            @click="showDetail">
+            <transition name="detail" mode="out-in">
+              <div class="front" v-if="wordVisible" key="front">
+                <span>{{frontDisplay}}</span>
+              </div>
+              <word-info-display class="back" key="back" v-else :wordInfo="wordInfo"></word-info-display>
+            </transition>
+          </div>                   
         </div>
       </transition>
-      <div class="toggle" @click="toggleDisplay">
+      <div class="toggle">
         <mo-button type="primary" size="big" text="记忆卡片"
-          @click.native="removeSelectedWords"></mo-button>
+          v-if="viewVisible"
+          @click.native="toggleDisplay"></mo-button>
+        <template v-else>
+          <mo-button type="primary" size="big" text="记下了"
+            @click.native="removeMasteredWord"></mo-button>
+          <mo-button type="primary" size="big" text="下一个"
+            @click.native="jumpToNext"></mo-button>
+          <mo-button type="primary" size="big" text="返回"
+            @click.native="toggleDisplay"></mo-button>         
+        </template>
       </div>   
     </div>              
   </div>
 </template>
 
 <script>
+import WordInfoDisplay from '../comComps/WordInfoDisplay'
 import { mapState } from 'vuex'
 export default {
   name: 'WordCollection',
   props: ['wordInfo'],
+  components: {
+    WordInfoDisplay
+  },
   data(){
     return {   
       selectedWords: [],
       //单词集中展示(视图/记忆卡片)
-      currentDisplay: false,
-      wordVisible: true
+      viewVisible: true,
+      //记忆卡片切换单词/详情; 当前学习单词在单词集中的位置
+      wordVisible: true,
+      currentWord: 0
     }
   },
   computed: {
-    ...mapState(['wordCollection'])   
+    ...mapState(['wordCollection']),
+    frontDisplay(){
+      if(this.currentWord !== this.wordCollection.length)
+      return this.wordCollection[this.currentWord]      
+      return '没有更多单词了'
+    }
   },
   methods: {
     hideWordCollection(){
       this.$emit('hideWordCollection')
+    },
+    //切换 单词视图/记忆卡片
+    toggleDisplay(){
+      this.viewVisible = !this.viewVisible
+      console.log(this.viewVisible)
     },
     //单词视图操作按钮
     selectAll(){
@@ -78,19 +95,32 @@ export default {
       for(let item of this.wordCollection){
         if(!this.selectedWords.includes(item)) revisedColletion.push(item)
       }
-      this.$store.commit('removeWord', revisedColletion)
+      this.$store.commit('removeSelectedWord', revisedColletion)
     },
     addToWordBase(){
       console.log("undone");
     },
 
-     //切换 单词视图/记忆卡片
-    toggleDisplay(){
-      this.currentDisplay = !this.currentDisplay
-    },
+    //卡片视图操作   
     //展示单词详情
-    showDetail(word){
-      this.$emit('detailSearch', word)    
+    showDetail(){      
+      this.wordVisible = false
+      this.$emit('detailSearch', this.wordCollection[this.currentWord])    
+    },
+    //删除学会的单词
+    removeMasteredWord(){
+      if(!this.wordVisible) this.wordVisible = true           
+      this.$store.commit('removeMasteredWord', this.currentWord)  
+      this.$emit('detailSearch', this.wordCollection[this.currentWord])   
+    },
+    jumpToNext(){
+      if(this.currentWord == this.wordCollection.length) return
+      if(!this.wordVisible) this.wordVisible = true  
+      this.currentWord ++
+      if(this.currentWord == this.wordCollection.length){        
+        return setTimeout(()=>{this.viewVisible = true}, 5000)        
+      }      
+      this.$emit('detailSearch', this.wordCollection[this.currentWord])
     }
   } 
 }
@@ -100,28 +130,30 @@ export default {
   width 100%
   height 100%
   font-size 16px
-  background-color rgba(120, 120, 120, .8)
+  background-color rgba(120, 120, 120, .2)
+  backdrop-filter blur(10px)
   position absolute
   top 0
   left 0
   .content
     width 350px
     height 500px    
-    background-color rgb(252, 252, 254)   
+    background-color rgb(233,237,240)   
     border-radius 8px 
     margin 0 auto
     margin-top 8%
-    .toggle-enter-active, .toggle-leave-active
-      transition all .3s
-    .toggle-enter, .toggle-leave-to
-      opacity 0
-    .toggle-leave, .toggle-enter-to       
-      opacity 1
+    // .toggle-enter-active, .toggle-leave-active
+    //   transition all .3s linear
+    // .toggle-enter, .toggle-leave-to
+    //   opacity 0.2
+    // .toggle-leave, .toggle-enter-to       
+    //   opacity 1
     .view      
       height 90%
       display flex
       align-items center
       .words   
+        position relative
         width 320px    
         height 100%    
         overflow-y auto 
@@ -146,33 +178,48 @@ export default {
         justify-content space-around
         align-items flex-end  
     .memory     
+      position relative
       height 90%
-      padding 20px
-      background-color silver
-      display flex
-      .card-box        
-        width 100%  
-        border-radius 12px 
-        overflow hidden           
-        position relative  
-        .card          
-          width 100%
+      padding 20px     
+      display flex      
+      .card          
+        width 100%
+        height 100%        
+        background-color white
+        overflow-y auto        
+        cursor pointer
+        .detail-enter-active
+          transition all .3s   
+        .detail-leave-active 
+          transition all .5s     
+        .detail-enter 
+          opacity 0
+        .detail-enter-to
+          opacity 1
+        .detail-leave
+          top 0
+        .detail-leave-to
+          top 100%
+        .front     
           height 100%
-          line-height 1       
-          text-align center
-          font-size 28px   
-          background-color white
-          position absolute
-          cursor pointer
-          span                 
+          position relative
+          span              
+            font-size 28px   
             position absolute
             top 50%
             left 50%
             transform translate(-50%, -50%)
-    .toggle
-      height 10%
-      & :first-child
-        width 100%
-        height 100%
+        .back 
+          padding-left 10px
+          padding-right 5px   
+          position relative
+  .toggle
+    height 10%
+    display flex
+    button 
+      flex 1
+      margin-left 5px
+      &:first-child 
+        margin 0
     
 </style>

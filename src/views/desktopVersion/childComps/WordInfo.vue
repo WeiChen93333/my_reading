@@ -10,28 +10,19 @@
         </div>
       </transition>      
     </div>   
-    <template v-if="wordInfo">
-      <div class="word">{{wordInfo.word}}</div>
-      <div class="meaning"
-        v-for="(item1, index1) in wordInfo.meanings" :key="index1">
-        <p class="explanation">{{item1.explanation}}</p>
-        <p class="sentence" :class="{property: item2.includes('[part of speech]')}"
-          v-for="(item2, index2) in item1.sentences" :key="index2"
-          >{{item2}}</p>
-      </div>
-    </template>
+    <word-info-display :wordInfo="wordInfo"></word-info-display>   
     
   </div>
 </template>
 
 <script>
+import WordInfoDisplay from '../comComps/WordInfoDisplay'
 export default {
   name: 'WordInfo',  
   props: ['wordInfo'],
-  model: {
-    prop: 'value',
-    event: 'change'
-  },
+  components: {
+    WordInfoDisplay
+  }, 
   data(){
     return {
       searchBoxVisible: false,
@@ -50,7 +41,7 @@ export default {
     toggleSearchBox(){
       this.searchBoxVisible = !this.searchBoxVisible    
     },
-    //发送单词搜索事件至 ReadingZone
+    //发送单词搜索事件
     inputSearch(inputWord){
       if(inputWord){
         this.$emit('inputSearch', inputWord)
@@ -104,30 +95,6 @@ export default {
         color white
         font-weight 700
         background-color rgb(64, 128, 128) 
-        border-bottom 2px solid rgb(64, 128, 128)       
-  .word
-    height 30px
-    line-height 30px
-    font-weight 700
-  .explanation, .sentence
-    font-size 15px          
-    color gray   
-    white-space pre-wrap
-  .explanation
-    background-color rgba(173, 216, 230, .2)
-    padding 5px  
-  .sentence
-    padding 5px 
-    padding-bottom 0
-    &:last-child
-      padding-bottom 5px
-  .property 
-    background-color lightyellow    
-    border-top 2px green dotted
-    margin-top 5px
-    & ~ p
-      background-color lightyellow
-    
- 
+        border-bottom 2px solid rgb(64, 128, 128) 
     
 </style>

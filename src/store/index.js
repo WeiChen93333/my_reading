@@ -13,15 +13,18 @@ export default new Vuex.Store({
       state.wordCollection.push(payload)
       window.localStorage.setItem('wordCollection', JSON.stringify(state.wordCollection))
     },
-    removeWord(state, payload){
+    removeSelectedWord(state, payload){
       state.wordCollection = payload
+      window.localStorage.setItem('wordCollection', JSON.stringify(state.wordCollection))
+    },
+    removeMasteredWord(state, payload){
+      state.wordCollection.splice(payload, 1)      
       window.localStorage.setItem('wordCollection', JSON.stringify(state.wordCollection))
     },
     //初始化时从localStorage获取单词集
     restoreCollection(state, payload){
       state.wordCollection = JSON.parse(payload)      
     },
-
 
   },
   actions: {

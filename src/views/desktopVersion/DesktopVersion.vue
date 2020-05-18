@@ -4,7 +4,7 @@
     <div id="main">    
       <!-- always being shown -->
       <!-- 按钮区域就不抽成组件了, 要不然很麻烦, 其实这有点像tab切换, 用路由也可以的 -->
-      <div class="buttons">
+      <div class="button-box">
         <div class="text">
           <mo-button type="primary" size="wider" text="导入文本片段"
             @click.native="toggleTextInputBox"></mo-button>           
@@ -149,8 +149,8 @@ export default {
           word: word
         }
       })           
-      this.wordInfo = data      
-      console.log(this.wordInfo)
+      this.wordInfo = data   
+    
     }  
 
   }
@@ -169,12 +169,17 @@ export default {
     width 100%
     height 600px    
     position relative
-    .buttons
+    .button-box
       height 60px   
       font-size 14px
       display flex
       justify-content space-between
-      align-items center   
+      align-items center
+      button 
+        flex 1
+        margin-left 5px
+        &:first-child 
+          margin 0
     .content
       height 500px      
       display flex
