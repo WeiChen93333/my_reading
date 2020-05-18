@@ -1,0 +1,28 @@
+input-box()
+  border 1px solid lightgray
+  &:hover
+    border 1px solid gray
+  &.focused
+    border 1px solid rgb(102,177,255)
+
+button-style($width)
+  width $width  
+  border-radius 4px
+  color white
+  background-color rgb(94,173,255)
+  cursor pointer
+
+//笔记页内容区的基本设置
+content-base()
+  height 100%      
+  padding 20px
+  overflow-y auto
+
+//点击目录激活的主题
+activeSubject()
+  background-color green
+  position relative
+  left -20px
+  padding-left 20px
+  border-top-right-radius 50% !important
+  border-bottom-right-radius 50% !important

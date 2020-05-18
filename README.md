@@ -1,4 +1,4 @@
-# my_reading
+# my_game
 
 ## Project setup
 ```
