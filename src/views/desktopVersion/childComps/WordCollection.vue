@@ -97,8 +97,11 @@ export default {
       }
       this.$store.commit('removeSelectedWord', revisedColletion)
     },
-    addToWordBase(){
-      console.log("undone");
+    async addToWordBase(){     
+      if(this.selectedWords.length){             
+        const data = await this.$http.post('/userInfo', JSON.stringify({username: 'chen', addition: this.selectedWords})) 
+        console.log(data)
+      }      
     },
 
     //卡片视图操作   

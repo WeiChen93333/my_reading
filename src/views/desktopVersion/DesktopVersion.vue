@@ -17,7 +17,7 @@
           <mo-button type="primary" size="middle" text="单词集"
             @click.native="toggleWordCollection"></mo-button>  
           <mo-button type="primary" size="middle" text="单词仓"
-            @click.native="openInputBox"></mo-button>     
+            @click.native="toggleWordBase"></mo-button>     
         </div>  
         <div class="login">
           <mo-button type="primary" size="middle" text="注册"
@@ -44,7 +44,8 @@
         @detailSearch = "searchThroughDict"
         :wordInfo="wordInfo"></word-collection>
       <!-- 单词仓展示区 -->
-      <div class="word-base"></div>
+      <word-base v-if="wordBaseVisible"
+        @hideWordBase="toggleWordBase"></word-base>
       <!-- 用户注册表单 -->
       <!-- 用户登录表单 -->
     </div>
@@ -56,21 +57,24 @@ import TextInputBox from './childComps/TextInputBox'
 import ReadingZone from './childComps/ReadingZone'
 import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
+import WordBase from './childComps/WordBase'
 export default {
   name: 'DesktopVersion',
   components: {   
     TextInputBox,
     ReadingZone,
     WordInfo,
-    WordCollection
+    WordCollection,
+    WordBase
   },
   data(){
     return {
       //开关
       //文本片段输入框
       textInputBoxVisible: false, 
-      //单词集      
+      //单词集 单词仓      
       wordCollectionVisible: false,
+      wordBaseVisible: false,
       
       //数据
       //要展示在阅读区的文本
@@ -137,13 +141,17 @@ export default {
     //显示与隐藏单词集
     toggleWordCollection(){
       this.wordCollectionVisible = !this.wordCollectionVisible
-    },    
+    },  
+    //显示与隐藏单词仓
+    toggleWordBase(){
+      this.wordBaseVisible = !this.wordBaseVisible     
+    },      
 
     //处理子组件发送的事件
     //在词典中查询单词
     async searchThroughDict(word){      
       const reg = /[a-zA-Z]+/
-      word = reg.exec(word)[0]
+      word = reg.exec(word)[0].toLowerCase()
       const {data} = await this.$http.get('/dict', {
         params: {
           word: word
@@ -161,8 +169,8 @@ export default {
   width 60%
   min-width 880px
   padding 20px
-  color green
-  background-color lightblue
+  color green  
+  background-color lightblue  
   margin 0 auto 
   margin-top 5%   
   #main
