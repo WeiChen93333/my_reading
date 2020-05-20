@@ -52,7 +52,8 @@ export default {
   border 2px solid rgb(64, 128, 128)
   border-right none
   background-color rgba(255, 255, 255, .5)  
-  max-width 710px   
+  max-width 710px
+  overflow-y auto 
   p 
     margin-bottom 20px
   span

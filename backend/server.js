@@ -17,40 +17,41 @@ const onRequest = (req, res) => {
     const { pathname, query } = url.parse(req.url, true) 
     if(pathname == '/dict'){
       WordModel.findOne({word: query['word']}, function(err, doc){
-        if(!err){          
+        if(!err){ 
           res.end(JSON.stringify(doc))
         }
       })           
     }else if(pathname == '/userInfo'){
-      UserModel.findOne({username: query['username']}, function(err, doc){
+      UserModel.findOne({userId: query['userId']}, function(err, doc){
         if(!err){          
           res.end(JSON.stringify(doc))
         }         
       }) 
     }
-  }else if(method == 'POST'){      
+  }else if(method == 'PUT'){
+    console.log('PUT')
+
+  
+  }else if(method == 'POST'){
+    const { pathname } = url.parse(req.url, true)    
+    const regexp = /\/userInfo\/(\w+)/
+    const userId = regexp.exec(pathname)[1]    
     req.on('data', (chunk)=> {
       let postData = JSON.parse(chunk)
-      UserModel.findOne({username: postData.username}, function(err, doc){
-        if(!err){
-          let targetWordBase = JSON.parse(JSON.stringify(doc)).wordbase 
-          targetWordBase.push(...postData.addition)      
-          UserModel.update({username: postData.username}, {$set: {wordbase: targetWordBase}}, err=>{
+      UserModel.findOne({userId: userId}, function(err, doc){
+        if(!err){          
+          UserModel.update({userId: userId}, {$set: {wordbase: postData.revisedWordBase}}, err=>{
             if(!err){
-              UserModel.findOne({username: postData.username}, function(err, doc){
+              UserModel.findOne({userId: userId}, function(err, doc){
                 res.end(JSON.stringify(doc))       
               })
             }
           })          
         }         
       })            
-    })    
-    
-  }else if(method == 'PUT'){
-    if(pathname == '/userInfo'){
-      console.log(query)
-      res.end('success')
-    }
+    })        
+  }else if(method == 'DELETE'){
+
   }
 }
 const server = http.createServer(onRequest);

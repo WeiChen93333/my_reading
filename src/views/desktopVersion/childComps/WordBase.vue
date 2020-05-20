@@ -8,7 +8,7 @@
               <input type="checkbox" :value="item2" v-model="selectedWords"> {{item2}}
             </label>
             <mo-button type="primary" size="small" text="选择当前列"
-              @click.native="selectAll"></mo-button> 
+              @click.native="selectColumn(wordBase.slice(index1 *15, item1 *15))"></mo-button> 
           </div>  
         </template>
       </div>                 
@@ -33,7 +33,12 @@ export default {
   data(){
     return {
       wordBase: [],
-      selectedWords: []
+      selectedWords: [],
+      userInfo: {
+        userId: '0',
+        username: 'chen',
+        password: 1111
+      }
     }
   },
   computed: {
@@ -53,11 +58,18 @@ export default {
 
     //获取单词仓数据
     async getWordBase(){
-      const { data } = await this.$http('/userInfo', { params: {username: 'chen'} })
-      this.wordBase = data.wordbase  
+      const { data } = await this.$http('/userInfo', { params: {userId: '0'} })
+      this.wordBase = data.wordbase
     },
   
     //操作按钮
+    selectColumn(column){
+      if(this.selectedWords.length !== column.length){
+        this.selectedWords = column
+      }else{
+        this.selectedWords = []
+      }
+    },
     selectAll(){
       if(this.selectedWords !== this.wordBase){
         this.selectedWords = this.wordBase
@@ -65,27 +77,40 @@ export default {
         this.selectedWords = []
       }     
     },
-    selectRondomWords(){     
+    selectRondomWords(){
+      this.selectedWords = []     
       if(this.wordBase.length <= 20) return
       let count = 0
       while(count < 20){
-        const index = Math.ceil(Math.random()*(this.wordBase.length-1))
+        const index = parseInt(Math.random()*(this.wordBase.length))
         if(!this.selectedWords.includes(this.wordBase[index])){
           this.selectedWords.push(this.wordBase[index])
           count ++         
         }             
       }     
     },
-    async removeSelectedWords(){
+    async removeSelectedWords(){      
       const revisedWordBase = []
       for(let item of this.wordBase){
         if(!this.selectedWords.includes(item)) revisedWordBase.push(item)
-      }
-      console.log('不好办呀, 都是修改, 但是一个是增, 一个是减, 是不是都统一成, 参数是改变里的 wordbase')
-      // const data = await this.$http.post('/userInfo', JSON.stringify({username: 'chen', revisedWordBase: revisedWordBase}))
+      }      
+      const { data } = await this.$http.post(`/userInfo/${this.userInfo.userId}`, JSON.stringify({revisedWordBase: revisedWordBase}))
+      this.wordBase = data.wordbase      
     },
     drawWords(){
-      this.$store.commit('addWord', this.selectedWords)
+      let addition = []
+      let repeatedwords = ''
+      for(let item of this.selectedWords){
+        if(!this.wordCollection.includes(item)){
+          addition.push(item)
+        }else{
+          repeatedwords += item + ' '         
+        }
+      }
+      this.$store.commit('addWord', addition)     
+      const message = '操作成功! ' + (repeatedwords.length > 1 ? repeatedwords + '已经存在': '')    
+      this.$message.show(message) 
+      this.removeSelectedWords()     
     }    
   } 
 }

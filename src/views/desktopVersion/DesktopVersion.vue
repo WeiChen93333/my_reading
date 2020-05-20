@@ -10,8 +10,10 @@
             @click.native="toggleTextInputBox"></mo-button>           
           <mo-button class="clear" type="primary" size="middle" text="取消输入"
             @click.native="cancelInput"></mo-button>  
+          <mo-button class="clear" type="primary" size="middle" text="全部加入"
+            @click.native="addAll"></mo-button>
           <mo-button class="clear" type="primary" size="wider" text="清空阅读区"
-            @click.native="clearReadingZone"></mo-button>
+            @click.native="clearReadingZone"></mo-button>        
         </div>        
         <div class="words">
           <mo-button type="primary" size="middle" text="单词集"
@@ -21,9 +23,9 @@
         </div>  
         <div class="login">
           <mo-button type="primary" size="middle" text="注册"
-            @click.native="openInputBox"></mo-button>  
+            @click.native="toggleRegisterBox"></mo-button>  
           <mo-button type="primary" size="middle" text="登录"
-            @click.native="openInputBox"></mo-button>     
+            @click.native="toggleLoginBox"></mo-button>     
         </div> 
       </div>
       <div class="content">
@@ -134,18 +136,32 @@ export default {
       this.newAdd = ''
       this.textInputBoxVisible = false
     },
+    //全部加入单词集
+    addAll(){
+      console.log('ongoing')
+    },
     //清空阅读区
     clearReadingZone(){    
       this.textStr = ''     
-    },    
-    //显示与隐藏单词集
+    },   
+
+    //显示与隐藏单词集 单词仓
     toggleWordCollection(){
       this.wordCollectionVisible = !this.wordCollectionVisible
-    },  
-    //显示与隐藏单词仓
+    },    
     toggleWordBase(){
       this.wordBaseVisible = !this.wordBaseVisible     
-    },      
+    }, 
+
+    //显示与隐藏单词集
+    toggleRegisterBox(){
+      // this.wordCollectionVisible = !this.wordCollectionVisible
+      console.log('to be continued')
+    },     
+    toggleLoginBox(){
+      // this.wordBaseVisible = !this.wordBaseVisible 
+      console.log('to be continued')    
+    },     
 
     //处理子组件发送的事件
     //在词典中查询单词

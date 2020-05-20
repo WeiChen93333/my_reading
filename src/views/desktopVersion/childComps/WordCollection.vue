@@ -14,7 +14,7 @@
             <mo-button type="primary" size="vertical" text="删除"
               @click.native="removeSelectedWords"></mo-button>        
             <mo-button type="primary" size="vertical" text="放入单词仓"
-              @click.native="addToWordBase"></mo-button>
+              @click.native="putInWordBase"></mo-button>
           </div> 
         </div>
         <div class="memory" v-else key="memory">        
@@ -62,7 +62,13 @@ export default {
       viewVisible: true,
       //记忆卡片切换单词/详情; 当前学习单词在单词集中的位置
       wordVisible: true,
-      currentWord: 0
+      currentWord: 0,
+      //用户信息
+      userInfo: {
+        userId: '0',
+        username: 'chen',
+        password: 1111
+      }
     }
   },
   computed: {
@@ -96,11 +102,21 @@ export default {
       }
       this.$store.commit('removeSelectedWord', revisedColletion)
     },
-    async addToWordBase(){     
-      if(this.selectedWords.length){             
-        const data = await this.$http.post('/userInfo', JSON.stringify({username: 'chen', addition: this.selectedWords}))
-        this.removeSelectedWords()        
-      }      
+    async putInWordBase(){     
+      if(!this.selectedWords.length) return
+      const { data } = await this.$http.get('/userInfo', { params: {userId: '0'} })
+      let repeatedwords = ''
+      for(let item of this.selectedWords){
+        if(!data.wordbase.includes(item)){
+          data.wordbase.push(item)
+        }else{
+          repeatedwords += item + ' '           
+        }
+      }
+      const message = '操作成功! ' + (repeatedwords.length > 1 ? repeatedwords + '已经添加过': '')    
+      this.$message.show(message)
+      await this.$http.post(`/userInfo/${this.userInfo.userId}`, JSON.stringify({revisedWordBase: data.wordbase}))      
+      this.removeSelectedWords()     
     },
 
     //卡片视图操作   
