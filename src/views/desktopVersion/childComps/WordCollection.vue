@@ -13,7 +13,7 @@
               @click.native="selectAll"></mo-button> 
             <mo-button type="primary" size="vertical" text="删除"
               @click.native="removeSelectedWords"></mo-button>        
-            <mo-button type="primary" size="vertical" text="添加至单词仓"
+            <mo-button type="primary" size="vertical" text="放入单词仓"
               @click.native="addToWordBase"></mo-button>
           </div> 
         </div>
@@ -79,8 +79,7 @@ export default {
     },
     //切换 单词视图/记忆卡片
     toggleDisplay(){
-      this.viewVisible = !this.viewVisible
-      console.log(this.viewVisible)
+      this.viewVisible = !this.viewVisible     
     },
     //单词视图操作按钮
     selectAll(){
@@ -99,8 +98,8 @@ export default {
     },
     async addToWordBase(){     
       if(this.selectedWords.length){             
-        const data = await this.$http.post('/userInfo', JSON.stringify({username: 'chen', addition: this.selectedWords})) 
-        console.log(data)
+        const data = await this.$http.post('/userInfo', JSON.stringify({username: 'chen', addition: this.selectedWords}))
+        this.removeSelectedWords()        
       }      
     },
 

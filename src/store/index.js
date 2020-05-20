@@ -10,7 +10,11 @@ export default new Vuex.Store({
   },
   mutations: {
     addWord(state, payload){
-      state.wordCollection.push(payload)
+      if(typeof payload == 'string'){
+        state.wordCollection.push(payload)
+      }else{
+        state.wordCollection.push(...payload)
+      }      
       window.localStorage.setItem('wordCollection', JSON.stringify(state.wordCollection))
     },
     removeSelectedWord(state, payload){
