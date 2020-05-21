@@ -12,7 +12,7 @@ export default {
     }
   },  
   methods:{
-    show(message, duration=2000){
+    show(message, duration=1000){
       this.message = message;
       this.isShow = true;      
       setTimeout(()=>{        
@@ -37,5 +37,5 @@ export default {
   right 0  
   margin: 0 auto
   border-radius 4px
-  background-color rgb(244, 242, 230, .8)  
+  background-color rgb(244, 242, 230)
 </style>

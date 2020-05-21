@@ -1,21 +1,18 @@
 <template>
-  <div class="mo-message-box-wrapper" v-if="confirmBoxVisible">
-    <template v-if="confirmBoxVisible">
-      <div class="message-box">
-        <div class="header">
-          <div class="title">{{type}}</div>
-          <button class="close-icon"><i class="iconfont icon-RectangleCopy2"></i></button>
-        </div>
-        <div class="content">{{message}}</div>
-        <div class="footer">
-          <mo-button type="negative" size="small" text="取消"           
-            @click.native="clickToCancel"></mo-button>
-          <mo-button type="primary" size="small" text="确认"           
-            @click.native="clickToConfirm"></mo-button>
-        </div>
+  <div class="mo-message-box-wrapper" v-if="confirmBoxVisible" @click.self="clickToCancel">  
+    <div class="message-box">
+      <div class="header">
+        <div class="title">{{type}}</div>
+        <button class="close-icon" @click="clickToCancel"><i class="iconfont icon-RectangleCopy2"></i></button>
       </div>
-    </template>
-    
+      <div class="content">{{message}}</div>
+      <div class="footer">
+        <mo-button type="negative" size="small" text="取消"           
+          @click.native="clickToCancel"></mo-button>
+        <mo-button type="primary" size="small" text="确认"           
+          @click.native="clickToConfirm"></mo-button>
+      </div>
+    </div>    
   </div>
 </template>
 <script>
@@ -66,9 +63,9 @@ export default {
     border-radius 4px
     background-color white
     position absolute
-    top 50%
+    top 30%
     left 50%
-    transform translate(-50%, -50%)
+    transform translateX(-50%)
     .header      
       position relative
       padding 15px 15px 10px
@@ -77,6 +74,7 @@ export default {
         position absolute
         top 15px
         right 15px
+        cursor pointer
     .content
       padding 10px 15px
       color #606266

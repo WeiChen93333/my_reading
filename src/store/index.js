@@ -9,12 +9,21 @@ export default new Vuex.Store({
     wordCollection: []
   },
   mutations: {
-    addWord(state, payload){
-      if(typeof payload == 'string'){
-        state.wordCollection.push(payload)
-      }else{
-        state.wordCollection.push(...payload)
-      }      
+    addWord(state, payload){      
+      function process(param){
+        if(typeof param == 'string'){
+          const reg = /[a-zA-Z']+/     
+          if(reg.exec(param)){
+            param = reg.exec(param)[0]
+            state.wordCollection.push(param)            
+          }
+          return        
+        }
+        for(let item of param){
+          process(item)         
+        }
+      }     
+      process(payload)      
       window.localStorage.setItem('wordCollection', JSON.stringify(state.wordCollection))
     },
     removeSelectedWord(state, payload){

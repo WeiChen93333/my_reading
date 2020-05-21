@@ -1,17 +1,10 @@
 <template>
-  <div id="reading-zone">
-    <template v-if="hasLineBreak">
-      <p v-for="(item1, index1) in textArr" :key="index1">
-      <span v-for="(item2, index2) in item1" :key="index2"
-      @click="clickSearch(item2)"
-      @dblclick="addToCollection(item2)">{{item2 + ' '}}</span>
-    </p>
-    </template>
-    <template v-else>         
-      <span v-for="(item, index) in textArr" :key="index"
-      @click="clickSearch(item)"
-      @dblclick="addToCollection(item)">{{item + ' '}}</span>    
-    </template>              
+  <div id="reading-zone">   
+    <p v-for="(item1, index1) in textArr" :key="index1">
+    <span v-for="(item2, index2) in item1" :key="index2"
+    @click="clickSearch(item2)"
+    @dblclick="addToCollection(item2)">{{item2 + ' '}}</span>
+  </p>   
   </div>
 </template>
 
@@ -20,7 +13,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'ReadingZone',
   components: {},
-  props: ['textArr', 'hasLineBreak'],
+  props: ['textArr'],
   data(){
     return {
       
@@ -36,7 +29,8 @@ export default {
     },    
     //将单词加入当前单词集
     addToCollection(word){
-      const reg = /[a-zA-Z]+/
+      //匹配字母和 ' , 去掉可能的标点符号、空格     
+      const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0]
       if(this.wordCollection.includes(word)) return this.$message.show('该单词已经添加过')
       this.$store.commit('addWord', word)

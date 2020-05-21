@@ -29,10 +29,11 @@
         </div> 
       </div>
       <div class="content">
+      <!-- 阅读区 -->
         <reading-zone 
-          :textArr="textArr" 
-          :hasLineBreak="hasLineBreak"
+          :textArr="textArr"         
           @clickSearch = "searchThroughDict"></reading-zone>
+      <!-- 单词信息展示区 -->
         <word-info @inputSearch = "searchThroughDict" :wordInfo="wordInfo"></word-info>
       </div>
       <!-- shown by clicking a button -->
@@ -82,9 +83,7 @@ export default {
       //要展示在阅读区的文本
       textStr: '',
       //用户每次输入的文本
-      newAdd: '',
-      //文本是否有换行
-      hasLineBreak: false,
+      newAdd: '',   
       //查询到的单词信息
       wordInfo: {}
     
@@ -92,21 +91,15 @@ export default {
   },
   computed: {
     textArr(){      
-      //判断输入文本是否有换行
-      if(!this.textStr.includes('\n')){
-        this.hasLineBreak = false
-        this.textStr += "\n"
-        return this.textStr.split(' ') 
-      }
+      //为输入文本末尾加上一个换行, 就可同时包含一段和多段的情况      
+      this.textStr = this.textStr.trim() + "\n"
       const reg = /.+\n/g
-      this.textStr += "\n"
       let match = reg.exec(this.textStr) 
       const tempArr = []
       while(match){        
         tempArr.push(match[0].split(' '))
-        match = reg.exec(this.textStr)
+        match = reg.exec(this.textStr)       
       }    
-      this.hasLineBreak = true
       return tempArr 
     }
   },
@@ -138,11 +131,12 @@ export default {
     },
     //全部加入单词集
     addAll(){
-      console.log('ongoing')
+      this.$store.commit('addWord', this.textArr)
     },
     //清空阅读区
-    clearReadingZone(){    
-      this.textStr = ''     
+    async clearReadingZone(){
+      const result = await this.$confirm('确定要清空阅读区吗?', '提示').catch(err => console.log(err))   
+      if(result == 'confirm') return this.textStr = ''      
     },   
 
     //显示与隐藏单词集 单词仓
@@ -156,27 +150,26 @@ export default {
     //显示与隐藏单词集
     toggleRegisterBox(){
       // this.wordCollectionVisible = !this.wordCollectionVisible
-      console.log('to be continued')
+      console.log('ongoing')
     },     
     toggleLoginBox(){
       // this.wordBaseVisible = !this.wordBaseVisible 
-      console.log('to be continued')    
+      console.log('ongoing')    
     },     
 
     //处理子组件发送的事件
     //在词典中查询单词
-    async searchThroughDict(word){      
-      const reg = /[a-zA-Z]+/
-      word = reg.exec(word)[0].toLowerCase()
+    async searchThroughDict(word){
+      //匹配字母和 ' , 去掉可能的标点符号、空格     
+      const reg = /[a-zA-Z']+/     
+      word = reg.exec(word)[0].toLowerCase()     
       const {data} = await this.$http.get('/dict', {
         params: {
           word: word
         }
       })           
-      this.wordInfo = data   
-    
-    }  
-
+      this.wordInfo = data    
+    }
   }
 }
 </script>
