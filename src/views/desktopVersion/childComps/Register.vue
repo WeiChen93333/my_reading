@@ -45,7 +45,7 @@ export default {
       this.$emit('hideForm')
     },
     submitRegister(){      
-      this.$http.post('/userInfo', JSON.stringify(this.registerInfo))
+      this.$http.post('/userInfo/register', JSON.stringify(this.registerInfo))
       this.hideForm()
     }
   }

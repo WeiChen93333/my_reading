@@ -51,10 +51,12 @@
         @hideWordBase="toggleWordBase"></word-base>
       <!-- 用户注册区 -->
       <register v-if="registerVisible"       
-        @hideForm="hideForm">
-        <mo-form>login</mo-form>
+        @hideForm="hideForm">        
       </register>
       <!-- 用户登录区 -->
+      <login v-if="loginVisible"       
+        @hideForm="hideForm">        
+      </login>
     </div>
   </div>
 </template>
@@ -66,6 +68,7 @@ import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
 import WordBase from './childComps/WordBase'
 import Register from './childComps/Register'
+import Login from './childComps/Login'
 export default {
   name: 'DesktopVersion',
   components: {   
@@ -74,7 +77,8 @@ export default {
     WordInfo,
     WordCollection,
     WordBase,
-    Register
+    Register,
+    Login
   },
   data(){
     return {
@@ -161,12 +165,13 @@ export default {
       this.registerVisible = true     
     },     
     showLoginBox(){
-      // this.wordBaseVisible = !this.wordBaseVisible 
-      console.log('ongoing')    
+      this.loginVisible = true        
     },
     //隐藏表单
     hideForm(){
       this.registerVisible = false
+      this.loginVisible = false
+      
 
     },
 

@@ -9,7 +9,7 @@ const fs = require('fs')
 
 const onRequest = (req, res) => {
   // res.writeHead(200, {'Content-Type': 'text/plain'})
-  res.statusCode = 200;
+  // res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')  
   const method = req.method 
@@ -17,7 +17,7 @@ const onRequest = (req, res) => {
     const { pathname, query } = url.parse(req.url, true) 
     if(pathname == '/dict'){
       WordModel.findOne({word: query['word']}, function(err, doc){
-        if(!err){ 
+        if(!err){
           res.end(JSON.stringify(doc))
         }
       })           
@@ -30,7 +30,8 @@ const onRequest = (req, res) => {
     } 
   }else if(method == 'POST'){
     const { pathname } = url.parse(req.url, true)  
-    if(pathname == '/userInfo'){
+    //用户注册
+    if(pathname == '/userInfo/register'){
       req.on('data', chunk=>{
         let postData = JSON.parse(chunk)  
         UserModel.count({}, (err, count)=>{
@@ -46,6 +47,22 @@ const onRequest = (req, res) => {
       })      
       return res.end('success')
     }    
+    //用户登录
+    if(pathname == '/userInfo/login'){
+      req.on('data', chunk=>{
+        let postData = JSON.parse(chunk)  
+        UserModel.count(postData, (err, count)=>{
+          if(count == 1){           
+            res.end('success')                
+          }else{
+            // res.statusCode = 401.1 会在控制台报错, 程序终止
+            res.end('failure')          
+          }
+        })    
+      })      
+      return 
+    }   
+    //修改用户信息, 本来该用 put, 但是不知道 http 模块不能接收还是需要怎么配置一下, 用 post 先将就
     const regexp = /\/userInfo\/(\w+)/
     const userId = regexp.exec(pathname)[1]    
     req.on('data', (chunk)=> {

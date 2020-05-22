@@ -25,7 +25,7 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .mo-message
-  width 25%
+  width 30%
   height 50px
   line-height 50px 
   font-size 16px
