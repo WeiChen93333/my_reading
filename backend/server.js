@@ -12,7 +12,7 @@ const onRequest = (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')  
-  const method = req.method  
+  const method = req.method 
   if(method == 'GET'){
     const { pathname, query } = url.parse(req.url, true) 
     if(pathname == '/dict'){
@@ -27,13 +27,25 @@ const onRequest = (req, res) => {
           res.end(JSON.stringify(doc))
         }         
       }) 
-    }
-  }else if(method == 'PUT'){
-    console.log('PUT')
-
-  
+    } 
   }else if(method == 'POST'){
-    const { pathname } = url.parse(req.url, true)    
+    const { pathname } = url.parse(req.url, true)  
+    if(pathname == '/userInfo'){
+      req.on('data', chunk=>{
+        let postData = JSON.parse(chunk)  
+        UserModel.count({}, (err, count)=>{
+          const userCount = ++count
+          const newUser = {
+            userId: userCount.toString(),
+            username: postData.username,
+            password: postData.password.toString(),
+            wordbase: []
+          }
+          UserModel.create(newUser)          
+        })    
+      })      
+      return res.end('success')
+    }    
     const regexp = /\/userInfo\/(\w+)/
     const userId = regexp.exec(pathname)[1]    
     req.on('data', (chunk)=> {
@@ -50,8 +62,6 @@ const onRequest = (req, res) => {
         }         
       })            
     })        
-  }else if(method == 'DELETE'){
-
   }
 }
 const server = http.createServer(onRequest);
@@ -87,8 +97,9 @@ const WordModel = conn1.model('words', wordSchema)
 //连接用户信息
 const conn2 = mongoose.createConnection('mongodb://localhost/userInfo', { useNewUrlParser: true, useUnifiedTopology: true })
 const userSchema = new mongoose.Schema({
+  userId: String,
   username: String,
-  password: Number,
+  password: String,
   wordbase: Array
 })
 const UserModel = conn2.model('users', userSchema)

@@ -1,11 +1,11 @@
 <template>
-  <button class="mo-button primary"
+  <button type="button" class="mo-button primary"
     :class="sizeChoice"
     v-if="type=='primary'">{{text}}</button> 
-  <button class="mo-button negative"
+  <button type="button" class="mo-button negative"
     :class="sizeChoice"
     v-else-if="type=='negative'">{{text}}</button>
-  <button class="mo-button vertical"
+  <button type="button" class="mo-button vertical"
     :class="sizeChoice"
     v-else-if="type=='vertical'">{{text}}</button>
 </template>

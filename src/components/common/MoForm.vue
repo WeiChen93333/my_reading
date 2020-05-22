@@ -1,30 +1,21 @@
 <template>
-  <div class="mo-form" v-if="isShow"></div>
+  <form class="mo-form">
+    <slot></slot>
+  </form>
+  
 </template>
 
 <script>
 export default {
-  name:'MoForm',
-  components:{},
-  props:{},
-  data(){
-    return {
-      isShow: true
-    }
-  },
-  computed:{},
-  methods:{}
+  name:'MoForm' 
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .mo-form
-  width 930px
-  height 430px
-  margin 0 auto
-  position fixed
-  top 150px
-  left 0
-  right 0
-  
+  width 100%      
+  padding 0 20px
+  position absolute
+  bottom 0
+  color gray
   
 </style>

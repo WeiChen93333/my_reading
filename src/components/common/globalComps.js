@@ -1,8 +1,5 @@
 import Vue from 'vue'
 
-import MoInput from './input-box/MoInput'
-Vue.component('MoInput', MoInput)
-
 import MoBreadcrumb from './MoBreadcrumb'
 Vue.component('MoBreadcrumb', MoBreadcrumb)
 
@@ -19,6 +16,10 @@ Vue.component('MoDialog', MoDialog)
 
 import MoForm from './MoForm'
 Vue.component('MoForm', MoForm)
+import MoFormItem from './MoFormItem'
+Vue.component('MoFormItem', MoFormItem)
+import MoInput from './MoInput'
+Vue.component('MoInput', MoInput)
 
 //简易小组件--不包含或包含少量数据传递
 import MoCard from './MoCard'

@@ -1,5 +1,5 @@
 <template>
-  <div class="mo-message-box-wrapper" v-if="confirmBoxVisible" @click.self="clickToCancel">  
+  <div class="mo-message-box-container" v-if="confirmBoxVisible" @click.self="clickToCancel">  
     <div class="message-box">
       <div class="header">
         <div class="title">{{type}}</div>
@@ -48,7 +48,7 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-.mo-message-box-wrapper
+.mo-message-box-container
   z-index 2020
   background-color rgba(0, 0, 0, .4)
   position fixed

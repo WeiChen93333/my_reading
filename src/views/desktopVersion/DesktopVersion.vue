@@ -23,9 +23,9 @@
         </div>  
         <div class="login">
           <mo-button type="primary" size="middle" text="注册"
-            @click.native="toggleRegisterBox"></mo-button>  
+            @click.native="showRegister"></mo-button>  
           <mo-button type="primary" size="middle" text="登录"
-            @click.native="toggleLoginBox"></mo-button>     
+            @click.native="showLoginBox"></mo-button>     
         </div> 
       </div>
       <div class="content">
@@ -49,8 +49,12 @@
       <!-- 单词仓展示区 -->
       <word-base v-if="wordBaseVisible"
         @hideWordBase="toggleWordBase"></word-base>
-      <!-- 用户注册表单 -->
-      <!-- 用户登录表单 -->
+      <!-- 用户注册区 -->
+      <register v-if="registerVisible"       
+        @hideForm="hideForm">
+        <mo-form>login</mo-form>
+      </register>
+      <!-- 用户登录区 -->
     </div>
   </div>
 </template>
@@ -61,6 +65,7 @@ import ReadingZone from './childComps/ReadingZone'
 import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
 import WordBase from './childComps/WordBase'
+import Register from './childComps/Register'
 export default {
   name: 'DesktopVersion',
   components: {   
@@ -68,7 +73,8 @@ export default {
     ReadingZone,
     WordInfo,
     WordCollection,
-    WordBase
+    WordBase,
+    Register
   },
   data(){
     return {
@@ -78,6 +84,9 @@ export default {
       //单词集 单词仓      
       wordCollectionVisible: false,
       wordBaseVisible: false,
+      //注册登录表单
+      registerVisible: false,
+      loginVisible: false,
       
       //数据
       //要展示在阅读区的文本
@@ -147,15 +156,19 @@ export default {
       this.wordBaseVisible = !this.wordBaseVisible     
     }, 
 
-    //显示与隐藏单词集
-    toggleRegisterBox(){
-      // this.wordCollectionVisible = !this.wordCollectionVisible
-      console.log('ongoing')
+    //显示注册登录表单
+    showRegister(){
+      this.registerVisible = true     
     },     
-    toggleLoginBox(){
+    showLoginBox(){
       // this.wordBaseVisible = !this.wordBaseVisible 
       console.log('ongoing')    
-    },     
+    },
+    //隐藏表单
+    hideForm(){
+      this.registerVisible = false
+
+    },
 
     //处理子组件发送的事件
     //在词典中查询单词
