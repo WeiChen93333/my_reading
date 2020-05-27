@@ -33,20 +33,14 @@ export default {
   data(){
     return {
       wordBase: [],
-      selectedWords: [],
-      userInfo: {
-        userId: '0',
-        username: 'chen',
-        password: 1111
-      }
+      selectedWords: []     
     }
   },
   computed: {
     ...mapState(['wordCollection']),
     numberOfCols(){
       return Math.ceil(this.wordBase.length/15)
-    }
-   
+    }   
   },
   created(){
     this.getWordBase()
@@ -58,7 +52,8 @@ export default {
 
     //获取单词仓数据
     async getWordBase(){
-      const { data } = await this.$http('/userInfo', { params: {userId: '0'} })
+      const userId = window.sessionStorage.getItem('userId')
+      const { data } = await this.$http('/userInfo', { params: {userId: userId} })
       this.wordBase = data.wordbase
     },
   
@@ -94,10 +89,12 @@ export default {
       for(let item of this.wordBase){
         if(!this.selectedWords.includes(item)) revisedWordBase.push(item)
       }      
-      const { data } = await this.$http.post(`/userInfo/${this.userInfo.userId}`, JSON.stringify({revisedWordBase: revisedWordBase}))
+      const userId = window.sessionStorage.getItem('userId')
+      const { data } = await this.$http.post(`/userInfo/${userId}`, JSON.stringify({revisedWordBase: revisedWordBase}))
       this.wordBase = data.wordbase      
     },
     drawWords(){
+      if(!this.selectedWords.length) return
       let addition = []
       let repeatedwords = ''
       for(let item of this.selectedWords){

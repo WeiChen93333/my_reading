@@ -53,11 +53,11 @@ export default {
       
     },
     async login(){   
-      const {data} = await this.$http.post('/userInfo/login', JSON.stringify(this.loginInfo))
-      if(data !== "success") return this.message = '用户名或密码不正确'
+      const { data } = await this.$http.post('/userInfo/login', JSON.stringify(this.loginInfo))   
+      if(data.message !== "success") return this.message = '用户名或密码不正确'
       this.$message.show('登录成功')
-      this.hideForm()
-      
+      window.sessionStorage.setItem('userId', data.userId)
+      this.hideForm()      
     }
   }
 }

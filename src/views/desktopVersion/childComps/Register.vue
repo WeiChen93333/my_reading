@@ -82,9 +82,6 @@ export default {
         right 15px
         cursor pointer
     .register-form 
-      .button-box
-        width 100%
-        height 32px
-        margin-bottom 20px
+      .button-box       
         text-align center
 </style>

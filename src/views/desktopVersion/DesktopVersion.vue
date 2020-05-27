@@ -157,6 +157,8 @@ export default {
       this.wordCollectionVisible = !this.wordCollectionVisible
     },    
     toggleWordBase(){
+      const userId = window.sessionStorage.getItem('userId')
+      if(!userId) return this.$message.show('使用此功能需要登录')
       this.wordBaseVisible = !this.wordBaseVisible     
     }, 
 
@@ -171,8 +173,6 @@ export default {
     hideForm(){
       this.registerVisible = false
       this.loginVisible = false
-      
-
     },
 
     //处理子组件发送的事件

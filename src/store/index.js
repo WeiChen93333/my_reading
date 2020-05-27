@@ -15,7 +15,7 @@ export default new Vuex.Store({
           const reg = /[a-zA-Z']+/     
           if(reg.exec(param)){
             param = reg.exec(param)[0]
-            state.wordCollection.push(param)            
+            if(!state.wordCollection.includes(param)) state.wordCollection.push(param)  
           }
           return        
         }
