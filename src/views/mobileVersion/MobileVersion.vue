@@ -1,6 +1,6 @@
 <template>
 <!-- 父组件就像中央控制室, 忙碌着数据的交互和分发 -->
-  <div id="desktop">
+  <div id="mobile">
     <div id="main">    
       <!-- always being shown -->
       <!-- 按钮区域就不抽成组件了, 要不然很麻烦, 其实这有点像tab切换, 用路由也可以的 -->
@@ -22,10 +22,10 @@
             @click.native="toggleWordBase"></mo-button>     
         </div>  
         <div class="login">
-          <mo-button type="primary" size="middle" text="释义模式"
-            ></mo-button>  
-          <mo-button type="primary" size="middle" text="例句模式"
-            ></mo-button>     
+          <mo-button type="primary" size="middle" text="注册"
+            @click.native="showRegister"></mo-button>  
+          <mo-button type="primary" size="middle" text="登录"
+            @click.native="showLoginBox"></mo-button>     
         </div> 
       </div>
       <div class="content">
@@ -48,7 +48,15 @@
         :wordInfo="wordInfo"></word-collection>
       <!-- 单词仓展示区 -->
       <word-base v-if="wordBaseVisible"
-        @hideWordBase="toggleWordBase"></word-base>      
+        @hideWordBase="toggleWordBase"></word-base>
+      <!-- 用户注册区 -->
+      <register v-if="registerVisible"       
+        @hideForm="hideForm">        
+      </register>
+      <!-- 用户登录区 -->
+      <login v-if="loginVisible"       
+        @hideForm="hideForm">        
+      </login>
     </div>
   </div>
 </template>
@@ -59,6 +67,8 @@ import ReadingZone from './childComps/ReadingZone'
 import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
 import WordBase from './childComps/WordBase'
+import Register from './childComps/Register'
+import Login from './childComps/Login'
 export default {
   name: 'DesktopVersion',
   components: {   
@@ -66,7 +76,9 @@ export default {
     ReadingZone,
     WordInfo,
     WordCollection,
-    WordBase    
+    WordBase,
+    Register,
+    Login
   },
   data(){
     return {
@@ -76,7 +88,9 @@ export default {
       //单词集 单词仓      
       wordCollectionVisible: false,
       wordBaseVisible: false,
-   
+      //注册登录表单
+      registerVisible: false,
+      loginVisible: false,
       
       //数据
       //要展示在阅读区的文本
@@ -147,7 +161,20 @@ export default {
       if(!userId) return this.$message.show('使用此功能需要登录')
       this.wordBaseVisible = !this.wordBaseVisible     
     }, 
-    
+
+    //显示注册登录表单
+    showRegister(){
+      this.registerVisible = true     
+    },     
+    showLoginBox(){
+      this.loginVisible = true        
+    },
+    //隐藏表单
+    hideForm(){
+      this.registerVisible = false
+      this.loginVisible = false
+    },
+
     //处理子组件发送的事件
     //在词典中查询单词
     async searchThroughDict(word){
@@ -165,7 +192,7 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#desktop
+#mobile
   width 60%
   min-width 880px
   padding 20px
