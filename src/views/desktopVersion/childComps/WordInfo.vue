@@ -28,14 +28,7 @@ export default {
       searchBoxVisible: false,
       inputWord: ''
     }
-  },
-  directives: {
-    focus: {
-      inserted(el){       
-        el.focus()
-      }
-    }
-  },
+  },  
   methods: {
     //控制搜索框的显示与隐藏
     toggleSearchBox(){

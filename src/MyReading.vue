@@ -1,12 +1,18 @@
 <template>
   <div id="my-reading">
     <div id="header">
-      <span class="desktop" 
-        :class="{active: isActive == 'desktop'}"
+      <span class="register" 
+        :class="{active: isActive == 'register'}"
         @click="showRegister">注册</span>
-      <span class="mobile" 
-        :class="{active: isActive == 'mobile'}"
-        @click="showLoginBox">登录</span>
+      <div class="login">
+        <span v-if="!username"       
+          @click="showLogin">登录</span>
+        <template v-else>
+          <span class="username">{{username}}</span>
+          <span class="exit"
+            @click="logout">退出</span>
+        </template>       
+      </div>
     </div>    
   <!-- 用户注册区 -->
     <register v-if="registerVisible"       
@@ -14,7 +20,8 @@
     </register>
     <!-- 用户登录区 -->
     <login v-if="loginVisible"       
-      @hideForm="hideForm">        
+      @hideForm="hideForm"
+      @loggedIn="loggedIn">        
     </login>
     <router-view/>
   </div>
@@ -31,25 +38,46 @@ export default {
   },
   data(){
     return {
-      isActive: 'desktop',
+      isActive: '',
       //注册登录表单
       registerVisible: false,
       loginVisible: false,
+      username: ''
     }
+  }, 
+  created(){
+    this.isLoggedIn()
   },
   methods: {
+    //刷新页面后查询用户是否已经登录
+    async isLoggedIn(){
+      const userId = window.sessionStorage.getItem('userId')
+      if(userId){
+        const {data} = await this.$http.get('/userInfo', {params: {userId: userId}})
+        this.username = data.username
+      }
+    },
     //显示注册登录表单
     showRegister(){
       this.registerVisible = true     
     },     
-    showLoginBox(){
+    showLogin(){
       this.loginVisible = true        
     },
     //隐藏表单
     hideForm(){
       this.registerVisible = false
       this.loginVisible = false
-    }   
+    },
+    //登录成功, 改变显示
+    loggedIn(username){
+      this.isActive = 'login'
+      this.username = username
+    },
+    logout(){
+      this.username = ''
+      window.sessionStorage.removeItem('userId')
+    }
   }
 
 }
@@ -63,15 +91,24 @@ export default {
     padding-right 40px
     background-color lightgray
     text-align right
-    .desktop, .mobile 
+    .register, .login 
       display inline-block
-      width 80px
+      width 50px
       height 40px
-      line-height 40px
+      line-height 40px      
       font-size 14px
+      text-align center
       cursor pointer
-    .active 
-      color blue
+    .login 
+      width 80px  
+      .username 
+        color blue    
+      .exit 
+        font-size 12px
+        color red
+        vertical-align text-top        
+        margin-left 5px
+  
  
 
 

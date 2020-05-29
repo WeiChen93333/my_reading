@@ -1,8 +1,7 @@
 <template>
-  <form class="mo-form">
+  <form class="mo-form" v-focus>
     <slot></slot>
-  </form>
-  
+  </form>  
 </template>
 
 <script>

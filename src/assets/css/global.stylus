@@ -55,6 +55,11 @@ pre{
 button
   border none
   padding 0
+
+input 
+  border none
+  outline:none
+
   
 .el-breadcrumb{
   margin-bottom: 15px;

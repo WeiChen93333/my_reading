@@ -5,7 +5,8 @@
       :class="{focused: isFocused}"           
       @focus="isFocused = true" @blur="isFocused = false"
       :value="value"
-      @change="$emit('change', $event.target.value)">
+      @change="$emit('change', $event.target.value)"
+      >
   </div>
 </template>
 
@@ -19,7 +20,7 @@ export default {
   props: ['value', 'text', 'type'],
   data(){
     return {     
-      isFocused: false     
+      isFocused: false      
     }
   } 
 }

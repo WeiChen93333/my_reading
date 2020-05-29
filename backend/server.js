@@ -8,6 +8,9 @@ const url = require('url')
 const onRequest = (req, res) => {
   res.setHeader('Content-Type', 'application/json'); 
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')  
+  // res.setHeader('Access-Control-Allow-Credentials', true)  
+  res.setHeader('Access-Control-Allow-Headers', 'authorization')  
+  
   const method = req.method 
   if(method == 'GET'){
     const { pathname, query } = url.parse(req.url, true) 
@@ -46,7 +49,10 @@ const onRequest = (req, res) => {
           UserModel.create(newUser)             
         })    
       })      
-      return res.end('success')
+      const resData = {        
+        message: 'success'
+      }
+      return res.end(JSON.stringify(resData))
     }    
     //用户登录
     if(pathname == '/userInfo/login'){
@@ -54,11 +60,12 @@ const onRequest = (req, res) => {
         let postData = JSON.parse(chunk) 
         UserModel.findOne(postData, function(err, doc){
           if(!err){            
-            if(doc){
+            if(doc){               
               const resData = {
                 userId: doc.userId,
+                username: doc.username,                     
                 message: 'success'
-              }              
+              }                         
               res.end(JSON.stringify(resData))    
             }else{
               const resData = {                

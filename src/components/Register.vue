@@ -44,8 +44,10 @@ export default {
     hideForm(){
       this.$emit('hideForm')
     },
-    submitRegister(){      
-      this.$http.post('/userInfo/register', JSON.stringify(this.registerInfo))
+    async submitRegister(){      
+      const { data } = await this.$http.post('/userInfo/register', JSON.stringify(this.registerInfo))
+      const message = "恭喜您注册成功!"
+      if(data.message == 'success') this.$message.show(message, 5000)
       this.hideForm()
     }
   }

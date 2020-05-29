@@ -23,14 +23,10 @@ Vue.prototype.$bus = new Vue()
 //引入axios
 import axios from "axios"
 axios.defaults.baseURL = "http://localhost:3366"
-// axios.interceptors.request.use(config => {
-//   //为请求头对象, 添加token验证的authorization字段  
-//   config.headers.Authorization = window.sessionStorage.getItem('token')
-//   //*发起登录请求的时候还没有token, window.sessionStorage.getItem('token')为"null"
-  
-//   return config
-// })
+
 Vue.prototype.$http = axios
+
+import { focus } from './directive/directive.js'
 
 Vue.config.productionTip = false
 
