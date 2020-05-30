@@ -12,13 +12,7 @@
 import { mapState } from 'vuex'
 export default {
   name: 'ReadingZone',
-  components: {},
   props: ['textArr'],
-  data(){
-    return {
-      
-    }
-  },
   computed: {
     ...mapState(['wordCollection'])
   },
@@ -49,7 +43,8 @@ export default {
   max-width 710px
   overflow-y auto 
   p 
-    margin-bottom 20px
+    margin-bottom 10px
+    line-height 22px   
   span
     cursor pointer
 </style>

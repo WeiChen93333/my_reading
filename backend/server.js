@@ -44,6 +44,7 @@ const onRequest = (req, res) => {
             userId: userCount.toString(),
             username: postData.username,
             password: postData.password.toString(),
+            history: [],
             wordbase: []
           }
           UserModel.create(newUser)             
@@ -79,7 +80,7 @@ const onRequest = (req, res) => {
       return 
     }   
     //修改用户信息, 本来该用 put, 但是不知道 http 模块不能接收还是需要怎么配置一下, 用 post 先将就
-    const regexp = /\/userInfo\/(\w+)/
+    const regexp = /\/userInfo\/update\/(\w+)/
     const userId = regexp.exec(pathname)[1]    
     req.on('data', (chunk)=> {
       let postData = JSON.parse(chunk)
@@ -121,6 +122,7 @@ const userSchema = new mongoose.Schema({
   userId: String,
   username: String,
   password: String,
+  history: Array,
   wordbase: Array
 })
 const UserModel = conn2.model('users', userSchema)

@@ -1,9 +1,7 @@
 <template>
-<!-- 父组件就像中央控制室, 忙碌着数据的交互和分发 -->
   <div id="desktop">
     <div id="main">    
-      <!-- always being shown -->
-      <!-- 按钮区域就不抽成组件了, 要不然很麻烦, 其实这有点像tab切换, 用路由也可以的 -->
+      <!-- 一直显示 -->  
       <div class="button-box">
         <div class="text">
           <mo-button type="primary" size="wider" text="导入文本片段"
@@ -36,7 +34,7 @@
       <!-- 单词信息展示区 -->
         <word-info @inputSearch = "searchThroughDict" :wordInfo="wordInfo"></word-info>
       </div>
-      <!-- shown by clicking a button -->
+      <!-- 点击按钮显示 -->
       <!-- 文本片段输入区 -->
       <text-input-box 
         v-show="textInputBoxVisible"
@@ -75,17 +73,12 @@ export default {
       textInputBoxVisible: false, 
       //单词集 单词仓      
       wordCollectionVisible: false,
-      wordBaseVisible: false,
-   
+      wordBaseVisible: false,   
       
-      //数据
-      //要展示在阅读区的文本
-      textStr: '',
-      //用户每次输入的文本
-      newAdd: '',   
-      //查询到的单词信息
-      wordInfo: {}
-    
+      //数据      
+      textStr: '',  //要展示在阅读区的文本
+      newAdd: '',   //用户每次输入的文本     
+      wordInfo: {}  //查询到的单词信息    
     }
   },
   computed: {
@@ -119,7 +112,7 @@ export default {
     toggleTextInputBox(){
       this.textInputBoxVisible = !this.textInputBoxVisible
       if(!this.textInputBoxVisible){
-        this.textStr += ' ' + this.newAdd
+        this.textStr += this.newAdd
         this.newAdd = ''   
       }    
     },  
@@ -154,7 +147,7 @@ export default {
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0].toLowerCase()     
-      const {data} = await this.$http.get('/dict', {
+      const {data} = await this.$http('GET', '/dict', {
         params: {
           word: word
         }

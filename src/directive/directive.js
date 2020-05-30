@@ -9,8 +9,7 @@ const focus = Vue.directive(
             if(item.tagName == 'INPUT') item.focus()
           })
         }
-    }
-    
+    }    
   }
 )
 

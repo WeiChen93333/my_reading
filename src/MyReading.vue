@@ -1,8 +1,7 @@
 <template>
   <div id="my-reading">
     <div id="header">
-      <span class="register" 
-        :class="{active: isActive == 'register'}"
+      <span class="register"        
         @click="showRegister">注册</span>
       <div class="login">
         <span v-if="!username"       
@@ -30,6 +29,7 @@
 <script>
 import Register from 'components/Register'
 import Login from 'components/Login'
+
 export default {
   name:'MyReading',
   components: {     
@@ -38,8 +38,6 @@ export default {
   },
   data(){
     return {
-      isActive: '',
-      //注册登录表单
       registerVisible: false,
       loginVisible: false,
       username: ''
@@ -52,8 +50,8 @@ export default {
     //刷新页面后查询用户是否已经登录
     async isLoggedIn(){
       const userId = window.sessionStorage.getItem('userId')
-      if(userId){
-        const {data} = await this.$http.get('/userInfo', {params: {userId: userId}})
+      if(userId){        
+        const {data} = await this.$http('GET', '/userInfo', {params: {userId: userId}})
         this.username = data.username
       }
     },
@@ -70,8 +68,7 @@ export default {
       this.loginVisible = false
     },
     //登录成功, 改变显示
-    loggedIn(username){
-      this.isActive = 'login'
+    loggedIn(username){      
       this.username = username
     },
     logout(){

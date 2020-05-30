@@ -17,7 +17,7 @@
         </mo-form-item>
         <mo-form-item class="button-box">         
           <mo-button type="primary" size="wider" text="提交注册"           
-            @click.native="submitRegister"></mo-button>
+            @click.native="register"></mo-button>
         </mo-form-item>
       </mo-form>      
     </div>    
@@ -39,15 +39,14 @@ export default {
       }
     }
   },
-  computed: {},
   methods: {
     hideForm(){
       this.$emit('hideForm')
     },
-    async submitRegister(){      
-      const { data } = await this.$http.post('/userInfo/register', JSON.stringify(this.registerInfo))
+    async register(){      
+      const { data } = await this.$http('POST', '/userInfo/register', this.registerInfo)
       const message = "恭喜您注册成功!"
-      if(data.message == 'success') this.$message.show(message, 5000)
+      if(data.message == 'success') this.$message.show(message)
       this.hideForm()
     }
   }

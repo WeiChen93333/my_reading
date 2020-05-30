@@ -15,16 +15,7 @@ export default {
   }, 
   props: {
     value: String
-  },
-  data(){
-    return {
-      //获取textarea元素
-      // textarea: ''
-    }
-  },
-  methods: {
-   
-  }
+  } 
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

@@ -24,14 +24,11 @@
       </mo-form>      
     </div>    
   </div>
-
 </template>
 
 <script>
 export default {
   name: 'Login',
-  components: {},
-  props: {},
   data(){
     return {
       loginInfo: {
@@ -41,7 +38,6 @@ export default {
       message: ''
     }
   },
-  computed: {},
   methods: {
     hideForm(){
       this.$emit('hideForm')
@@ -53,7 +49,7 @@ export default {
       
     },
     async login(){   
-      const { data } = await this.$http.post('/userInfo/login', JSON.stringify(this.loginInfo))   
+      const { data } = await this.$http('POST', '/userInfo/login', this.loginInfo)   
       if(data.message !== "success") return this.message = '用户名或密码不正确'
       this.$emit('loggedIn', data.username)
       window.sessionStorage.setItem('userId', data.userId)     

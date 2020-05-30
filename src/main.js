@@ -20,11 +20,9 @@ Vue.use(MessageBox)
 //设置事件总线
 Vue.prototype.$bus = new Vue()
 
-//引入axios
-import axios from "axios"
-axios.defaults.baseURL = "http://localhost:3366"
-
-Vue.prototype.$http = axios
+//引入 axios 请求函数
+import { request } from "./request/request.js"
+Vue.prototype.$http = request
 
 import { focus } from './directive/directive.js'
 
