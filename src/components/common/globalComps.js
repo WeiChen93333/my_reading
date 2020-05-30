@@ -1,20 +1,22 @@
 import Vue from 'vue'
-
-import MoBreadcrumb from './MoBreadcrumb'
-Vue.component('MoBreadcrumb', MoBreadcrumb)
-
+//分页组件
 import MoPagination from './MoPagination'
 Vue.component('MoPagination', MoPagination)
 
 import MoDialog from './MoDialog'
 Vue.component('MoDialog', MoDialog)
 
+//表单组件
 import MoForm from './MoForm'
 Vue.component('MoForm', MoForm)
 import MoFormItem from './MoFormItem'
 Vue.component('MoFormItem', MoFormItem)
 import MoInput from './MoInput'
 Vue.component('MoInput', MoInput)
+
+//右键菜单组件
+import ContextMenu from './ContextMenu'
+Vue.component('ContextMenu', ContextMenu)
 
 //简易小组件--不包含或包含少量数据传递
 import MoCard from './MoCard'

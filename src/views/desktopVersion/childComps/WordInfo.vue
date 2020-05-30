@@ -9,19 +9,19 @@
           <i class="iconfont icon-i-search" @click="inputSearch(inputWord)"></i>
         </div>
       </transition>      
-    </div>   
-    <word-info-display :wordInfo="wordInfo"></word-info-display>   
-    
-  </div>
+    </div>       
+    <word-info-display :wordInfo="wordInfo"></word-info-display>          
+  </div>  
 </template>
 
 <script>
 import WordInfoDisplay from '../comComps/WordInfoDisplay'
+
 export default {
   name: 'WordInfo',  
   props: ['wordInfo'],
   components: {
-    WordInfoDisplay
+    WordInfoDisplay   
   }, 
   data(){
     return {
@@ -41,9 +41,8 @@ export default {
         this.inputWord = ''
       }  
       this.searchBoxVisible = false
-    }
+    }  
   }
-
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

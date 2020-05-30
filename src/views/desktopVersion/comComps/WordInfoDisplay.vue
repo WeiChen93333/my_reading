@@ -1,5 +1,6 @@
 <template>
   <div id="word-info-display"  v-backtotop>
+    <context-menu>
     <p class="not-found" v-if="!wordInfo">查 无 此 词</p>
     <div class="word-info-container" v-else>
       <div class="word">{{wordInfo.word}}</div>
@@ -11,20 +12,21 @@
           >{{item2}}</p>
       </div>
     </div>
+    </context-menu>
   </div>
 </template>
 
 <script>
 export default {
   name: 'WordInfoDisplay',   
-  props: ['wordInfo'],
+  props: ['wordInfo'], 
   directives: {
     backtotop: {
       componentUpdated(el){       
         el.scrollTop = 0      
       }
     }
-  }
+  }  
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
