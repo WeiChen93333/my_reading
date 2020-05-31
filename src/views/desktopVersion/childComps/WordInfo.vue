@@ -49,7 +49,6 @@ export default {
 .word-info
   flex 1
   height 100%
-  overflow hidden
   padding-left 10px
   padding-right 5px
   border 2px solid rgb(64, 128, 128) 

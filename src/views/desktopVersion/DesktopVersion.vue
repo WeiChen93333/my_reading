@@ -143,7 +143,7 @@ export default {
     
     //处理子组件发送的事件
     //在词典中查询单词
-    async searchThroughDict(word){
+    async searchThroughDict(word){  
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0].toLowerCase()     

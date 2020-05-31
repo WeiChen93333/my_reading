@@ -80,9 +80,7 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#my-reading
-  overflow hidden
-  overflow-x auto
+#my-reading  
   #header  
     height 40px
     padding-right 40px

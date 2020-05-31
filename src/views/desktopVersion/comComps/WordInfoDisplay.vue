@@ -31,7 +31,7 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #word-info-display
-  height calc(100% - 5px)
+  height calc(100% - 5px)  
   overflow-y auto
   font-size 16px
   .not-found

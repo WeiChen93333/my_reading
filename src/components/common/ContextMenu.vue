@@ -1,46 +1,68 @@
 <template>
   <div id="context-menu-wrapper"
-    @contextmenu.prevent="showContextMenu">
+    @contextmenu.prevent="showContextMenu"
+    @click="hideContextMenu"
+    @mouseup="selectText">
     <slot></slot>
-    <ul id="context-menu" v-show="ContextMenuVisible">
-      <li v-for="(item, index) in menu" :key="index">{{item.content}}</li>        
-    </ul>
+    <ul id="context-menu" v-show="ContextMenuVisible" v-getposition="mousePosition">
+      <li v-for="(item, index) in menu" :key="index" @click="item.handler">{{item.content}}</li>        
+    </ul>   
   </div>
 </template>
 
 <script>
+// import { deepFreeze } from './deepFreeze.js'
 export default {
   name: 'ContextMenu',  
   props: {},
   data(){
     return {
-      ContextMenuVisible: false,
-      menu: [
+      ContextMenuVisible: false,   
+      menu: Object.freeze([
         {
-          content: '查询释义'
+          content: '查询释义',    
+          handler: this.meaningSearch   
         },
         {
-          content: '查询例句'
+          content: '查询例句',
+          handler: this.sentenceSearch   
         },
         {
-          content: '添加到单词集'
+          content: '添加到单词集',
+          handler: this.addToWordCollection  
         },
         {
-          content: '添加到句集'
-        },
-      ]
+          content: '添加到句集',
+          handler: this.addToSentenceCollection   
+        }
+      ]),
+      mousePosition: {},
+      selectedText: ''  
     }
   },
-  computed: {},
+  directives:{
+    getposition: {
+      componentUpdated(el, binding){
+        el.style.left = binding.value.x + 'px'     
+        el.style.top = binding.value.y + 'px'          
+      }
+    }
+  },
   methods: {
-    showContextMenu(){
+    showContextMenu(event){     
+      this.mousePosition = {x: event.clientX, y: event.clientY} 
       this.ContextMenuVisible = true
-    },
+    }, 
     hideContextMenu(){
       this.ContextMenuVisible = false
     },
+    //选中文本内容
+    selectText(){
+      this.selectedText = window.getSelection().toString()
+    },
     meaningSearch(){
-      console.log('meaning')
+      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')  
+      this.$emit('searchThroughDict', this.selectedText) 
     },
     sentenceSearch(){
       console.log('sentence')
@@ -57,17 +79,14 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #context-menu-wrapper
-  height 100%
-  position relative  
-  #context-menu   
+  #context-menu 
     padding 2px 0
     color black
     font-size 14px
     background-color white      
     border 1px solid lightgray
-    position absolute
-    left 0
-    top 0
+    position fixed
+    z-index 1000
     li      
       height 25px
       padding 5px 20px 
