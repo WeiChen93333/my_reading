@@ -9,33 +9,26 @@
           <i class="iconfont icon-i-search" @click="inputSearch(inputWord)"></i>
         </div>
       </transition>      
-    </div>   
-    <word-info-display :wordInfo="wordInfo"></word-info-display>   
-    
-  </div>
+    </div>       
+    <word-info-display :wordInfo="wordInfo"></word-info-display>          
+  </div>  
 </template>
 
 <script>
 import WordInfoDisplay from '../comComps/WordInfoDisplay'
+
 export default {
   name: 'WordInfo',  
   props: ['wordInfo'],
   components: {
-    WordInfoDisplay
+    WordInfoDisplay   
   }, 
   data(){
     return {
       searchBoxVisible: false,
       inputWord: ''
     }
-  },
-  directives: {
-    focus: {
-      inserted(el){       
-        el.focus()
-      }
-    }
-  },
+  },  
   methods: {
     //控制搜索框的显示与隐藏
     toggleSearchBox(){
@@ -48,20 +41,19 @@ export default {
         this.inputWord = ''
       }  
       this.searchBoxVisible = false
-    }
+    }  
   }
-
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .word-info
   flex 1
   height 100%
-  overflow hidden
   padding-left 10px
   padding-right 5px
   border 2px solid rgb(64, 128, 128) 
   background-color rgb(252, 252, 254) 
+  overflow hidden
   .search-line
     border-top 2px solid #e1251b
     height 5px

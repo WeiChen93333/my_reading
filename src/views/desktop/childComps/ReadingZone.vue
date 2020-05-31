@@ -3,7 +3,7 @@
     <p v-for="(item1, index1) in textArr" :key="index1">
     <span v-for="(item2, index2) in item1" :key="index2"
     @click="clickSearch(item2)"
-    @dblclick="addToCollection(item2)">{{item2 + ' '}}</span>
+    @dblclick="addToWordCollection(item2)">{{item2 + ' '}}</span>
   </p>   
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
       this.$emit('clickSearch', word)    
     },    
     //将单词加入当前单词集
-    addToCollection(word){
+    addToWordCollection(word){
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0]

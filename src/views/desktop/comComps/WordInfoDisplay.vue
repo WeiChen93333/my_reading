@@ -1,35 +1,36 @@
 <template>
   <div id="word-info-display"  v-backtotop>
-    <p class="not-found" v-if="!wordInfo">查 无 此 词</p>
-    <div class="word-info-container" v-else>
-      <div class="word">{{wordInfo.word}}</div>
-      <div class="meaning"
-        v-for="(item1, index1) in wordInfo.meanings" :key="index1">
-        <p class="explanation">{{item1.explanation}}</p>
-        <p class="sentence" :class="{property: item2.includes('[part of speech]')}"
-          v-for="(item2, index2) in item1.sentences" :key="index2"
-          >{{item2}}</p>
-      </div>
+  <p class="not-found" v-if="!wordInfo">查 无 此 词</p>
+  <div class="word-info-container" v-else>
+    <div class="word">{{wordInfo.word}}</div>
+    <div class="meaning"
+      v-for="(item1, index1) in wordInfo.meanings" :key="index1">
+      <p class="explanation">{{item1.explanation}}</p>
+      <p class="sentence" :class="{property: item2.includes('[part of speech]')}"
+        v-for="(item2, index2) in item1.sentences" :key="index2"
+        >{{item2}}</p>
     </div>
+  </div>
+ 
   </div>
 </template>
 
 <script>
 export default {
   name: 'WordInfoDisplay',   
-  props: ['wordInfo'],
+  props: ['wordInfo'], 
   directives: {
     backtotop: {
       componentUpdated(el){       
         el.scrollTop = 0      
       }
     }
-  }
+  }  
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #word-info-display
-  height calc(100% - 5px)
+  height calc(100% - 5px)  
   overflow-y auto
   font-size 16px
   .not-found

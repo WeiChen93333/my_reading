@@ -1,9 +1,7 @@
 <template>
-<!-- 父组件就像中央控制室, 忙碌着数据的交互和分发 -->
-  <div id="mobile">
+  <div id="desktop">
     <div id="main">    
-      <!-- always being shown -->
-      <!-- 按钮区域就不抽成组件了, 要不然很麻烦, 其实这有点像tab切换, 用路由也可以的 -->
+      <!-- 一直显示 -->  
       <div class="button-box">
         <div class="text">
           <mo-button type="primary" size="wider" text="导入文本片段"
@@ -22,12 +20,13 @@
             @click.native="toggleWordBase"></mo-button>     
         </div>  
         <div class="login">
-          <mo-button type="primary" size="middle" text="注册"
-            @click.native="showRegister"></mo-button>  
-          <mo-button type="primary" size="middle" text="登录"
-            @click.native="showLoginBox"></mo-button>     
+          <mo-button type="primary" size="middle" text="释义模式"
+            ></mo-button>  
+          <mo-button type="primary" size="middle" text="例句模式"
+            ></mo-button>     
         </div> 
       </div>
+      <context-menu>
       <div class="content">
       <!-- 阅读区 -->
         <reading-zone 
@@ -36,7 +35,8 @@
       <!-- 单词信息展示区 -->
         <word-info @inputSearch = "searchThroughDict" :wordInfo="wordInfo"></word-info>
       </div>
-      <!-- shown by clicking a button -->
+      </context-menu>
+      <!-- 点击按钮显示 -->
       <!-- 文本片段输入区 -->
       <text-input-box 
         v-show="textInputBoxVisible"
@@ -48,15 +48,7 @@
         :wordInfo="wordInfo"></word-collection>
       <!-- 单词仓展示区 -->
       <word-base v-if="wordBaseVisible"
-        @hideWordBase="toggleWordBase"></word-base>
-      <!-- 用户注册区 -->
-      <register v-if="registerVisible"       
-        @hideForm="hideForm">        
-      </register>
-      <!-- 用户登录区 -->
-      <login v-if="loginVisible"       
-        @hideForm="hideForm">        
-      </login>
+        @hideWordBase="toggleWordBase"></word-base>      
     </div>
   </div>
 </template>
@@ -67,18 +59,14 @@ import ReadingZone from './childComps/ReadingZone'
 import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
 import WordBase from './childComps/WordBase'
-import Register from './childComps/Register'
-import Login from './childComps/Login'
 export default {
-  name: 'DesktopVersion',
+  name: 'Desktop',
   components: {   
     TextInputBox,
     ReadingZone,
     WordInfo,
     WordCollection,
-    WordBase,
-    Register,
-    Login
+    WordBase    
   },
   data(){
     return {
@@ -87,19 +75,12 @@ export default {
       textInputBoxVisible: false, 
       //单词集 单词仓      
       wordCollectionVisible: false,
-      wordBaseVisible: false,
-      //注册登录表单
-      registerVisible: false,
-      loginVisible: false,
+      wordBaseVisible: false,   
       
-      //数据
-      //要展示在阅读区的文本
-      textStr: '',
-      //用户每次输入的文本
-      newAdd: '',   
-      //查询到的单词信息
-      wordInfo: {}
-    
+      //数据      
+      textStr: '',  //要展示在阅读区的文本
+      newAdd: '',   //用户每次输入的文本     
+      wordInfo: {}  //查询到的单词信息    
     }
   },
   computed: {
@@ -127,13 +108,22 @@ export default {
     const wordCollection = window.localStorage.getItem('wordCollection')    
     if(wordCollection) this.$store.commit('restoreCollection', wordCollection)
   },
+  mounted(){
+    this.$bus.$on('meaningSearch', value=>{
+      this.searchThroughDict(value)
+    })
+
+  },
+  beforeDestroy(){
+    this.$bus.$on('meaningSearch')
+  },
   methods: {
     //按钮功能
     //控制文本输入框
     toggleTextInputBox(){
       this.textInputBoxVisible = !this.textInputBoxVisible
       if(!this.textInputBoxVisible){
-        this.textStr += ' ' + this.newAdd
+        this.textStr += this.newAdd
         this.newAdd = ''   
       }    
     },  
@@ -161,27 +151,14 @@ export default {
       if(!userId) return this.$message.show('使用此功能需要登录')
       this.wordBaseVisible = !this.wordBaseVisible     
     }, 
-
-    //显示注册登录表单
-    showRegister(){
-      this.registerVisible = true     
-    },     
-    showLoginBox(){
-      this.loginVisible = true        
-    },
-    //隐藏表单
-    hideForm(){
-      this.registerVisible = false
-      this.loginVisible = false
-    },
-
+    
     //处理子组件发送的事件
     //在词典中查询单词
-    async searchThroughDict(word){
+    async searchThroughDict(word){  
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0].toLowerCase()     
-      const {data} = await this.$http.get('/dict', {
+      const {data} = await this.$http('GET', '/dict', {
         params: {
           word: word
         }
@@ -192,7 +169,7 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#mobile
+#desktop
   width 60%
   min-width 880px
   padding 20px

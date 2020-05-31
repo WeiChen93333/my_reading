@@ -12,9 +12,12 @@
 
 <script>
 // import { deepFreeze } from './deepFreeze.js'
+import { mapState } from 'vuex'
 export default {
   name: 'ContextMenu',  
-  props: {},
+  computed: {
+    ...mapState(['wordCollection'])
+  },
   data(){
     return {
       ContextMenuVisible: false,   
@@ -62,13 +65,16 @@ export default {
     },
     meaningSearch(){
       if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')  
-      this.$emit('searchThroughDict', this.selectedText) 
+      this.$bus.$emit('meaningSearch', this.selectedText) 
     },
     sentenceSearch(){
       console.log('sentence')
     },
     addToWordCollection(){
-      console.log('add')
+      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')
+      if(this.wordCollection.includes(this.selectedText)) return this.$message.show('该单词已经添加过')
+      this.$store.commit('addWord', this.selectedText)
+      this.$message.show(`成功添加 ${this.selectedText} 至单词集`)   
     },
     addToSentenceCollection(){
       console.log('add')

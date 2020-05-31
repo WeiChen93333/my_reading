@@ -53,7 +53,7 @@ export default {
     //获取单词仓数据
     async getWordBase(){
       const userId = window.sessionStorage.getItem('userId')
-      const { data } = await this.$http('/userInfo', { params: {userId: userId} })
+      const { data } = await this.$http('GET', '/userInfo', { params: {userId: userId} })
       this.wordBase = data.wordbase
     },
   

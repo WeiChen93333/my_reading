@@ -99,7 +99,7 @@ export default {
     async putInWordBase(){     
       if(!this.selectedWords.length) return
       const userId = window.sessionStorage.getItem('userId')
-      const { data } = await this.$http.get('/userInfo', { params: {userId: userId} })
+      const { data } = await this.$http('GET', '/userInfo', { params: {userId: userId} })
       let repeatedwords = ''
       for(let item of this.selectedWords){
         if(!data.wordbase.includes(item)){
@@ -110,7 +110,7 @@ export default {
       }
       const message = '操作成功! ' + (repeatedwords.length > 1 ? repeatedwords + '已经添加过': '')    
       this.$message.show(message)
-      await this.$http.post(`/userInfo/${userId}`, JSON.stringify({revisedWordBase: data.wordbase}))      
+      await this.$http('POST', `/userInfo/update/${userId}`, {revisedWordBase: data.wordbase})      
       this.removeSelectedWords()     
     },
 

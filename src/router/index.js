@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import DesktopVersion from 'views/desktopVersion/DesktopVersion'
+import Desktop from 'views/desktop/Desktop'
 
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    component: DesktopVersion
+    redirect: '/desktop' 
   },
   {
     path: '/desktop',
-    component: DesktopVersion
+    component: Desktop
   }  
 ]
 
