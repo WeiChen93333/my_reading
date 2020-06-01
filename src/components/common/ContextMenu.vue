@@ -40,7 +40,7 @@ export default {
         }
       ]),
       mousePosition: {},
-      selectedText: ''  
+      selectedText: ''    
     }
   },
   directives:{
@@ -61,23 +61,27 @@ export default {
     },
     //选中文本内容
     selectText(){
-      this.selectedText = window.getSelection().toString()
+      this.selectedText = window.getSelection().toString()     
     },
     meaningSearch(){
-      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')  
+      if(/\s/.test(this.selectedText)) return  
       this.$bus.$emit('meaningSearch', this.selectedText) 
     },
     sentenceSearch(){
       console.log('sentence')
     },
     addToWordCollection(){
-      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')
+      if(/\s/.test(this.selectedText)) return
       if(this.wordCollection.includes(this.selectedText)) return this.$message.show('该单词已经添加过')
       this.$store.commit('addWord', this.selectedText)
       this.$message.show(`成功添加 ${this.selectedText} 至单词集`)   
     },
-    addToSentenceCollection(){
-      console.log('add')
+    async addToSentenceCollection(){
+      if(/\s/.test(this.selectedText)) return
+      const userId = window.localStorage.getItem('userId')
+      const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})     
+      this.$http('GET', '/userInfo', {params: {userId: userId}})
+      this.$http('POST', `/userInfo/update/${userId}`, {revisedSentenceCollection: data.sentences.push(this.selectedText)})
     }
 
   }
@@ -94,7 +98,7 @@ export default {
     position fixed
     z-index 1000
     li      
-      height 25px
+      height 24px   
       padding 5px 20px 
       user-select none
       &:hover 

@@ -90,7 +90,7 @@ export default {
         if(!this.selectedWords.includes(item)) revisedWordBase.push(item)
       }      
       const userId = window.sessionStorage.getItem('userId')
-      const { data } = await this.$http.post(`/userInfo/${userId}`, JSON.stringify({revisedWordBase: revisedWordBase}))
+      const { data } = await this.$http('POST', `/userInfo/update/${userId}`, {revisedWordBase: revisedWordBase})
       this.wordBase = data.wordbase      
     },
     drawWords(){

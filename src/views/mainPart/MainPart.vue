@@ -1,56 +1,54 @@
-<template>
-  <div id="desktop">
-    <div id="main">    
-      <!-- 一直显示 -->  
-      <div class="button-box">
-        <div class="text">
-          <mo-button type="primary" size="wider" text="导入文本片段"
-            @click.native="toggleTextInputBox"></mo-button>           
-          <mo-button class="clear" type="primary" size="middle" text="取消输入"
-            @click.native="cancelInput"></mo-button>  
-          <mo-button class="clear" type="primary" size="middle" text="全部加入"
-            @click.native="addAll"></mo-button>
-          <mo-button class="clear" type="primary" size="wider" text="清空阅读区"
-            @click.native="clearReadingZone"></mo-button>        
-        </div>        
-        <div class="words">
-          <mo-button type="primary" size="middle" text="单词集"
-            @click.native="toggleWordCollection"></mo-button>  
-          <mo-button type="primary" size="middle" text="单词仓"
-            @click.native="toggleWordBase"></mo-button>     
-        </div>  
-        <div class="login">
-          <mo-button type="primary" size="middle" text="释义模式"
-            ></mo-button>  
-          <mo-button type="primary" size="middle" text="例句模式"
-            ></mo-button>     
-        </div> 
-      </div>
-      <context-menu>
-      <div class="content">
-      <!-- 阅读区 -->
-        <reading-zone 
-          :textArr="textArr"         
-          @clickSearch = "searchThroughDict"></reading-zone>
-      <!-- 单词信息展示区 -->
-        <word-info @inputSearch = "searchThroughDict" :wordInfo="wordInfo"></word-info>
-      </div>
-      </context-menu>
-      <!-- 点击按钮显示 -->
-      <!-- 文本片段输入区 -->
-      <text-input-box 
-        v-show="textInputBoxVisible"
-        v-model="newAdd"></text-input-box>
-      <!-- 单词集展示区 -->
-      <word-collection v-show="wordCollectionVisible" 
-        @hideWordCollection="toggleWordCollection"
-        @detailSearch = "searchThroughDict"
-        :wordInfo="wordInfo"></word-collection>
-      <!-- 单词仓展示区 -->
-      <word-base v-if="wordBaseVisible"
-        @hideWordBase="toggleWordBase"></word-base>      
+<template>  
+  <div id="main-part">    
+    <!-- 一直显示 -->  
+    <div class="button-box">
+      <div class="text">
+        <mo-button type="primary" size="wider" text="导入文本片段"
+          @click.native="toggleTextInputBox"></mo-button>           
+        <mo-button class="clear" type="primary" size="middle" text="取消输入"
+          @click.native="cancelInput"></mo-button>  
+        <mo-button class="clear" type="primary" size="middle" text="全部加入"
+          @click.native="addAll"></mo-button>
+        <mo-button class="clear" type="primary" size="wider" text="清空阅读区"
+          @click.native="clearReadingZone"></mo-button>        
+      </div>        
+      <div class="words">
+        <mo-button type="primary" size="middle" text="单词集"
+          @click.native="toggleWordCollection"></mo-button>  
+        <mo-button type="primary" size="middle" text="单词仓"
+          @click.native="toggleWordBase"></mo-button>     
+      </div>  
+      <div class="login">
+        <mo-button type="primary" size="middle" text="释义模式"
+          ></mo-button>  
+        <mo-button type="primary" size="middle" text="例句模式"
+          ></mo-button>     
+      </div> 
     </div>
-  </div>
+    <context-menu>
+    <div class="content">
+    <!-- 阅读区 -->
+      <reading-zone 
+        :textArr="textArr"         
+        @clickSearch = "searchThroughDict"></reading-zone>
+    <!-- 单词信息展示区 -->
+      <word-info @inputSearch = "searchThroughDict" :wordInfo="wordInfo"></word-info>
+    </div>
+    </context-menu>
+    <!-- 点击按钮显示 -->
+    <!-- 文本片段输入区 -->
+    <text-input-box 
+      v-show="textInputBoxVisible"
+      v-model="newAdd"></text-input-box>
+    <!-- 单词集展示区 -->
+    <word-collection v-show="wordCollectionVisible" 
+      @hideWordCollection="toggleWordCollection"
+      @detailSearch = "searchThroughDict"
+      :wordInfo="wordInfo"></word-collection>
+    <!-- 单词仓展示区 -->
+    <word-base v-if="wordBaseVisible"
+      @hideWordBase="toggleWordBase"></word-base>      
+  </div> 
 </template>
 
 <script>
@@ -60,7 +58,7 @@ import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
 import WordBase from './childComps/WordBase'
 export default {
-  name: 'Desktop',
+  name: 'MainPart',
   components: {   
     TextInputBox,
     ReadingZone,
@@ -103,10 +101,7 @@ export default {
     }
   },
   created(){
-    const text = window.localStorage.getItem('text')
-    if(text) this.textStr = text
-    const wordCollection = window.localStorage.getItem('wordCollection')    
-    if(wordCollection) this.$store.commit('restoreCollection', wordCollection)
+    this.init()
   },
   mounted(){
     this.$bus.$on('meaningSearch', value=>{
@@ -118,6 +113,14 @@ export default {
     this.$bus.$on('meaningSearch')
   },
   methods: {
+    //初始化 (获取阅读文本, 恢复单词集)
+    init(){
+      const text = window.localStorage.getItem('text')
+      if(text) this.textStr = text
+      const wordCollection = window.localStorage.getItem('wordCollection')    
+      if(wordCollection) this.$store.commit('restoreCollection', wordCollection)
+    },
+
     //按钮功能
     //控制文本输入框
     toggleTextInputBox(){
@@ -168,34 +171,26 @@ export default {
   }
 }
 </script>
-<style lang="stylus" rel="stylesheet/stylus" scoped>
-#desktop
-  width 60%
-  min-width 880px
-  padding 20px
-  color green  
-  background-color lightblue  
-  margin 0 auto 
-  margin-top 5%   
-  #main
-    width 100%
-    height 600px    
-    position relative
-    .button-box
-      height 60px   
-      font-size 14px
-      display flex
-      justify-content space-between
-      align-items center
-      button 
-        flex 1
-        margin-left 5px
-        &:first-child 
-          margin 0
-    .content
-      height 500px      
-      display flex
-       
+<style lang="stylus" rel="stylesheet/stylus" scoped>  
+#main-part
+  width 100%
+  height 600px    
+  position relative
+  .button-box
+    height 60px   
+    font-size 14px
+    display flex
+    justify-content space-between
+    align-items center
+    button 
+      flex 1
+      margin-left 5px
+      &:first-child 
+        margin 0
+  .content
+    height 500px      
+    display flex
+      
     
    
 

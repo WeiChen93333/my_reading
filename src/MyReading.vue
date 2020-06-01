@@ -6,11 +6,15 @@
       <div class="login">
         <span v-if="!username"       
           @click="showLogin">登录</span>
-        <template v-else>
-          <span class="username">{{username}}</span>
-          <span class="exit"
-            @click="logout">退出</span>
-        </template>       
+        <div class="personal-center" v-else>
+          <span class="username"
+            @click="toggleMenu">{{username}}</span> 
+          <ul class="menu" v-show="menuVisible">
+            <li>资料夹</li>
+            <li @click="showSentenceCollection">句集</li>
+            <li @click="logout">退出</li>
+          </ul>
+        </div>       
       </div>
     </div>    
   <!-- 用户注册区 -->
@@ -22,7 +26,10 @@
       @hideForm="hideForm"
       @loggedIn="loggedIn">        
     </login>
-    <router-view/>
+    <div id="desktop">
+      <router-view/>
+    </div>
+    
   </div>
 </template>
 
@@ -40,7 +47,8 @@ export default {
     return {
       registerVisible: false,
       loginVisible: false,
-      username: ''
+      username: '',
+      menuVisible: false
     }
   }, 
   created(){
@@ -71,9 +79,16 @@ export default {
     loggedIn(username){      
       this.username = username
     },
+    toggleMenu(){
+      this.menuVisible = !this.menuVisible
+    },
+    showSentenceCollection(){
+      this.$router.push('/sentence')
+    },
     logout(){
       this.username = ''
       window.sessionStorage.removeItem('userId')
+      this.toggleMenu()
     }
   }
 
@@ -85,24 +100,42 @@ export default {
     height 40px
     padding-right 40px
     background-color lightgray
-    text-align right
+    text-align right    
     .register, .login 
       display inline-block
       width 50px
       height 40px
       line-height 40px      
       font-size 14px
-      text-align center
+      text-align center     
       cursor pointer
-    .login 
-      width 80px  
-      .username 
-        color blue    
-      .exit 
-        font-size 12px
-        color red
-        vertical-align text-top        
-        margin-left 5px
+    .login
+      width 62px 
+      // background white
+      .personal-center
+        position relative     
+        .username 
+          color blue   
+        .menu
+          position absolute
+          padding 2px 0   
+          background-color white         
+          li 
+            height 24px
+            padding 5px 10px     
+            line-height 14px  
+            text-align center
+            &:hover
+              background-color lightgray
+  #desktop
+    width 60%
+    min-width 880px
+    padding 20px
+    color green  
+    background-color lightblue  
+    margin 0 auto 
+    margin-top 5% 
+
   
  
 

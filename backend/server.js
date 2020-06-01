@@ -45,7 +45,9 @@ const onRequest = (req, res) => {
             username: postData.username,
             password: postData.password.toString(),
             history: [],
-            wordbase: []
+            wordbase: [],
+            sentences: [],
+            materials: []
           }
           UserModel.create(newUser)             
         })    
@@ -84,17 +86,19 @@ const onRequest = (req, res) => {
     const userId = regexp.exec(pathname)[1]    
     req.on('data', (chunk)=> {
       let postData = JSON.parse(chunk)
-      UserModel.findOne({userId: userId}, function(err, doc){
-        if(!err){          
-          UserModel.update({userId: userId}, {$set: {wordbase: postData.revisedWordBase}}, err=>{
-            if(!err){
-              UserModel.findOne({userId: userId}, function(err, doc){
-                res.end(JSON.stringify(doc))       
-              })
-            }
-          })          
-        }         
-      })            
+      //判断修改了什么
+      const revision = Object.keys(postData)[0] 
+      let update = null
+      switch(revision){
+        case 'revisedWordBase':
+          update = {$set: {wordbase: postData.revisedWordBase}}
+        case 'revisedSentenceCollection':
+          update = {$set: {sentenceCollectione: postData.revisedSentenceCollection}}
+      }      
+      console.log(update)
+      UserModel.findOneAndUpdate({userId: userId}, update, {new: true}, (err, doc)=>{     
+        res.end(JSON.stringify(doc))
+      })        
     })        
   }
 }
@@ -123,7 +127,9 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   history: Array,
-  wordbase: Array
+  wordbase: Array,
+  sentences: Array,
+  materials: Array
 })
 const UserModel = conn2.model('users', userSchema)
 

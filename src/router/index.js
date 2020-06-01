@@ -1,19 +1,29 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Desktop from 'views/desktop/Desktop'
+import MainPart from 'views/mainPart/MainPart'
+import ReadingMaterial from 'views/readingMaterial/ReadingMaterial'
+import SentenceCollection from 'views/sentenceCollection/SentenceCollection'
 
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    redirect: '/desktop' 
+    redirect: '/main' 
   },
   {
-    path: '/desktop',
-    component: Desktop
-  }  
+    path: '/main',
+    component: MainPart
+  },  
+  {
+    path: '/material',
+    component: ReadingMaterial
+  }, 
+  {
+    path: '/sentence',
+    component: SentenceCollection
+  }
 ]
 
 const router = new VueRouter({
