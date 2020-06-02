@@ -1,4 +1,4 @@
-const { WordModel, UserModel } = require(__dirname + '/db.js')
+const { WordModel, SentenceModel, UserModel } = require(__dirname + '/db.js')
 
 const url = require('url')
 
@@ -13,6 +13,16 @@ const onRequest = (req, res) => {
       WordModel.findOne({word: query['word']}, function(err, doc){
         if(!err){         
           res.end(JSON.stringify(doc))
+        }
+      })  
+      return         
+    }
+    if(pathname == '/dict/sentences'){
+      SentenceModel.find({sentence: {$regex: eval(`/${query['word']}/ig`)}}, null, { skip: 10, limit: 5 }, function(err, docs){
+        if(!err){   
+          console.log(query['word'])
+          console.log(docs)      
+          // res.end(JSON.stringify(doc)) 
         }
       })  
       return         

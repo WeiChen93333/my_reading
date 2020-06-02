@@ -82,7 +82,8 @@ export default {
       //数据      
       textStr: '',  //要展示在阅读区的文本
       newAdd: '',   //用户每次输入的文本     
-      wordInfo: {}  //查询到的单词信息    
+      wordInfo: {},  //查询到的单词信息
+      sentenceInfo: {}   
     }
   },
   computed: {
@@ -182,13 +183,12 @@ export default {
         })           
         this.wordInfo = data
       }else if(this.mode == 'sentence'){
-        const {data} = await this.$http('GET', '/userInfo', {
+        const {data} = await this.$http('GET', '/dict/sentences', {
           params: {
             word: word
           }
         })           
-        this.sentenceInfo = data.sentences
-
+        // this.sentenceInfo = data.sentences
       }
    
     }  
