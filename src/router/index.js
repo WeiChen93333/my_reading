@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import MainPart from 'views/mainPart/MainPart'
-import ReadingMaterial from 'views/readingMaterial/ReadingMaterial'
+// import ReadingMaterial from 'views/readingMaterial/ReadingMaterial'
 import SentenceCollection from 'views/sentenceCollection/SentenceCollection'
 
 Vue.use(VueRouter)
@@ -16,10 +16,10 @@ Vue.use(VueRouter)
     path: '/main',
     component: MainPart
   },  
-  {
-    path: '/material',
-    component: ReadingMaterial
-  }, 
+  // {
+  //   path: '/material',
+  //   component: ReadingMaterial
+  // }, 
   {
     path: '/sentence',
     component: SentenceCollection

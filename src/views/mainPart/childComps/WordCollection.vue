@@ -100,6 +100,7 @@ export default {
       if(!this.selectedWords.length) return
       const userId = window.sessionStorage.getItem('userId')
       const { data } = await this.$http('GET', '/userInfo', { params: {userId: userId} })
+      console.log(data)
       let repeatedwords = ''
       for(let item of this.selectedWords){
         if(!data.wordbase.includes(item)){

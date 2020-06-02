@@ -18,11 +18,13 @@
         <mo-button type="primary" size="middle" text="单词仓"
           @click.native="toggleWordBase"></mo-button>     
       </div>  
-      <div class="login">
+      <div class="mode">
         <mo-button type="primary" size="middle" text="释义模式"
-          ></mo-button>  
+          @click.native="mode = 'meaning'"
+          :class="{active: mode=='meaning'}"></mo-button>  
         <mo-button type="primary" size="middle" text="例句模式"
-          ></mo-button>     
+          @click.native="mode = 'sentence'"
+          :class="{active: mode=='sentence'}"></mo-button>     
       </div> 
     </div>
     <context-menu>
@@ -74,6 +76,8 @@ export default {
       //单词集 单词仓      
       wordCollectionVisible: false,
       wordBaseVisible: false,   
+      //模式选择(释义/例句)
+      mode: 'meaning',
       
       //数据      
       textStr: '',  //要展示在阅读区的文本
@@ -160,14 +164,34 @@ export default {
     async searchThroughDict(word){  
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
-      word = reg.exec(word)[0].toLowerCase()     
-      const {data} = await this.$http('GET', '/dict', {
-        params: {
-          word: word
-        }
-      })           
-      this.wordInfo = data    
-    }
+      word = reg.exec(word)[0].toLowerCase()
+      // let path = ''
+      // switch(this.mode){
+      //   case 'meaning':
+      //     path = '/dict/words'
+      //     break
+      //   case 'sentence':
+      //     path = '/userInfo'
+      //     break
+      // }     
+      if(this.mode == 'meaning'){
+        const {data} = await this.$http('GET', '/dict/words', {
+          params: {
+            word: word
+          }
+        })           
+        this.wordInfo = data
+      }else if(this.mode == 'sentence'){
+        const {data} = await this.$http('GET', '/userInfo', {
+          params: {
+            word: word
+          }
+        })           
+        this.sentenceInfo = data.sentences
+
+      }
+   
+    }  
   }
 }
 </script>
@@ -187,6 +211,8 @@ export default {
       margin-left 5px
       &:first-child 
         margin 0
+      &.active 
+        background-color rgb(0, 28, 28)
   .content
     height 500px      
     display flex

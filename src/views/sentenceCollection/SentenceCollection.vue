@@ -7,6 +7,7 @@
         <p class="text">{{item}}</p>
       </li>
     </ul>
+    <mo-pagination :total="1" pageSize="2"></mo-pagination>
   </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
   },
   methods: {
     async init(){
-      const userId = window.localStorage.getItem('userId')
+      const userId = window.sessionStorage.getItem('userId')
       const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})
       this.sentences = data.sentences
     }
@@ -32,13 +33,18 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #sentence-collection
+  min-height 500px
+  background-color white
+  color black
   .title 
-    color blue
+    color rgb(86,122,144)
+    font-weight 700
+    margin-bottom 5px
   .sentences
     .sentence    
       display flex
       .order         
-        width 40px
+        flex 0 0 25px
       .sentence 
         flex 1
 

@@ -10,7 +10,7 @@
           <span class="username"
             @click="toggleMenu">{{username}}</span> 
           <ul class="menu" v-show="menuVisible">
-            <li>资料夹</li>
+            <!-- <li>资料夹</li> -->
             <li @click="showSentenceCollection">句集</li>
             <li @click="logout">退出</li>
           </ul>
@@ -110,14 +110,14 @@ export default {
       text-align center     
       cursor pointer
     .login
-      width 62px 
-      // background white
+      width 62px   
       .personal-center
         position relative     
         .username 
           color blue   
         .menu
           position absolute
+          width 100%
           padding 2px 0   
           background-color white         
           li 

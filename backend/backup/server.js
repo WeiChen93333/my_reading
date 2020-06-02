@@ -87,16 +87,17 @@ const onRequest = (req, res) => {
     req.on('data', (chunk)=> {
       let postData = JSON.parse(chunk)
       //判断修改了什么
-      const revision = Object.keys(postData)[0] 
+      const revision = Object.keys(postData)[0]     
       let update = null
       switch(revision){
         case 'revisedWordBase':
           update = {$set: {wordbase: postData.revisedWordBase}}
+          break
         case 'revisedSentenceCollection':
-          update = {$set: {sentenceCollectione: postData.revisedSentenceCollection}}
+          update = {$set: {sentenceCollection: postData.revisedSentenceCollection}}
+          break
       }      
-      console.log(update)
-      UserModel.findOneAndUpdate({userId: userId}, update, {new: true}, (err, doc)=>{     
+      UserModel.findOneAndUpdate({userId: userId}, update, {new: true}, (err, doc)=>{       
         res.end(JSON.stringify(doc))
       })        
     })        

@@ -64,24 +64,26 @@ export default {
       this.selectedText = window.getSelection().toString()     
     },
     meaningSearch(){
-      if(/\s/.test(this.selectedText)) return  
+      if(!this.selectedText) return
+      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')
       this.$bus.$emit('meaningSearch', this.selectedText) 
     },
     sentenceSearch(){
       console.log('sentence')
     },
     addToWordCollection(){
-      if(/\s/.test(this.selectedText)) return
+      if(!this.selectedText) return
+      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')
       if(this.wordCollection.includes(this.selectedText)) return this.$message.show('该单词已经添加过')
       this.$store.commit('addWord', this.selectedText)
       this.$message.show(`成功添加 ${this.selectedText} 至单词集`)   
     },
     async addToSentenceCollection(){
-      if(/\s/.test(this.selectedText)) return
-      const userId = window.localStorage.getItem('userId')
-      const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})     
-      this.$http('GET', '/userInfo', {params: {userId: userId}})
-      this.$http('POST', `/userInfo/update/${userId}`, {revisedSentenceCollection: data.sentences.push(this.selectedText)})
+      if(!this.selectedText) return  
+      const userId = window.sessionStorage.getItem('userId')     
+      const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})       
+      data.sentences.push(this.selectedText)       
+      this.$http('POST', `/userInfo/update/${userId}`, {revisedSentenceCollection: data.sentences})       
     }
 
   }
