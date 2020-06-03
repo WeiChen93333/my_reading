@@ -6,22 +6,29 @@
           <input type="text" class="text" v-focus
             v-model="inputWord"
             @keyup.enter="inputSearch(inputWord)">
-          <i class="iconfont icon-i-search" @click="inputSearch(inputWord)"></i>
+          <i class="iconfont icon-search" @click="inputSearch(inputWord)"></i>
         </div>
       </transition>      
     </div>       
-    <word-info-display :wordInfo="wordInfo"></word-info-display>          
+    <word-info-display 
+      v-if="mode=='meaning'"
+      :wordInfo="wordInfo"></word-info-display>    
+    <sentence-display
+      v-if="mode=='sentence'"
+      :sentenceInfo="sentenceInfo"></sentence-display>     
   </div>  
 </template>
 
 <script>
 import WordInfoDisplay from '../comComps/WordInfoDisplay'
+import SentenceDisplay from '../comComps/SentenceDisplay'
 
 export default {
   name: 'WordInfo',  
-  props: ['wordInfo'],
+  props: ['wordInfo', 'sentenceInfo', 'mode'],
   components: {
-    WordInfoDisplay   
+    WordInfoDisplay,
+    SentenceDisplay
   }, 
   data(){
     return {
@@ -77,7 +84,7 @@ export default {
         outline none
         border none 
         border-bottom 2px solid rgb(64, 128, 128) 
-      .icon-i-search       
+      .icon-search       
         display inline-block
         vertical-align top
         width 10%

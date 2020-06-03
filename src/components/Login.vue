@@ -3,7 +3,7 @@
     <div class="login-box">
       <div class="header">
         <div class="title">用户登录</div>
-        <button class="close-icon" @click="hideForm"><i class="iconfont icon-RectangleCopy2"></i></button>
+        <button class="close-icon" @click="hideForm"><i class="iconfont icon-close"></i></button>
       </div>      
       <mo-form class="login-form">
         <mo-form-item>

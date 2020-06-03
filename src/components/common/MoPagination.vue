@@ -1,29 +1,19 @@
 <template>
   <div class="mo-pagination">
-    <div class="total">共 {{total}} 条</div>
     <select class="sizes"
       :class="{focused: isfocused}"       
       @focus="isfocused=true"
       @blur="isfocused = false" 
       @click="handlePageSize($event.currentTarget.value)"    
       >
-      <option>2条/页</option>
-      <option selected>4条/页</option>
       <option>5条/页</option>
-      <option>6条/页</option>
+      <option selected>6条/页</option>
+      <option>7条/页</option>
+      <option>8条/页</option>
     </select>          
-    <ul class="pages">
-      <!-- 页码选择列表包含两个事件, 被动(与"queryInfo.pagenum"有关), 主动(点击事件) -->
-      <li class="page" v-for="(item, index) in pages" :key="index"  
-      :class="{active: item === currentPage}"         
-      @click="handleCurrentPage(item)">{{item}}</li>
-    </ul>
-    <div class="jumper">
-      <span>前往</span>
-      <input class="target-page" type="text"       
-      :value="value"
-      @change="$emit('change', $event.target.value)">
-      <span>页</span>
+    <div class="button-box">
+      <button class="prev" @click="goPrevPage"><i class="iconfont icon-back"></i></button>
+      <button class="next" @click="goNextPage"><i class="iconfont icon-next"></i></button>
     </div>
   </div>
 </template>
@@ -34,8 +24,7 @@ export default {
     prop: 'value',
     event: 'change'
   },
-  props:{
-    //通过v-model传递的当前页码"queryInfo.pagenum"
+  props:{   
     value: String,
     total: Number,
     pageSize: String    
@@ -50,18 +39,6 @@ export default {
     value(){
       this.currentPage = parseInt(this.value)
     }
-  },
-  computed: {
-    //页码展示所需内容    
-    pages(){      
-      let pages = []
-      let pageSize = parseInt(this.pageSize)
-      let number = this.total % pageSize === 0 ? this.total / pageSize : parseInt(this.total / pageSize) + 1 
-      for(let i = 1; i <= number; i++){
-        pages.push(i)
-      }
-      return pages
-    }    
   },
   methods:{
     //页码选择

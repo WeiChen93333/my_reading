@@ -3,7 +3,7 @@
     <div class="register-box">
       <div class="header">
         <div class="title">用户注册</div>
-        <button class="close-icon" @click="hideForm"><i class="iconfont icon-RectangleCopy2"></i></button>
+        <button class="close-icon" @click="hideForm"><i class="iconfont icon-close"></i></button>
       </div>      
       <mo-form class="register-form">
         <mo-form-item>

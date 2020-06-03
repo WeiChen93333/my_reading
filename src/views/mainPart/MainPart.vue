@@ -34,7 +34,11 @@
         :textArr="textArr"         
         @clickSearch = "searchThroughDict"></reading-zone>
     <!-- 单词信息展示区 -->
-      <word-info @inputSearch = "searchThroughDict" :wordInfo="wordInfo"></word-info>
+      <word-info 
+        :wordInfo="wordInfo"
+        :sentenceInfo="sentenceInfo"
+        :mode="mode"
+        @inputSearch = "searchThroughDict" ></word-info>
     </div>
     </context-menu>
     <!-- 点击按钮显示 -->
@@ -77,13 +81,13 @@ export default {
       wordCollectionVisible: false,
       wordBaseVisible: false,   
       //模式选择(释义/例句)
-      mode: 'meaning',
+      mode: 'sentence',
       
       //数据      
       textStr: '',  //要展示在阅读区的文本
       newAdd: '',   //用户每次输入的文本     
       wordInfo: {},  //查询到的单词信息
-      sentenceInfo: {}   
+      sentenceInfo: []   
     }
   },
   computed: {
@@ -176,21 +180,21 @@ export default {
       //     break
       // }     
       if(this.mode == 'meaning'){
-        const {data} = await this.$http('GET', '/dict/words', {
+        const {data: meaningData} = await this.$http('GET', '/dict/words', {
           params: {
             word: word
           }
         })           
-        this.wordInfo = data
+        this.wordInfo = meaningData
       }else if(this.mode == 'sentence'){
-        const {data} = await this.$http('GET', '/dict/sentences', {
+        const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
           params: {
             word: word
           }
         })           
-        // this.sentenceInfo = data.sentences
-      }
-   
+        this.sentenceInfo = sentenceData
+        console.log(this.sentenceInfo)
+      }   
     }  
   }
 }
