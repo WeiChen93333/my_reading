@@ -19,7 +19,8 @@ export default {
   methods: {
     // 单击查词
     clickSearch(word){      
-      this.$emit('clickSearch', word)    
+      this.$emit('clickSearch', word)
+      window.localStorage.setItem('word', word)
     },    
     //将单词加入当前单词集
     addToWordCollection(word){

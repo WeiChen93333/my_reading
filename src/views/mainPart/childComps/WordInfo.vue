@@ -60,7 +60,7 @@ export default {
   padding-right 5px
   border 2px solid rgb(64, 128, 128) 
   background-color rgb(252, 252, 254) 
-  overflow hidden
+  // overflow hidden
   .search-line
     border-top 2px solid #e1251b
     height 5px

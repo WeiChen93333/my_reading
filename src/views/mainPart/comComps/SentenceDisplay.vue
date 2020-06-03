@@ -1,15 +1,13 @@
 <template>
   <div id="sentence-display">
     <p class="not-found" v-if="!sentenceInfo.length">没有匹配的例句</p>
-    <div class="sentences">
-      <p class="sentence" v-for="(item, index) in sentenceInfo" :key="index">{{item.sentence}}</p>
-    </div>
-    <mo-pagination class="pagination"      
-      :page-size="queryInfo.pagesize"         
-      v-model="queryInfo.pagenum"
-      @changePageSize="changePageSize"
-      @changeCurrentPage="changeCurrentPage"
-      @change="changeCurrentPage"></mo-pagination>  
+    <template v-else>
+      <div class="sentences">
+        <p class="sentence" v-for="(item, index) in sentenceInfo" :key="index">{{item.sentence}}</p>
+      </div>
+      <mo-pagination class="pagination"              
+      ></mo-pagination> 
+    </template> 
   </div>
 </template>
 
@@ -20,11 +18,7 @@ export default {
   props: ['sentenceInfo'],
   data(){
     return {
-      queryInfo: {
-        query: '',
-        pagenum: '1',
-        pagesize: '4条/页'
-      }     
+          
     }
   },
   computed: {},
@@ -39,20 +33,19 @@ export default {
     //子组件点击pages区域更改当前页码时, 父组件修改queryInfo.pagenum
     changeCurrentPage(currentPage){
       this.queryInfo.pagenum = currentPage;
-      this.getUserList()     
+        
     },   
     //点击每页展示内容选择区域时, 父组件修改queryInfo.pagesize
     changePageSize(pageSize){
       this.queryInfo.pagesize = pageSize;
-      this.getUserList()     
+     
     },     
      
   }
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#sentence-display
-  position relative
+#sentence-display  
   height calc(100% - 5px)  
   font-size 16px
   .not-found
@@ -62,6 +55,7 @@ export default {
     color gray
     margin-top 120px 
   .sentences
+    height calc(100% - 25px)  
     overflow-y auto
     .sentence
       font-size 15px          
@@ -70,8 +64,7 @@ export default {
       padding 5px   
       &:nth-child(odd)
         background-color rgba(173, 216, 230, .2)   
-  .pagination
-    position absolute
+  .pagination    
     left 0
     bottom 0
 </style>

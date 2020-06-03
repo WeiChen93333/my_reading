@@ -20,10 +20,10 @@
       </div>  
       <div class="mode">
         <mo-button type="primary" size="middle" text="释义模式"
-          @click.native="mode = 'meaning'"
+          @click.native="switchToMeaningMode"
           :class="{active: mode=='meaning'}"></mo-button>  
         <mo-button type="primary" size="middle" text="例句模式"
-          @click.native="mode = 'sentence'"
+          @click.native="switchToSentenceMode"
           :class="{active: mode=='sentence'}"></mo-button>     
       </div> 
     </div>
@@ -85,9 +85,9 @@ export default {
       
       //数据      
       textStr: '',  //要展示在阅读区的文本
-      newAdd: '',   //用户每次输入的文本     
+      newAdd: '',   //用户每次输入的文本         
       wordInfo: {},  //查询到的单词信息
-      sentenceInfo: []   
+      sentenceInfo: []   //查询到的例句信息
     }
   },
   computed: {
@@ -122,12 +122,14 @@ export default {
     this.$bus.$on('meaningSearch')
   },
   methods: {
-    //初始化 (获取阅读文本, 恢复单词集)
+    //初始化 (恢复阅读文本, 恢复最后查询的单词, 恢复单词集)
     init(){
       const text = window.localStorage.getItem('text')
       if(text) this.textStr = text
+      const word = window.localStorage.getItem('word')
+      if(word) this.searchThroughDict(word)
       const wordCollection = window.localStorage.getItem('wordCollection')    
-      if(wordCollection) this.$store.commit('restoreCollection', wordCollection)
+      if(wordCollection) this.$store.commit('restoreCollection', wordCollection)      
     },
 
     //按钮功能
@@ -163,37 +165,38 @@ export default {
       if(!userId) return this.$message.show('使用此功能需要登录')
       this.wordBaseVisible = !this.wordBaseVisible     
     }, 
-    
+    //切换释义/例句模式
+    switchToMeaningMode(){
+      this.mode = 'meaning'
+      const word = window.localStorage.getItem('word')
+      if(word) this.searchThroughDict(word)      
+    },
+    switchToSentenceMode(){
+      this.mode = 'sentence'
+      const word = window.localStorage.getItem('word')
+      if(word) this.searchThroughDict(word)         
+    },
+
     //处理子组件发送的事件
     //在词典中查询单词
     async searchThroughDict(word){  
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
-      word = reg.exec(word)[0].toLowerCase()
-      // let path = ''
-      // switch(this.mode){
-      //   case 'meaning':
-      //     path = '/dict/words'
-      //     break
-      //   case 'sentence':
-      //     path = '/userInfo'
-      //     break
-      // }     
+      word = reg.exec(word)[0].toLowerCase()   
       if(this.mode == 'meaning'){
         const {data: meaningData} = await this.$http('GET', '/dict/words', {
           params: {
             word: word
           }
-        })           
+        })    
         this.wordInfo = meaningData
       }else if(this.mode == 'sentence'){
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
           params: {
             word: word
           }
-        })           
-        this.sentenceInfo = sentenceData
-        console.log(this.sentenceInfo)
+        })               
+        this.sentenceInfo = sentenceData     
       }   
     }  
   }
