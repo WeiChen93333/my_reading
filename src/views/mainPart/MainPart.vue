@@ -38,7 +38,7 @@
         :wordInfo="wordInfo"
         :sentenceInfo="sentenceInfo"
         :mode="mode"
-        @inputSearch = "searchThroughDict" ></word-info>
+        ></word-info>
     </div>
     </context-menu>
     <!-- 点击按钮显示 -->
@@ -63,6 +63,8 @@ import ReadingZone from './childComps/ReadingZone'
 import WordInfo from './childComps/WordInfo'
 import WordCollection from './childComps/WordCollection'
 import WordBase from './childComps/WordBase'
+
+import { mapState } from 'vuex'
 export default {
   name: 'MainPart',
   components: {   
@@ -82,7 +84,11 @@ export default {
       wordBaseVisible: false,   
       //模式选择(释义/例句)
       mode: 'sentence',
-      
+      queryInfo: {
+        word: '',
+        pagenum: 1,
+        pagesize: 5
+      },
       //数据      
       textStr: '',  //要展示在阅读区的文本
       newAdd: '',   //用户每次输入的文本         
@@ -91,6 +97,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['readingText', 'wordCollection', 'searchHistory']),
     textArr(){      
       //为输入文本末尾加上一个换行, 就可同时包含一段和多段的情况      
       this.textStr = this.textStr.trim() + "\n"
@@ -102,34 +109,55 @@ export default {
         match = reg.exec(this.textStr)       
       }    
       return tempArr 
-    }
+    },
+    currentWord(){ //当前要查询/展示的单词
+      if(this.searchHistory.length - 1 >= 0)
+        return this.searchHistory[this.searchHistory.length - 1]      
+    } 
   },
   watch: {
     textStr(){
-      window.localStorage.setItem('text', this.textStr)
+      this.$store.commit('changeReadingText', this.textStr)
+    },
+    searchHistory(){
+      this.searchThroughDict(this.currentWord)
     }
   },
   created(){
-    this.init()
+    this.init()  
   },
   mounted(){
-    this.$bus.$on('meaningSearch', value=>{
-      this.searchThroughDict(value)
-    })
+    //刷新或关闭页面前保存 store.state 的数据
+    window.addEventListener('unload', this.saveState)
 
+    //监听右键菜单释义/例句查询事件 (主要为了改变模式)
+    this.$bus.$on('meaningSearch', value=>{
+      this.mode = "meaning"
+      this.$store.commit('addSearchHistory', value)
+    })
+    this.$bus.$on('sentenceSearch', value=>{
+      this.mode = "sentence"
+      this.$store.commit('addSearchHistory', value)
+    })
+    //监听例句查询分页组件
+    // this.$bus.$on('pageChange', value=>{
+    //   // this.searchThroughDict(value)
+    //   this.queryInfo.pagenum = 
+    // })
   },
   beforeDestroy(){
-    this.$bus.$on('meaningSearch')
+    this.$bus.$off('meaningSearch')
+    this.$bus.$off('sentenceSearch')
   },
   methods: {
-    //初始化 (恢复阅读文本, 恢复最后查询的单词, 恢复单词集)
+    saveState() {
+      window.localStorage.setItem('state', JSON.stringify(this.$store.state))
+    },    
+
+    //初始化时从 vuex 获取数据
     init(){
-      const text = window.localStorage.getItem('text')
-      if(text) this.textStr = text
-      const word = window.localStorage.getItem('word')
-      if(word) this.searchThroughDict(word)
-      const wordCollection = window.localStorage.getItem('wordCollection')    
-      if(wordCollection) this.$store.commit('restoreCollection', wordCollection)      
+      this.textStr = this.readingText
+      if(this.currentWord) this.searchThroughDict(this.currentWord)
     },
 
     //按钮功能
@@ -159,6 +187,7 @@ export default {
     //显示与隐藏单词集 单词仓
     toggleWordCollection(){
       this.wordCollectionVisible = !this.wordCollectionVisible
+      if(this.wordCollectionVisible) this.mode = "meaning"
     },    
     toggleWordBase(){
       const userId = window.sessionStorage.getItem('userId')
@@ -167,34 +196,29 @@ export default {
     }, 
     //切换释义/例句模式
     switchToMeaningMode(){
-      this.mode = 'meaning'
-      const word = window.localStorage.getItem('word')
-      if(word) this.searchThroughDict(word)      
+      this.mode = 'meaning'     
+      if(this.currentWord) this.searchThroughDict(this.currentWord)      
     },
     switchToSentenceMode(){
       this.mode = 'sentence'
-      const word = window.localStorage.getItem('word')
-      if(word) this.searchThroughDict(word)         
+      if(this.currentWord) this.searchThroughDict(this.currentWord)         
     },
-
-    //处理子组件发送的事件
+    
     //在词典中查询单词
     async searchThroughDict(word){  
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0].toLowerCase()   
       if(this.mode == 'meaning'){
+        payload.word = word
         const {data: meaningData} = await this.$http('GET', '/dict/words', {
-          params: {
-            word: word
-          }
+          params: payload
         })    
         this.wordInfo = meaningData
       }else if(this.mode == 'sentence'){
+        this.queryInfo.word = this.currentWord       
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
-          params: {
-            word: word
-          }
+          params: this.queryInfo      
         })               
         this.sentenceInfo = sentenceData     
       }   

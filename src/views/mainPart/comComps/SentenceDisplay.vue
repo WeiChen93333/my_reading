@@ -5,7 +5,8 @@
       <div class="sentences">
         <p class="sentence" v-for="(item, index) in sentenceInfo" :key="index">{{item.sentence}}</p>
       </div>
-      <mo-pagination class="pagination"              
+      <mo-pagination class="pagination"
+        :queryInfo="queryInfo"                 
       ></mo-pagination> 
     </template> 
   </div>
@@ -15,11 +16,25 @@
 export default {
   name: 'SentenceDisplay',
   components: {},
-  props: ['sentenceInfo'],
+  props: {
+    sentenceInfo: Array    
+  },
   data(){
     return {
-          
+      queryInfo: {
+        word: '',
+        pagenum: 1,
+        pagesize: 5
+      }          
     }
+  },
+  watch: {
+    queryInfo: {
+      handler(){        
+        console.log(this.queryInfo)
+      },
+      deep: true
+    } 
   },
   computed: {},
   methods: {
@@ -30,17 +45,14 @@ export default {
     //   this.total = res.data.total;
     //   this.addUserForm = {}         
     // },
-    //子组件点击pages区域更改当前页码时, 父组件修改queryInfo.pagenum
-    changeCurrentPage(currentPage){
-      this.queryInfo.pagenum = currentPage;
-        
-    },   
-    //点击每页展示内容选择区域时, 父组件修改queryInfo.pagesize
-    changePageSize(pageSize){
-      this.queryInfo.pagesize = pageSize;
-     
-    },     
-     
+    //处理子组件发送的事件
+    // changePageSize(pagesize){
+    //   console.log(pagesize)
+    //   this.queryInfo.pagesize = pagesize     
+    // },  
+    // changeCurrentPage(pagenum){
+    //   this.queryInfo.pagenum = pagenum        
+    // }     
   }
 }
 </script>

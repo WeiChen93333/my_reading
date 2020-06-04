@@ -5,6 +5,7 @@
     @mouseup="selectText">
     <slot></slot>
     <ul id="context-menu" v-show="ContextMenuVisible" v-getposition="mousePosition">
+      <li @click.stop="reduceSearchHistory">返回</li>
       <li v-for="(item, index) in menu" :key="index" @click="item.handler">{{item.content}}</li>        
     </ul>   
   </div>
@@ -21,7 +22,11 @@ export default {
   data(){
     return {
       ContextMenuVisible: false,   
-      menu: Object.freeze([
+      menu: Object.freeze([       
+        {
+          content: '清空查词历史',    
+          handler: this.clearSearchHistory  
+        },
         {
           content: '查询释义',    
           handler: this.meaningSearch   
@@ -59,6 +64,15 @@ export default {
     hideContextMenu(){
       this.ContextMenuVisible = false
     },
+
+    //回退与清空查词历史
+    reduceSearchHistory(){
+      this.$store.commit('reduceSearchHistory')
+    },
+    clearSearchHistory(){
+      this.$store.commit('clearSearchHistory')
+    },
+
     //选中文本内容
     selectText(){
       this.selectedText = window.getSelection().toString()     
@@ -69,7 +83,9 @@ export default {
       this.$bus.$emit('meaningSearch', this.selectedText) 
     },
     sentenceSearch(){
-      console.log('sentence')
+      if(!this.selectedText) return
+      if(/\s/.test(this.selectedText)) return this.$message.show('请选择单词')
+      this.$bus.$emit('sentenceSearch', this.selectedText) 
     },
     addToWordCollection(){
       if(!this.selectedText) return

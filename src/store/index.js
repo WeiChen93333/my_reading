@@ -4,11 +4,13 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {    
-    //单词集
-    wordCollection: []
+  state: window.localStorage.getItem('state') ? JSON.parse(window.localStorage.getItem('state')): {    
+    readingText: '', //阅读文本
+    wordCollection: [], //单词集
+    searchHistory: [], //查词跳转历史
   },
   mutations: {
+    //改变单词集
     addWord(state, payload){      
       function process(param){
         if(typeof param == 'string'){
@@ -34,11 +36,24 @@ export default new Vuex.Store({
       state.wordCollection.splice(payload, 1)      
       window.localStorage.setItem('wordCollection', JSON.stringify(state.wordCollection))
     },
-    //初始化时从localStorage获取单词集
-    restoreCollection(state, payload){
-      state.wordCollection = JSON.parse(payload)      
+
+    //改变阅读文本
+    changeReadingText(state, payload){
+      state.readingText = payload
     },
 
+    //改变查词跳转历史
+    addSearchHistory(state, payload){
+      //判断是否连续查询同一个单词
+      if(state.searchHistory[state.searchHistory.length - 1] !== payload)
+        state.searchHistory.push(payload)
+    },
+    reduceSearchHistory(state){
+      state.searchHistory.pop(state.searchHistory.length - 1)
+    },
+    clearSearchHistory(state){
+      state.searchHistory = []
+    }
   },
   actions: {
   },

@@ -79,7 +79,11 @@ export default {
     },
     //切换 单词视图/记忆卡片
     toggleDisplay(){
-      this.viewVisible = !this.viewVisible     
+      this.viewVisible = !this.viewVisible  
+      if(!this.viewVisible){
+        this.currentWord = 0
+        this.wordVisible = true
+      } 
     },
     //单词视图操作按钮
     selectAll(){
@@ -194,7 +198,7 @@ export default {
     .memory     
       position relative
       height 90%
-      padding 20px     
+      padding 18px     
       display flex      
       .card          
         width 100%

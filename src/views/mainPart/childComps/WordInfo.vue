@@ -11,10 +11,10 @@
       </transition>      
     </div>       
     <word-info-display 
-      v-if="mode=='meaning'"
+      v-if="mode=='meaning' && searchHistory.length"
       :wordInfo="wordInfo"></word-info-display>    
     <sentence-display
-      v-if="mode=='sentence'"
+      v-if="mode=='sentence' && searchHistory.length"
       :sentenceInfo="sentenceInfo"></sentence-display>     
   </div>  
 </template>
@@ -23,9 +23,14 @@
 import WordInfoDisplay from '../comComps/WordInfoDisplay'
 import SentenceDisplay from '../comComps/SentenceDisplay'
 
+import { mapState } from 'vuex'
 export default {
   name: 'WordInfo',  
-  props: ['wordInfo', 'sentenceInfo', 'mode'],
+  props: {
+    wordInfo: Object,
+    sentenceInfo: Array,
+    mode: String
+  }, 
   components: {
     WordInfoDisplay,
     SentenceDisplay
@@ -36,6 +41,9 @@ export default {
       inputWord: ''
     }
   },  
+  computed: {
+    ...mapState(['searchHistory'])
+  },
   methods: {
     //控制搜索框的显示与隐藏
     toggleSearchBox(){
@@ -44,7 +52,7 @@ export default {
     //发送单词搜索事件
     inputSearch(inputWord){
       if(inputWord){
-        this.$emit('inputSearch', inputWord)
+        this.$store.commit('addSearchHistory', inputWord)
         this.inputWord = ''
       }  
       this.searchBoxVisible = false

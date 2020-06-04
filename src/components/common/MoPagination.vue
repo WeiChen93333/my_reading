@@ -8,7 +8,7 @@
       <ul class="size-box" v-if="sizeBoxVisible">
         <li class="size"
           v-for="(item, index) in sizes" :key="index"
-          @click="selectSize(item)">{{item + '条/页'}}</li>
+          @click="changePageSize(item)">{{item + '条/页'}}</li>
       </ul>
     </div>        
     <div class="button-box">
@@ -20,16 +20,14 @@
 <script>
 export default {
   name:'MoPagination',  
+  props: {
+    queryInfo: Object
+  },
   data(){
     return {      
       selectedSize: '5条/页',
       sizeBoxVisible: false,
-      sizes: [5, 6, 7, 8],   
-      queryInfo: {
-        word: '',
-        pagenum: '1',
-        pagesize: '5'
-      }   
+      sizes: [5, 6, 7, 8]      
     }
   },
   methods:{   
@@ -37,21 +35,18 @@ export default {
     toggleSizeBox(){
       this.sizeBoxVisible = !this.sizeBoxVisible  
     },
-    //选择 size
-    selectSize(size){
+    //改变 size
+    changePageSize(size){
       this.selectedSize = size + '条/页'     
-      this.queryInfo.pagesize = size
-      this.toggleSizeBox()
-      this.$bus.$emit('sentenceSearch', this.queryInfo)
-    },
-  
+      this.$set(this.queryInfo, 'pagesize', size)  
+      this.toggleSizeBox()      
+    },  
     //前后翻页
-    goPrevPage(){
-      console.log('prev')
-
+    goPrevPage(){  
+      this.$set(this.queryInfo, 'pagenum', --this.queryInfo.pagenum)     
     },
     goNextPage(){
-      console.log('next')
+      this.$set(this.queryInfo, 'pagenum', ++this.queryInfo.pagenum)    
     }
   },  
 }

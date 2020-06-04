@@ -19,6 +19,7 @@ const onRequest = (req, res) => {
     }
     if(pathname == '/dict/sentences'){
       SentenceModel.find({sentence: {$regex: eval(`/${query['word']}/ig`)}}, null, { skip: 10, limit: 5 }, function(err, docs){
+  
         if(!err){
           res.end(JSON.stringify(docs)) 
         }

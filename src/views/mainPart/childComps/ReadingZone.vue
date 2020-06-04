@@ -18,9 +18,8 @@ export default {
   },
   methods: {
     // 单击查词
-    clickSearch(word){      
-      this.$emit('clickSearch', word)
-      window.localStorage.setItem('word', word)
+    clickSearch(word){     
+      this.$store.commit('addSearchHistory', word)     
     },    
     //将单词加入当前单词集
     addToWordCollection(word){
