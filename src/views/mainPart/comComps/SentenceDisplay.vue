@@ -3,10 +3,13 @@
     <p class="not-found" v-if="!sentenceInfo.length">没有匹配的例句</p>
     <template v-else>
       <div class="sentences">
-        <p class="sentence" v-for="(item, index) in sentenceInfo" :key="index">{{item.sentence}}</p>
+        <p class="sentence" 
+          v-for="(item, index) in sentenceInfo" :key="index"
+          v-highlight="currentWord">{{item.sentence}}</p>
       </div>
       <mo-pagination class="pagination"
-        :queryInfo="queryInfo"                 
+        :sizes="[5, 6, 7, 8]"
+        :queryInfo="queryInfo"                
       ></mo-pagination> 
     </template> 
   </div>
@@ -15,9 +18,9 @@
 <script>
 export default {
   name: 'SentenceDisplay',
-  components: {},
   props: {
-    sentenceInfo: Array    
+    sentenceInfo: Array,
+    currentWord: String  
   },
   data(){
     return {
@@ -31,29 +34,12 @@ export default {
   watch: {
     queryInfo: {
       handler(){        
-        console.log(this.queryInfo)
+        //向 MainPart.vue 发送事件, 通知查询条件已变更
+        this.$bus.$emit('queryInfoChanged', this.queryInfo)
       },
       deep: true
     } 
-  },
-  computed: {},
-  methods: {
-    // async getUserList(){
-    //   const {data: res} = await this.$http.get('users', {params: this.queryInfo}) 
-    //   if(res.meta.status !== 200) return this.$message.show('获取用户列表失败')
-    //   this.userList = res.data.users;
-    //   this.total = res.data.total;
-    //   this.addUserForm = {}         
-    // },
-    //处理子组件发送的事件
-    // changePageSize(pagesize){
-    //   console.log(pagesize)
-    //   this.queryInfo.pagesize = pagesize     
-    // },  
-    // changeCurrentPage(pagenum){
-    //   this.queryInfo.pagenum = pagenum        
-    // }     
-  }
+  }  
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
@@ -76,7 +62,4 @@ export default {
       padding 5px   
       &:nth-child(odd)
         background-color rgba(173, 216, 230, .2)   
-  .pagination    
-    left 0
-    bottom 0
 </style>

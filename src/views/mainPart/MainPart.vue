@@ -38,6 +38,7 @@
         :wordInfo="wordInfo"
         :sentenceInfo="sentenceInfo"
         :mode="mode"
+        :currentWord="currentWord"
         ></word-info>
     </div>
     </context-menu>
@@ -110,9 +111,9 @@ export default {
       }    
       return tempArr 
     },
-    currentWord(){ //当前要查询/展示的单词
+    currentWord(){ //当前要查询/展示的单词     
       if(this.searchHistory.length - 1 >= 0)
-        return this.searchHistory[this.searchHistory.length - 1]      
+        return this.searchHistory[this.searchHistory.length - 1]       
     } 
   },
   watch: {
@@ -120,7 +121,7 @@ export default {
       this.$store.commit('changeReadingText', this.textStr)
     },
     searchHistory(){
-      this.searchThroughDict(this.currentWord)
+      this.searchThroughDict()
     }
   },
   created(){
@@ -139,11 +140,12 @@ export default {
       this.mode = "sentence"
       this.$store.commit('addSearchHistory', value)
     })
-    //监听例句查询分页组件
-    // this.$bus.$on('pageChange', value=>{
-    //   // this.searchThroughDict(value)
-    //   this.queryInfo.pagenum = 
-    // })
+    //监听 SentenceDisplay.vue 查询条件变更
+    this.$bus.$on('queryInfoChanged', value=>{      
+      this.queryInfo.pagenum = value.pagenum
+      this.queryInfo.pagesize = value.pagesize 
+      this.searchThroughDict()
+    })
   },
   beforeDestroy(){
     this.$bus.$off('meaningSearch')
@@ -197,26 +199,24 @@ export default {
     //切换释义/例句模式
     switchToMeaningMode(){
       this.mode = 'meaning'     
-      if(this.currentWord) this.searchThroughDict(this.currentWord)      
+      if(this.currentWord) this.searchThroughDict()      
     },
     switchToSentenceMode(){
       this.mode = 'sentence'
-      if(this.currentWord) this.searchThroughDict(this.currentWord)         
+      if(this.currentWord) this.searchThroughDict()         
     },
     
     //在词典中查询单词
-    async searchThroughDict(word){  
-      //匹配字母和 ' , 去掉可能的标点符号、空格     
-      const reg = /[a-zA-Z']+/     
-      word = reg.exec(word)[0].toLowerCase()   
-      if(this.mode == 'meaning'){
-        payload.word = word
+    async searchThroughDict(){ 
+      if(this.mode == 'meaning'){ 
         const {data: meaningData} = await this.$http('GET', '/dict/words', {
-          params: payload
+          params: {
+            word: this.currentWord
+          }
         })    
         this.wordInfo = meaningData
-      }else if(this.mode == 'sentence'){
-        this.queryInfo.word = this.currentWord       
+      }else if(this.mode == 'sentence'){      
+        this.queryInfo.word = this.currentWord
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
           params: this.queryInfo      
         })               

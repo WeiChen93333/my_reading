@@ -15,7 +15,9 @@
       :wordInfo="wordInfo"></word-info-display>    
     <sentence-display
       v-if="mode=='sentence' && searchHistory.length"
-      :sentenceInfo="sentenceInfo"></sentence-display>     
+      :sentenceInfo="sentenceInfo"
+      :currentWord="currentWord"
+      ></sentence-display>     
   </div>  
 </template>
 
@@ -29,7 +31,8 @@ export default {
   props: {
     wordInfo: Object,
     sentenceInfo: Array,
-    mode: String
+    mode: String,
+    currentWord: String
   }, 
   components: {
     WordInfoDisplay,

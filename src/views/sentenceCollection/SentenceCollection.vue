@@ -7,7 +7,9 @@
         <p class="text">{{item}}</p>
       </li>
     </ul>
-    <mo-pagination :total="1" pageSize="2"></mo-pagination>
+    <mo-pagination 
+      :sizes="[7, 8, 9, 10]"
+      :queryInfo="queryInfo"></mo-pagination>
   </div>
 </template>
 
@@ -16,7 +18,11 @@ export default {
   name: 'SentenceCollection',  
   data(){
     return {
-      sentences: []
+      sentences: [],
+      queryInfo: {        
+        pagenum: 1,
+        pagesize: 7
+      }
     }
   },
   created(){
@@ -33,19 +39,28 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #sentence-collection
-  min-height 500px
+  height 600px
+  padding 20px
   background-color white
   color black
+  box-shadow 0 0 5px black inset
   .title 
     color rgb(86,122,144)
     font-weight 700
-    margin-bottom 5px
+    margin-bottom 7px
   .sentences
+    height calc(100% - 50px)  
+    overflow-y auto
     .sentence    
-      display flex
+      display flex      
+      font-size 15px          
+      color gray   
+      white-space pre-wrap  
+      padding 5px   
+      &:nth-child(odd)
+        background-color rgba(173, 216, 230, .2)  
       .order         
         flex 0 0 25px
       .sentence 
         flex 1
-
 </style>

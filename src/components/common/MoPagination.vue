@@ -2,11 +2,12 @@
   <div id="mo-pagination">
     <div class="size-choice">
       <input type="text" readonly
-        class="selected"
+        class="current-size"
         :value="selectedSize"
         @click="toggleSizeBox">
       <ul class="size-box" v-if="sizeBoxVisible">
         <li class="size"
+          :class="{selected: item == queryInfo.pagesize}"
           v-for="(item, index) in sizes" :key="index"
           @click="changePageSize(item)">{{item + '条/页'}}</li>
       </ul>
@@ -21,13 +22,13 @@
 export default {
   name:'MoPagination',  
   props: {
-    queryInfo: Object
+    queryInfo: Object,
+    sizes: Array
   },
   data(){
     return {      
-      selectedSize: '5条/页',
-      sizeBoxVisible: false,
-      sizes: [5, 6, 7, 8]      
+      selectedSize: this.queryInfo.pagesize + '条/页',
+      sizeBoxVisible: false           
     }
   },
   methods:{   
@@ -62,7 +63,7 @@ export default {
     color #808080
     text-align center
     flex 0 0 25%
-    .selected 
+    .current-size 
       width 100%
       height 100%       
       border 1px solid #DCDFE6
@@ -86,6 +87,8 @@ export default {
         cursor pointer
         &:hover 
           background-color lightgray
+        &.selected
+          color #409eff     
   .button-box 
     flex 0 0 50% 
     display flex 

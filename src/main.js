@@ -24,7 +24,7 @@ Vue.prototype.$bus = new Vue()
 import { request } from "./request/request.js"
 Vue.prototype.$http = request
 
-import { focus } from './directive/directive.js'
+import { focus, highlight } from './directive/directive.js'
 
 Vue.config.productionTip = false
 
