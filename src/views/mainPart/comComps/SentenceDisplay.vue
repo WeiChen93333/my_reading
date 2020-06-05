@@ -9,7 +9,7 @@
       </div>
       <mo-pagination class="pagination"
         :sizes="[5, 6, 7, 8]"
-        :queryInfo="queryInfo"                
+        :pageInfo="pageInfo"                
       ></mo-pagination> 
     </template> 
   </div>
@@ -24,7 +24,7 @@ export default {
   },
   data(){
     return {
-      queryInfo: {
+      pageInfo: {
         word: '',
         pagenum: 1,
         pagesize: 5
@@ -32,10 +32,10 @@ export default {
     }
   },
   watch: {
-    queryInfo: {
+    pageInfo: {
       handler(){        
-        //向 MainPart.vue 发送事件, 通知查询条件已变更
-        this.$bus.$emit('queryInfoChanged', this.queryInfo)
+        //向 MainPart.vue 发送事件, 通知页面信息已变更        
+        this.$bus.$emit('pageInfoChanged', this.pageInfo)
       },
       deep: true
     } 

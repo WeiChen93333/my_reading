@@ -1,5 +1,6 @@
 <template>
   <div id="mo-pagination">
+    <div v-if="total" class="total">共 {{total}} 条</div>
     <div class="size-choice">
       <input type="text" readonly
         class="current-size"
@@ -7,7 +8,7 @@
         @click="toggleSizeBox">
       <ul class="size-box" v-if="sizeBoxVisible">
         <li class="size"
-          :class="{selected: item == queryInfo.pagesize}"
+          :class="{selected: item == pageInfo.pagesize}"
           v-for="(item, index) in sizes" :key="index"
           @click="changePageSize(item)">{{item + '条/页'}}</li>
       </ul>
@@ -22,12 +23,13 @@
 export default {
   name:'MoPagination',  
   props: {
-    queryInfo: Object,
+    pageInfo: Object,
+    total: Number,
     sizes: Array
   },
   data(){
     return {      
-      selectedSize: this.queryInfo.pagesize + '条/页',
+      selectedSize: this.pageInfo.pagesize + '条/页',
       sizeBoxVisible: false           
     }
   },
@@ -39,15 +41,15 @@ export default {
     //改变 size
     changePageSize(size){
       this.selectedSize = size + '条/页'     
-      this.$set(this.queryInfo, 'pagesize', size)  
+      this.$set(this.pageInfo, 'pagesize', size)  
       this.toggleSizeBox()      
     },  
     //前后翻页
     goPrevPage(){  
-      this.$set(this.queryInfo, 'pagenum', --this.queryInfo.pagenum)     
+      this.$set(this.pageInfo, 'pagenum', --this.pageInfo.pagenum)     
     },
     goNextPage(){
-      this.$set(this.queryInfo, 'pagenum', ++this.queryInfo.pagenum)    
+      this.$set(this.pageInfo, 'pagenum', ++this.pageInfo.pagenum)    
     }
   },  
 }
@@ -58,11 +60,15 @@ export default {
   justify-content space-around
   width 100%
   height 25px 
-  .size-choice
-    width 50px
-    color #808080
+  .total 
+    flex 0 0 10% 
+    text-align center
+    line-height 25px
+    color #808080       
+  .size-choice   
     text-align center
     flex 0 0 25%
+    color #808080 
     .current-size 
       width 100%
       height 100%       

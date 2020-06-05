@@ -2,14 +2,15 @@
   <div id="sentence-collection">
     <p class="title">我的句集</p>
     <ul class="sentences">
-      <li class="sentence" v-for="(item, index) in sentences" :key="index">
+      <li class="sentence" v-for="(item, index) in currentSentences" :key="index">
         <span class="order">{{index + 1}}</span>
         <p class="text">{{item}}</p>
       </li>
     </ul>
     <mo-pagination 
-      :sizes="[7, 8, 9, 10]"
-      :queryInfo="queryInfo"></mo-pagination>
+      :total="total"
+      :sizes="[2, 3, 4, 6]"
+      :pageInfo="pageInfo"></mo-pagination>
   </div>
 </template>
 
@@ -18,11 +19,20 @@ export default {
   name: 'SentenceCollection',  
   data(){
     return {
-      sentences: [],
-      queryInfo: {        
+      allSentences: [],
+      total: 0,     
+      pageInfo: {        
         pagenum: 1,
-        pagesize: 7
+        pagesize: 2
       }
+    }
+  },
+  computed: {
+    //当前展示的句子
+    currentSentences(){     
+      const start = (this.pageInfo.pagenum-1)*this.pageInfo.pagesize
+      const end = this.pageInfo.pagenum*this.pageInfo.pagesize   
+      return this.allSentences.slice(start, end)
     }
   },
   created(){
@@ -32,7 +42,8 @@ export default {
     async init(){
       const userId = window.sessionStorage.getItem('userId')
       const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})
-      this.sentences = data.sentences
+      this.allSentences = data.sentences
+      this.total = this.allSentences.length
     }
   }
 }

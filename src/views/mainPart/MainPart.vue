@@ -140,8 +140,8 @@ export default {
       this.mode = "sentence"
       this.$store.commit('addSearchHistory', value)
     })
-    //监听 SentenceDisplay.vue 查询条件变更
-    this.$bus.$on('queryInfoChanged', value=>{      
+    //监听 SentenceDisplay.vue 页面信息变更
+    this.$bus.$on('pageInfoChanged', value=>{   
       this.queryInfo.pagenum = value.pagenum
       this.queryInfo.pagesize = value.pagesize 
       this.searchThroughDict()
