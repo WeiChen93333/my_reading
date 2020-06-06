@@ -94,7 +94,10 @@ export default {
       textStr: '',  //要展示在阅读区的文本
       newAdd: '',   //用户每次输入的文本         
       wordInfo: {},  //查询到的单词信息
-      sentenceInfo: []   //查询到的例句信息
+      sentenceInfo: {
+        total: 0,
+        sentences: []
+      }   //查询到的例句信息
     }
   },
   computed: {
@@ -219,8 +222,8 @@ export default {
         this.queryInfo.word = this.currentWord
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
           params: this.queryInfo      
-        })               
-        this.sentenceInfo = sentenceData     
+        })                
+        this.sentenceInfo = sentenceData
       }   
     }  
   }

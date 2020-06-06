@@ -1,13 +1,14 @@
 <template>
   <div id="sentence-display">
-    <p class="not-found" v-if="!sentenceInfo.length">没有匹配的例句</p>
+    <p class="not-found" v-if="!sentenceInfo.sentences.length">没有匹配的例句</p>
     <template v-else>
       <div class="sentences">
         <p class="sentence" 
-          v-for="(item, index) in sentenceInfo" :key="index"
+          v-for="(item, index) in sentenceInfo.sentences" :key="index"
           v-highlight="currentWord">{{item.sentence}}</p>
       </div>
       <mo-pagination class="pagination"
+        :total="sentenceInfo.total"
         :sizes="[5, 6, 7, 8]"
         :pageInfo="pageInfo"                
       ></mo-pagination> 
@@ -19,11 +20,12 @@
 export default {
   name: 'SentenceDisplay',
   props: {
-    sentenceInfo: Array,
+    sentenceInfo: Object,
     currentWord: String  
   },
   data(){
     return {
+      total: 0,
       pageInfo: {
         word: '',
         pagenum: 1,
@@ -33,7 +35,7 @@ export default {
   },
   watch: {
     pageInfo: {
-      handler(){        
+      handler(){
         //向 MainPart.vue 发送事件, 通知页面信息已变更        
         this.$bus.$emit('pageInfoChanged', this.pageInfo)
       },

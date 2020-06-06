@@ -14,8 +14,16 @@
       </ul>
     </div>        
     <div class="button-box">
-      <button class="prev" @click="goPrevPage"><i class="iconfont icon-back"></i></button>
-      <button class="next" @click="goNextPage"><i class="iconfont icon-next"></i></button>
+      <button class="prev" 
+        :class="{disabled: pageInfo.pagenum == 1}"
+        @click="goPrevPage">
+        <i class="iconfont icon-back"></i>
+      </button>
+      <button class="next" 
+        :class="{disabled: pageInfo.pagenum == totalPages}"
+        @click="goNextPage">
+        <i class="iconfont icon-next"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -29,8 +37,13 @@ export default {
   },
   data(){
     return {      
-      selectedSize: this.pageInfo.pagesize + '条/页',
+      selectedSize: this.pageInfo.pagesize + ' 条/页',
       sizeBoxVisible: false           
+    }
+  },
+  computed: {
+    totalPages(){
+      return Math.ceil(this.total / this.pageInfo.pagesize)
     }
   },
   methods:{   
@@ -42,14 +55,17 @@ export default {
     changePageSize(size){
       this.selectedSize = size + '条/页'     
       this.$set(this.pageInfo, 'pagesize', size)  
+      this.$set(this.pageInfo, 'pagenum', 1)  
       this.toggleSizeBox()      
     },  
     //前后翻页
-    goPrevPage(){  
-      this.$set(this.pageInfo, 'pagenum', --this.pageInfo.pagenum)     
+    goPrevPage(){     
+      if(this.pageInfo.pagenum > 1)
+        this.$set(this.pageInfo, 'pagenum', --this.pageInfo.pagenum)     
     },
-    goNextPage(){
-      this.$set(this.pageInfo, 'pagenum', ++this.pageInfo.pagenum)    
+    goNextPage(){      
+      if(this.pageInfo.pagenum < this.totalPages)
+        this.$set(this.pageInfo, 'pagenum', ++this.pageInfo.pagenum)   
     }
   },  
 }
@@ -61,7 +77,7 @@ export default {
   width 100%
   height 25px 
   .total 
-    flex 0 0 10% 
+    flex 0 0 25% 
     text-align center
     line-height 25px
     color #808080       
@@ -74,7 +90,7 @@ export default {
       height 100%       
       border 1px solid #DCDFE6
       border-radius 3px   
-      text-align center    
+      text-align center
       user-select none
       cursor pointer
       &:hover       
@@ -104,6 +120,8 @@ export default {
       cursor pointer
       .iconfont    
         font-size 22px
+      &.disabled 
+        color red
 
      
   

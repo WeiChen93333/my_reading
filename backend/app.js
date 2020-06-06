@@ -18,13 +18,20 @@ const onRequest = (req, res) => {
       return         
     }
     if(pathname == '/dict/sentences'){
-      const { word, pagenum, pagesize} = query     
-      SentenceModel.find({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, null, { skip: (pagenum-1)*pagesize, limit: parseInt(pagesize) }, function(err, docs){  
-        if(!err){
-          res.end(JSON.stringify(docs)) 
-        }
-      })  
-      return         
+      const { word, pagenum, pagesize} = query
+      const resData = {
+        total: 0,
+        sentences: []
+      } 
+      SentenceModel.count({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, (err, count)=>{
+        if(!err) resData.total = count  
+        SentenceModel.find({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, null, { skip: (pagenum-1)*pagesize, limit: parseInt(pagesize) }, function(err, docs){  
+          if(!err){
+            resData.sentences = docs          
+            return res.end(JSON.stringify(resData)) 
+          }
+        })        
+      })            
     }
     //获取用户信息
     if(pathname == '/userInfo'){
@@ -99,8 +106,7 @@ const onRequest = (req, res) => {
         case 'revisedSentenceCollection':
           update = {$set: {sentences: postData.revisedSentenceCollection}}
           break
-      }
-      console.log(update)
+      }    
       UserModel.findOneAndUpdate({userId: userId}, update, {new: true}, (err, doc)=>{    
         res.end(JSON.stringify(doc))
       })        

@@ -30,7 +30,7 @@ export default {
   name: 'WordInfo',  
   props: {
     wordInfo: Object,
-    sentenceInfo: Array,
+    sentenceInfo: Object,
     mode: String,
     currentWord: String
   }, 

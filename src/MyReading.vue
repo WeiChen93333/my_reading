@@ -84,6 +84,7 @@ export default {
     },
     showSentenceCollection(){
       this.$router.push('/sentence')
+      this.toggleMenu()
     },
     logout(){
       this.username = ''

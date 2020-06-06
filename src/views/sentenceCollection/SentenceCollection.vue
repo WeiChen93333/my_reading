@@ -9,7 +9,7 @@
     </ul>
     <mo-pagination 
       :total="total"
-      :sizes="[2, 3, 4, 6]"
+      :sizes="[5, 7, 8, 10]"
       :pageInfo="pageInfo"></mo-pagination>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
       total: 0,     
       pageInfo: {        
         pagenum: 1,
-        pagesize: 2
+        pagesize: 5
       }
     }
   },
