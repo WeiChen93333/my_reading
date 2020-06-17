@@ -23,7 +23,7 @@ const onRequest = (req, res) => {
         total: 0,
         sentences: []
       } 
-      SentenceModel.count({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, (err, count)=>{
+      SentenceModel.countDocuments({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, (err, count)=>{
         if(!err) resData.total = count  
         SentenceModel.find({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, null, { skip: (pagenum-1)*pagesize, limit: parseInt(pagesize) }, function(err, docs){  
           if(!err){
@@ -45,10 +45,14 @@ const onRequest = (req, res) => {
   }else if(method == 'POST'){
     const { pathname } = url.parse(req.url, true)  
     //用户注册
-    if(pathname == '/userInfo/register'){      
-      req.on('data', chunk=>{
-        let postData = JSON.parse(chunk)  
-        UserModel.count({}, (err, count)=>{
+    if(pathname == '/userInfo/register'){   
+      let postData = ''   
+      req.on('data', chunk=>{     
+        postData += chunk.toString()
+      })
+      req.on('end', ()=>{
+        postData = JSON.parse(postData)
+        UserModel.countDocuments({}, (err, count)=>{      
           const userCount = ++count
           const newUser = {
             userId: userCount.toString(),
@@ -60,8 +64,8 @@ const onRequest = (req, res) => {
             materials: []
           }
           UserModel.create(newUser)             
-        })    
-      })      
+        })
+      })  
       const resData = {        
         message: 'success'
       }
@@ -69,8 +73,12 @@ const onRequest = (req, res) => {
     }    
     //用户登录
     if(pathname == '/userInfo/login'){
+      let postData = ''
       req.on('data', chunk=>{       
-        let postData = JSON.parse(chunk) 
+        postData += chunk.toString()         
+      })   
+      req.on('end', ()=>{
+        postData = JSON.parse(postData)
         UserModel.findOne(postData, function(err, doc){
           if(!err){            
             if(doc){               
@@ -87,15 +95,19 @@ const onRequest = (req, res) => {
               res.end(JSON.stringify(resData))              
             }                   
           }        
-        })    
-      })      
+        })  
+      })   
       return 
     }   
     //修改用户信息, 本来该用 put, 但是不知道 http 模块不能接收还是需要怎么配置一下, 用 post 先将就
     const regexp = /\/userInfo\/update\/(\w+)/
-    const userId = regexp.exec(pathname)[1]    
+    const userId = regexp.exec(pathname)[1]   
+    let postData = '' 
     req.on('data', (chunk)=> {
-      let postData = JSON.parse(chunk)
+      postData += chunk.toString()      
+    })   
+    req.on('end', ()=>{
+      postData = JSON.parse(postData)
       //判断修改了什么
       const revision = Object.keys(postData)[0]
       let update = null
@@ -107,10 +119,10 @@ const onRequest = (req, res) => {
           update = {$set: {sentences: postData.revisedSentenceCollection}}
           break
       }    
-      UserModel.findOneAndUpdate({userId: userId}, update, {new: true}, (err, doc)=>{    
+      UserModel.findOneAndUpdate({userId: userId}, update, {new: true, useFindAndModify: false}, (err, doc)=>{    
         res.end(JSON.stringify(doc))
-      })        
-    })        
+      })
+    })     
   }
 } 
             

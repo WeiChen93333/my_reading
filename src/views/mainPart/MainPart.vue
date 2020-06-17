@@ -84,7 +84,7 @@ export default {
       wordCollectionVisible: false,
       wordBaseVisible: false,   
       //模式选择(释义/例句)
-      mode: 'sentence',
+      mode: 'meaning',
       queryInfo: {
         word: '',
         pagenum: 1,

@@ -71,25 +71,26 @@ export default {
   padding-right 5px
   border 2px solid rgb(64, 128, 128) 
   background-color rgb(252, 252, 254) 
-  // overflow hidden
   .search-line
     border-top 2px solid #e1251b
     height 5px
     cursor pointer
-    position relative     
+    position relative    
     .expand-enter-active, .expand-leave-active
-      transition top .5s ease
+      transition all .3s ease-in-out
     .expand-enter, .expand-leave-to         
-      top -30px  
+      // top -30px 
+      opacity 0   
     .expand-enter-to, .expand-leave          
-      top 0
+      // top 0  
+      opacity 1    
     .search-box
       width 100% 
       height 30px   
-      position absolute          
+      position absolute     
       .text       
         width 90%
-        height 100%
+        height 30px
         line-height 28px
         padding-left 12px
         outline none

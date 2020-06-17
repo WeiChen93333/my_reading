@@ -1,4 +1,7 @@
 //引入mongoose操作mongoDB数据库服务器
+// const onlinePath = '/www/server/nvm/versions/node/v12.16.0/lib/node_modules/'
+// const mongoose = require(onlinePath + 'mongoose')
+
 const mongoose = require('mongoose')
 
 //连接词典
@@ -21,11 +24,9 @@ const conn2 = mongoose.createConnection('mongodb://localhost/userInfo', { useNew
 const userSchema = new mongoose.Schema({
   userId: String,
   username: String,
-  password: String,
-  history: Array,
+  password: String,  
   wordbase: Array,
-  sentences: Array,
-  materials: Array
+  sentences: Array 
 })
 const UserModel = conn2.model('users', userSchema)
 

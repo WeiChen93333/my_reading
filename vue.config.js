@@ -1,12 +1,8 @@
-// const path = require("path");
-
-// const vueSrc = "./src";
-
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
     configureWebpack: {
         resolve: {
-            alias: {
-               
+            alias: {               
                 'assets': '@/assets',
                 'common': '@/common',
                 'components': '@/components',                

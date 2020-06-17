@@ -22,7 +22,7 @@ export default {
   data(){
     return {
       ContextMenuVisible: false,   
-      menu: Object.freeze([       
+      menu: Object.freeze([
         {
           content: '清空查词历史',    
           handler: this.clearSearchHistory  
@@ -97,11 +97,18 @@ export default {
     async addToSentenceCollection(){
       if(!this.selectedText) return  
       const userId = window.sessionStorage.getItem('userId')     
-      const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})       
-      data.sentences.push(this.selectedText)       
+      const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})
+      if(data.sentences.includes(this.selectedText)) return this.$message.show('该句子已经添加过')
+      // const reg = /[a-zA-z'\s]+\./g
+      // let sentenceMatch = reg.exec(this.selectedText)      
+      // while(sentenceMatch){
+      //   data.sentences.push(sentenceMatch[0]) 
+      //   sentenceMatch = reg.exec(this.selectedText)       
+      // }           
+      data.sentences.push(this.selectedText)
+      console.log(data.sentences)
       this.$http('POST', `/userInfo/update/${userId}`, {revisedSentenceCollection: data.sentences})       
     }
-
   }
 }
 </script>

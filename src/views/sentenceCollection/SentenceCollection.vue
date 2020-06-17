@@ -5,6 +5,10 @@
       <li class="sentence" v-for="(item, index) in currentSentences" :key="index">
         <span class="order">{{index + 1}}</span>
         <p class="text">{{item}}</p>
+        <i class="iconfont icon-close"
+          ref="iconRef"         
+          :key=item
+          @click="removeSentence($event, item)"></i>
       </li>
     </ul>
     <mo-pagination 
@@ -19,12 +23,16 @@ export default {
   name: 'SentenceCollection',  
   data(){
     return {
+      //数据
       allSentences: [],
       total: 0,     
       pageInfo: {        
         pagenum: 1,
         pagesize: 5
-      }
+      },
+      //开关
+      isActive: false
+
     }
   },
   computed: {
@@ -44,6 +52,23 @@ export default {
       const { data } = await this.$http('GET', '/userInfo', {params: {userId: userId}})
       this.allSentences = data.sentences
       this.total = this.allSentences.length
+    },
+    removeSentence(event, sentence){    
+      const icons = this.$refs.iconRef
+      const addCss = "color: red; font-size: 18px; font-weight: 700"
+      if(!event.target.style.cssText.includes(addCss)){
+        icons.forEach(item => {
+          item.style.cssText -= addCss      
+        })
+        event.target.style.cssText += addCss
+      }else{
+        const userId = window.sessionStorage.getItem('userId')     
+        const index = this.allSentences.indexOf(sentence);
+        if (index !== -1){
+        this.allSentences.splice(index, 1)            
+        this.$http('POST', `/userInfo/update/${userId}`, {revisedSentenceCollection: this.allSentences})   
+        }
+      }      
     }
   }
 }
@@ -63,15 +88,24 @@ export default {
     height calc(100% - 50px)  
     overflow-y auto
     .sentence    
-      display flex      
+      display flex     
+      padding 5px 
       font-size 15px          
-      color gray   
-      white-space pre-wrap  
-      padding 5px   
+      color gray        
       &:nth-child(odd)
         background-color rgba(173, 216, 230, .2)  
       .order         
         flex 0 0 25px
-      .sentence 
+      .text
         flex 1
+      .iconfont
+        flex 0 0 25px
+        position relative      
+        vertical-align middle
+        cursor pointer
+        &::before 
+          position absolute
+          top 50%
+          left 50%
+          transform translate(-50%, -50%)
 </style>
