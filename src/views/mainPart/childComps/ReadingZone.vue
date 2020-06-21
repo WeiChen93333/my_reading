@@ -45,6 +45,7 @@ export default {
   p 
     margin-bottom 10px
     line-height 22px   
+    text-align justify    
   span
     cursor pointer
 </style>
