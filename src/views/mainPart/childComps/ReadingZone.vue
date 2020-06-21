@@ -13,16 +13,25 @@ import { mapState } from 'vuex'
 export default {
   name: 'ReadingZone',
   props: ['textArr'],
+  data(){
+    return {
+      timer: null
+    }
+  },
   computed: {
     ...mapState(['wordCollection'])
   },
   methods: {
-    // 单击查词
-    clickSearch(word){     
-      this.$store.commit('addSearchHistory', word)     
+    // 单击查词    
+    clickSearch(word){    
+      clearTimeout(this.timer)
+      this.timer = setTimeout(()=>{           
+        this.$store.commit('addSearchHistory', word) 
+      }, 200)     
     },    
     //将单词加入当前单词集
     addToWordCollection(word){
+      clearTimeout(this.timer)
       //匹配字母和 ' , 去掉可能的标点符号、空格     
       const reg = /[a-zA-Z']+/     
       word = reg.exec(word)[0]
