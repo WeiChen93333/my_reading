@@ -45,7 +45,6 @@ export default {
     async login(){   
       const { data } = await this.$http('POST', '/userInfo/login', this.loginInfo)   
       if(data.message !== "success") return this.message = '用户名或密码不正确'
-      this.$emit('loggedIn', data.username)
       window.sessionStorage.setItem('userId', data.userId)     
       this.$router.push('/reading') 
     }

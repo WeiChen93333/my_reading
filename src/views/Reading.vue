@@ -6,7 +6,7 @@
             @click="toggleMenu">{{username}}</span> 
           <ul class="menu" v-show="menuVisible">
             <!-- <li>资料夹</li> -->
-            <li @click="showSentenceCollection">句集</li>
+            <li @click="enterSentenceCollection">句集</li>
             <li @click="logout">退出</li>
           </ul>
         </div>    
@@ -30,24 +30,27 @@ export default {
     }
   }, 
   created(){
-    this.isLoggedIn()
+    this.getUsername()
   },
   methods: {
-    //刷新页面后查询用户是否已经登录
-    async isLoggedIn(){
+    //获取用户名
+    async getUsername(){
       const userId = window.sessionStorage.getItem('userId')
       if(userId){        
         const {data} = await this.$http('GET', '/userInfo', {params: {userId: userId}})
         this.username = data.username
       }
     },   
+    //显示/隐藏个人中心菜单
     toggleMenu(){
       this.menuVisible = !this.menuVisible
     },
-    showSentenceCollection(){
+    //进入句集界面
+    enterSentenceCollection(){
       this.$router.push('/sentence')
       this.toggleMenu()
     },
+    //登出
     logout(){
       this.username = ''
       window.sessionStorage.removeItem('userId')
