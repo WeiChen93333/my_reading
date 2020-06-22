@@ -159,12 +159,6 @@ export default {
     border-radius 8px 
     margin 0 auto
     margin-top 8%
-    // .toggle-enter-active, .toggle-leave-active
-    //   transition all .3s linear
-    // .toggle-enter, .toggle-leave-to
-    //   opacity 0.2
-    // .toggle-leave, .toggle-enter-to       
-    //   opacity 1
     .view      
       height 90%
       display flex
@@ -206,9 +200,9 @@ export default {
         overflow-y auto        
         cursor pointer
         .detail-enter-active
-          transition all .3s   
+          transition all .2s   
         .detail-leave-active 
-          transition all .5s     
+          transition all .4s     
         .detail-enter 
           opacity 0
         .detail-enter-to
