@@ -16,7 +16,7 @@
         <mo-button type="primary" size="middle" text="登录"           
           @click.native="login"></mo-button>
       </mo-form-item>
-    </mo-form>      
+    </mo-form>
   </div>    
 </template>
 
@@ -45,9 +45,10 @@ export default {
     async login(){   
       const { data } = await this.$http('POST', '/userInfo/login', this.loginInfo)   
       if(data.message !== "success") return this.message = '用户名或密码不正确'
-      window.sessionStorage.setItem('userId', data.userId)     
+      window.sessionStorage.setItem('userId', data.userId)    
+      window.sessionStorage.setItem('token', data.token)
       this.$router.push('/reading') 
-    }
+    } 
   }
 }
 </script>

@@ -54,6 +54,7 @@ export default {
     logout(){
       this.username = ''
       window.sessionStorage.removeItem('userId')
+      window.sessionStorage.removeItem('token')
       this.$router.push('/login')
     }
   }
@@ -66,7 +67,7 @@ export default {
     display flex
     justify-content flex-end
     height 40px
-    padding-right 40px
+    padding 0 10%
     background-color lightgray
     text-align right
     .personal-center

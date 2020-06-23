@@ -1,12 +1,22 @@
 const { WordModel, SentenceModel, UserModel } = require(__dirname + '/db.js')
 
 const url = require('url')
+const jwt  = require('jsonwebtoken');
 
 const onRequest = (req, res) => {
   res.setHeader('Content-Type', 'application/json'); 
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080') 
-  const method = req.method 
-  if(method == 'GET'){
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization') 
+  const method = req.method   
+  if(method == 'OPTIONS'){   
+    return res.end()
+  }  
+  if(method == 'PUT'){   
+    return res.end('put')
+  }  
+  if(method == 'GET'){   
     const { pathname, query } = url.parse(req.url, true) 
     //获取单词释义信息
     if(pathname == '/dict/words'){
@@ -86,7 +96,15 @@ const onRequest = (req, res) => {
                 userId: doc.userId,
                 username: doc.username,                     
                 message: 'success'
-              }                         
+              }
+              //生成 token
+              let payload = {name:'张三',admin:true};
+              let secret = 'I_LOVE_JING';
+              let token = jwt.sign(payload, secret); 
+              //解码
+              // let payload = jwt.verify(token, secret)
+                              
+              resData.token = 'Bearer ' + token
               res.end(JSON.stringify(resData))    
             }else{
               const resData = {                
