@@ -2,10 +2,18 @@
   <div id="login-box">       
     <mo-form class="login-form">
       <mo-form-item>
-        <mo-input type="text" text="用户名" v-model="loginInfo.username"></mo-input>        
+        <mo-input 
+          type="text" 
+          text="用户名" 
+          v-model="loginInfo.username"
+          ></mo-input>        
       </mo-form-item>
       <mo-form-item>
-        <mo-input type="password" text="密码" v-model="loginInfo.password"></mo-input>        
+        <mo-input 
+          type="password" 
+          text="密码" 
+          v-model="loginInfo.password"
+          ></mo-input>        
       </mo-form-item>
       <mo-form-item>
         <p class="message">{{message}}</p>        
