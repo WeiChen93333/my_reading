@@ -210,18 +210,18 @@ export default {
     },
     
     //在词典中查询单词
-    async searchThroughDict(){ 
-      if(this.mode == 'meaning'){ 
-        const {data: meaningData} = await this.$http('GET', '/dict/words', {
-          params: {
-            word: this.currentWord
-          }
-        })    
-        this.wordInfo = meaningData
+    async searchThroughDict(word){ // word 参数仅记忆卡片发送的查词事件携带
+      if(this.mode == 'meaning'){
+        const params = {
+          word: this.currentWord
+        }        
+        params.word = word ? word : this.currentWord       
+        const {data: meaningData} = await this.$http('GET', '/dict/words', { params }) 
+        this.wordInfo = meaningData     
       }else if(this.mode == 'sentence'){      
         this.queryInfo.word = this.currentWord
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
-          params: this.queryInfo      
+          params: this.queryInfo
         })                
         this.sentenceInfo = sentenceData
       }   

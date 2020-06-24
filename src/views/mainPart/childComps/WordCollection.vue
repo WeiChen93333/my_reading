@@ -1,37 +1,35 @@
 <template>
   <div id="word-collection" @click.self="hideWordCollection">
-    <div class="content">
-      <transition name="toggle" mode="out-in">
-        <div class="view" v-if="viewVisible" key="view">
-          <div class="words">
-            <label v-for="(item, index) in wordCollection" :key="index">          
-              <input type="checkbox" :value="item" v-model="selectedWords"> {{item}}
-            </label>    
-          </div>           
-          <div class="buttons">
-            <mo-button type="primary" size="vertical" text="全选"
-              @click.native="selectAll"></mo-button> 
-            <mo-button type="primary" size="vertical" text="删除"
-              @click.native="removeSelectedWords"></mo-button>        
-            <mo-button type="primary" size="vertical" text="放入单词仓"
-              @click.native="putInWordBase"></mo-button>
-          </div> 
-        </div>
-        <div class="memory" v-else key="memory">        
-          <div class="card"              
-            @click="showDetail">
-            <transition name="detail" mode="out-in">
-              <div class="front" v-if="wordVisible" key="front">
-                <span>{{frontDisplay}}</span>
-              </div>
-              <word-info-display class="back" key="back" v-else :wordInfo="wordInfo"></word-info-display>
-            </transition>
-          </div>                   
-        </div>
-      </transition>
+    <div class="content">     
+      <div class="list-display" v-if="listDisplayVisible" key="list">
+        <div class="words">
+          <label v-for="(item, index) in wordCollection" :key="index">          
+            <input type="checkbox" :value="item" v-model="selectedWords"> {{item}}
+          </label>    
+        </div>           
+        <div class="buttons">
+          <mo-button type="primary" size="vertical" text="全选"
+            @click.native="selectAll"></mo-button> 
+          <mo-button type="primary" size="vertical" text="删除"
+            @click.native="removeSelectedWords"></mo-button>        
+          <mo-button type="primary" size="vertical" text="放入单词仓"
+            @click.native="putInWordBase"></mo-button>
+        </div> 
+      </div>
+      <div class="memory-card" v-else key="memory">        
+        <div class="card"              
+          @click="showDetail">
+          <transition name="detail" mode="out-in">
+            <div class="front" v-if="wordVisible" key="front">
+              <span>{{frontDisplay}}</span>
+            </div>
+            <word-info-display class="back" key="back" v-else :wordInfo="wordInfo"></word-info-display>
+          </transition>
+        </div>                   
+      </div>    
       <div class="toggle">
         <mo-button type="primary" size="big" text="记忆卡片"
-          v-if="viewVisible"
+          v-if="listDisplayVisible"
           @click.native="toggleDisplay"></mo-button>
         <template v-else>
           <mo-button type="primary" size="big" text="记下了"
@@ -56,13 +54,14 @@ export default {
     WordInfoDisplay
   },
   data(){
-    return {   
-      selectedWords: [],
-      //单词集中展示(视图/记忆卡片)
-      viewVisible: true,
-      //记忆卡片切换单词/详情; 当前学习单词在单词集中的位置
-      wordVisible: true,
-      currentWord: 0     
+    return {      
+      //列表展示视图
+      listDisplayVisible: true,
+      selectedWords: [], //选中的单词      
+      
+      //记忆卡片视图; 
+      wordVisible: true, //切换单词与详情
+      currentWord: 0 //当前学习单词在单词集中的位置
     }
   },
   computed: {
@@ -77,15 +76,15 @@ export default {
     hideWordCollection(){
       this.$emit('hideWordCollection')
     },
-    //切换 单词视图/记忆卡片
+    //切换 列表展示视图/记忆卡片模块
     toggleDisplay(){
-      this.viewVisible = !this.viewVisible  
-      if(!this.viewVisible){
+      this.listDisplayVisible = !this.listDisplayVisible  
+      if(!this.listDisplayVisible){
         this.currentWord = 0
         this.wordVisible = true
       } 
     },
-    //单词视图操作按钮
+    //列表展示视图操作按钮
     selectAll(){
       if(this.selectedWords !== this.wordCollection){
         this.selectedWords = this.wordCollection
@@ -118,7 +117,7 @@ export default {
       this.removeSelectedWords()     
     },
 
-    //卡片视图操作   
+    //记忆卡片视图操作   
     //展示单词详情
     showDetail(){      
       this.wordVisible = false
@@ -135,7 +134,7 @@ export default {
       if(!this.wordVisible) this.wordVisible = true  
       this.currentWord ++
       if(this.currentWord == this.wordCollection.length){        
-        return setTimeout(()=>{this.viewVisible = true}, 5000)        
+        return setTimeout(()=>{this.listDisplayVisible = true}, 5000)        
       }      
       this.$emit('detailSearch', this.wordCollection[this.currentWord])
     }
@@ -159,7 +158,7 @@ export default {
     border-radius 8px 
     margin 0 auto
     margin-top 8%
-    .view      
+    .list-display     
       height 90%
       display flex
       align-items center
@@ -188,7 +187,7 @@ export default {
         flex-direction column
         justify-content space-around
         align-items flex-end  
-    .memory     
+    .memory-card   
       position relative
       height 90%
       padding 18px     
