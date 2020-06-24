@@ -126,17 +126,15 @@ export default {
     //删除学会的单词
     removeMasteredWord(){
       if(!this.wordVisible) this.wordVisible = true           
-      this.$store.commit('removeMasteredWord', this.currentWord)  
-      this.$emit('detailSearch', this.wordCollection[this.currentWord])   
+      this.$store.commit('removeMasteredWord', this.currentWord)   
     },
     jumpToNext(){
       if(this.currentWord == this.wordCollection.length) return
       if(!this.wordVisible) this.wordVisible = true  
       this.currentWord ++
       if(this.currentWord == this.wordCollection.length){        
-        return setTimeout(()=>{this.listDisplayVisible = true}, 5000)        
-      }      
-      this.$emit('detailSearch', this.wordCollection[this.currentWord])
+        return setTimeout(()=>{this.listDisplayVisible = true}, 1500)        
+      }
     }
   } 
 }
