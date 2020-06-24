@@ -1,18 +1,19 @@
 <template>   
-  <div id="login-box">       
-    <mo-form class="login-form">
+  <div id="login-box"> 
+    <mo-form class="login-form" ref="formRef">
       <mo-form-item>
-        <mo-input 
+        <mo-input
           type="text" 
           text="用户名" 
           v-model="loginInfo.username"
+          @moveFocus="moveFocus"
           ></mo-input>        
       </mo-form-item>
       <mo-form-item>
-        <mo-input 
+        <mo-input
           type="password" 
           text="密码" 
-          v-model="loginInfo.password"
+          v-model="loginInfo.password"        
           ></mo-input>        
       </mo-form-item>
       <mo-form-item>
@@ -37,18 +38,15 @@ export default {
         username: '',
         password: ''            
       },
-      message: ''
+      message: '',
+      items: null
     }
   },
   methods: {
-    hideForm(){
-      this.$emit('hideForm')
-    },
     resetForm(){
       this.loginInfo.username = ''
       this.loginInfo.password = ''
-      this.message = ''
-      
+      this.message = ''      
     },
     async login(){   
       const { data } = await this.$http('POST', '/userInfo/login', this.loginInfo)   
@@ -56,7 +54,10 @@ export default {
       window.sessionStorage.setItem('userId', data.userId)    
       window.sessionStorage.setItem('token', data.token)
       this.$router.push('/reading') 
-    } 
+    },
+    moveFocus(){
+      this.$moveFocus()      
+    }    
   }
 }
 </script>

@@ -1,12 +1,12 @@
 <template>
   <div class="mo-input">
     <span class="text">{{text}}: </span>
-    <input :type="type" class="input" ref="inputRef"
+    <input :type="type" class="input"
       :class="{focused: isFocused}"           
       @focus="isFocused = true" @blur="isFocused = false"
       :value="value"
-      @change="$emit('change', $event.target.value)"
-      @keyup.enter="moveFocus"
+      @change="$emit('change', $event.target.value)" 
+      @keyup.enter.prevent="moveFocus"    
       >   
   </div>
 </template>
@@ -21,16 +21,15 @@ export default {
   props: ['value', 'text', 'type'],
   data(){
     return {     
-      isFocused: false      
+      isFocused: false
     }
   },
   methods: {
-    moveFocus(e){
-      const el = document.activeElement
-      console.log(this.$refs.inputRef)
-      //只能获取到"激活"(focus 状态) 的 input 元素; 大概是因为这个组件生成了多个实例, 要获取全部 input, 要到父组件里去
+    moveFocus(){
+      this.$emit('moveFocus') 
     }
-  } 
+    
+  }
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

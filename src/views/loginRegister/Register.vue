@@ -1,14 +1,25 @@
 <template>
   <div id="register-box">       
-    <mo-form class="register-form">
+    <mo-form class="register-form" ref="formRef">
       <mo-form-item>
-        <mo-input type="text" text="用户名" v-model="registerInfo.username"></mo-input>         
+        <mo-input 
+          type="text" 
+          text="用户名" 
+          v-model="registerInfo.username"
+          @moveFocus="moveFocus"></mo-input>         
       </mo-form-item>
       <mo-form-item>
-        <mo-input type="password" text="密码" v-model="registerInfo.password"></mo-input>        
+        <mo-input 
+          type="password" 
+          text="密码" 
+          v-model="registerInfo.password"
+          @moveFocus="moveFocus"></mo-input>        
       </mo-form-item>
       <mo-form-item>
-        <mo-input type="password" text="确认密码" v-model="registerInfo.passwordConfirm"></mo-input>        
+        <mo-input 
+          type="password" 
+          text="确认密码" 
+          v-model="registerInfo.passwordConfirm"></mo-input>        
       </mo-form-item>
       <mo-form-item class="button-box">         
         <mo-button type="primary" size="wider" text="提交注册"           
@@ -43,6 +54,9 @@ export default {
       setTimeout(()=>{
         this.$emit('registerSuccess')
       }, 1000)   
+    },
+    moveFocus(){
+      this.$moveFocus()
     }
   }
 }

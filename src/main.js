@@ -17,14 +17,21 @@ Vue.use(Message)
 import MessageBox from "@/plugins/mo-messageBox.js"
 Vue.use(MessageBox)
 
-//设置事件总线
-Vue.prototype.$bus = new Vue()
+
+
+//引入公用函数
+import { moveFocus } from './utils/utils.js'
+Vue.prototype.$moveFocus = moveFocus
 
 //引入 axios 请求函数
 import { request } from "./request/request.js"
 Vue.prototype.$http = request
 
+//引入自定义指令
 import { focus, highlight } from './directive/directive.js'
+
+//设置事件总线
+Vue.prototype.$bus = new Vue()
 
 Vue.config.productionTip = false
 

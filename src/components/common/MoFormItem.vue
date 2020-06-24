@@ -6,15 +6,7 @@
 
 <script>
 export default {
-  name: 'MoFormItem',
-  components: {},
-  props: {},
-  data(){
-    return {
-    }
-  },
-  computed: {},
-  methods: {}
+  name: 'MoFormItem'  
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
