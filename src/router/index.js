@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import LoginRegister from 'views/loginRegister/LoginRegister'
-import Reading from 'views/Reading'
+import Reading from 'views/reading/Reading'
 import MainPart from 'views/mainPart/MainPart'
 // import ReadingMaterial from 'views/readingMaterial/ReadingMaterial'
 import SentenceCollection from 'views/sentenceCollection/SentenceCollection'

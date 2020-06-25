@@ -11,12 +11,10 @@
             :class="['register', activeComponent == 'Register' ? 'active' : '']"
             @click="switchToRegisterBox">用户注册</span>
         </div>        
-      </div>  
-      <keep-alive>
+      </div>     
         <component 
           :is="currentComponent"
-          @registerSuccess="switchToLoginBox"></component>
-      </keep-alive>
+          @registerSuccess="switchToLoginBox"></component>      
     </div>
   </div>
 </template>
