@@ -115,7 +115,9 @@ export default {
           cursor pointer     
         .menu
           position absolute      
-          width 100%
+          left 50%
+          transform translateX(-50%)
+          width 70%
           padding 2px 0   
           background-color white         
           li 
