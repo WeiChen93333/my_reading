@@ -1,7 +1,8 @@
 <template>
   <div id="mo-pagination">
     <div v-if="total" class="total">共 {{total}} 条</div>
-    <div class="size-choice">
+    <div class="size-choice"
+      @mouseleave="hideSizeBox">
       <input type="text" readonly
         class="current-size"
         :value="selectedSize"
@@ -50,6 +51,11 @@ export default {
     //显示隐藏 size (每页显示条数) 选择框
     toggleSizeBox(){
       this.sizeBoxVisible = !this.sizeBoxVisible  
+    },
+    hideSizeBox(){
+      setTimeout(()=>{
+        this.sizeBoxVisible = false
+      }, 1500)
     },
     //改变 size
     changePageSize(size){
