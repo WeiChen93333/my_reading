@@ -2,11 +2,12 @@
   <div class="mo-input">
     <span class="text">{{text}}: </span>
     <input :type="type" class="input"
-      :class="{focused: isFocused}"           
-      @focus="isFocused = true" @blur="isFocused = false"
+      :class="{focused: isFocused}"      
       :value="value"
-      @change="$emit('change', $event.target.value)" 
-      @keyup.enter.prevent="moveFocus"    
+      @change="$emit('change', $event.target.value)"
+      @focus="isFocused = true"      
+      @blur="typingFinished($event)"
+      @keyup.enter.prevent="typingFinished($event)"
       >   
   </div>
 </template>
@@ -24,11 +25,11 @@ export default {
       isFocused: false
     }
   },
-  methods: {
-    moveFocus(){
-      this.$emit('moveFocus') 
-    }
-    
+  methods: {  
+    typingFinished(event){   
+      this.isFocused = false   
+      this.$emit('typingFinished', event)  
+    }    
   }
 }
 </script>
@@ -47,6 +48,5 @@ export default {
     height 100%
     padding-left 10px
     border-radius 4px        
-    input-box()          
-
+    input-box()      
 </style>
