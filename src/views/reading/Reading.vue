@@ -11,9 +11,10 @@
           sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 
         ></iframe>
       </div>
-      <div class="personal-center">
-        <span class="username"
-          @click="toggleMenu">{{username}}</span> 
+      <div class="personal-center"
+        @mouseover="menuVisible = true"
+        @mouseout="menuVisible = false">
+        <span class="username">{{username}}</span> 
         <ul class="menu" v-show="menuVisible">
           <!-- <li>资料夹</li> -->
           <li @click="enterSentenceCollection">句集</li>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import BackgourndMusic from './BackgourndMusic'
+
 export default {
   name:'Reading',  
   data(){
@@ -38,9 +39,6 @@ export default {
       username: '',
       menuVisible: false
     }
-  },
-  components: {
-    BackgourndMusic
   },
   created(){
     this.getUsername()
@@ -53,15 +51,12 @@ export default {
         const {data} = await this.$http('GET', '/userInfo', {params: {userId: userId}})
         this.username = data.username
       }
-    },   
-    //显示/隐藏个人中心菜单
-    toggleMenu(){
-      this.menuVisible = !this.menuVisible
-    },
+    },  
     //进入句集界面
     enterSentenceCollection(){
-      this.$router.push('/sentence')
-      this.toggleMenu()
+      if(this.$route.path === '/sentence') return
+      this.$router.push('/sentence') 
+      this.menuVisible = false
     },
     //登出
     logout(){
@@ -71,7 +66,6 @@ export default {
       this.$router.push('/login')
     }
   }
-
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
@@ -114,6 +108,7 @@ export default {
           padding 5px 10px     
           line-height 14px  
           text-align center
+          user-select none
           cursor pointer
           &:hover
             background-color lightgray
