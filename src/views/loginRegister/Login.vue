@@ -6,14 +6,15 @@
           type="text" 
           text="用户名" 
           v-model="loginInfo.username"
-          @moveFocus="moveFocus"
+          @typingFinished="typingFinished($event)"
           ></mo-input>        
       </mo-form-item>
       <mo-form-item>
         <mo-input
           type="password" 
           text="密码" 
-          v-model="loginInfo.password"        
+          v-model="loginInfo.password"   
+          @typingFinished="typingFinished($event)"     
           ></mo-input>        
       </mo-form-item>
       <mo-form-item>
@@ -55,8 +56,8 @@ export default {
       window.sessionStorage.setItem('token', data.token)
       this.$router.push('/reading') 
     },
-    moveFocus(){
-      this.$moveFocus()      
+    typingFinished(payload){
+      if(payload.type === 'keyup') this.$moveFocus()        
     }    
   }
 }

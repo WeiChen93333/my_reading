@@ -57,30 +57,42 @@ const onRequest = (req, res) => {
     //用户注册
     if(pathname == '/userInfo/register'){   
       let postData = ''   
+      const resData = {        
+        message: 'success'
+      }
       req.on('data', chunk=>{     
         postData += chunk.toString()
       })
       req.on('end', ()=>{
         postData = JSON.parse(postData)
-        UserModel.countDocuments({}, (err, count)=>{      
-          const userCount = ++count
-          const newUser = {
-            userId: userCount.toString(),
-            username: postData.username,
-            password: postData.password.toString(),
-            history: [],
-            wordbase: [],
-            sentences: [],
-            materials: []
-          }
-          UserModel.create(newUser)             
-        })
-      })  
-      const resData = {        
-        message: 'success'
-      }
-      return res.end(JSON.stringify(resData))
+        //判断要注册的用户名是否已经存在, 存在返回消息 failure
+        UserModel.findOne({username: postData.username}, function(err, doc){
+          if(!err){        
+            if(doc){
+              resData.message = 'failure'
+              return res.end(JSON.stringify(resData))
+            }
+            //不存在, 创建用户, 返回消息 success
+            UserModel.countDocuments({}, (err, count)=>{      
+              const userCount = ++count
+              const newUser = {
+                userId: userCount.toString(),
+                username: postData.username,
+                password: postData.password.toString(),
+                history: [],
+                wordbase: [],
+                sentences: [],
+                materials: []
+              }
+              UserModel.create(newUser)
+              res.end(JSON.stringify(resData))             
+            })                
+          }         
+        })      
+      })   
+      return
     }    
+  
     //用户登录
     if(pathname == '/userInfo/login'){
       let postData = ''
@@ -116,10 +128,10 @@ const onRequest = (req, res) => {
         })  
       })   
       return 
-    }   
+    }
     //修改用户信息, 本来该用 put, 但是不知道 http 模块不能接收还是需要怎么配置一下, 用 post 先将就
-    const regexp = /\/userInfo\/update\/(\w+)/
-    const userId = regexp.exec(pathname)[1]   
+    const regexp = /\/userInfo\/update\/(\w+)/  
+    const userId = regexp.exec(pathname)[1]  
     let postData = '' 
     req.on('data', (chunk)=> {
       postData += chunk.toString()      

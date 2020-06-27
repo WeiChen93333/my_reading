@@ -27,7 +27,7 @@ export default {
   },
   methods: {  
     typingFinished(event){   
-      this.isFocused = false   
+      this.isFocused = false    
       this.$emit('typingFinished', event)  
     }    
   }
