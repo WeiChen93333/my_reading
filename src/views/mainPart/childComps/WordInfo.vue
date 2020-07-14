@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     //控制搜索框的显示与隐藏
-    toggleSearchBox(){
+    toggleSearchBox(e){   
       this.searchBoxVisible = !this.searchBoxVisible    
     },
     //发送单词搜索事件
@@ -72,17 +72,15 @@ export default {
   border 2px solid rgb(64, 128, 128) 
   background-color rgb(252, 252, 254) 
   .search-line
+    position relative 
     border-top 2px solid #e1251b
     height 5px
     cursor pointer
-    position relative    
     .expand-enter-active, .expand-leave-active
       transition all .3s ease-in-out
-    .expand-enter, .expand-leave-to         
-      // top -30px 
+    .expand-enter, .expand-leave-to    
       opacity 0   
-    .expand-enter-to, .expand-leave          
-      // top 0  
+    .expand-enter-to, .expand-leave  
       opacity 1    
     .search-box
       width 100% 

@@ -24,4 +24,43 @@ const highlight = Vue.directive(
   }
 )
 
-export { focus, highlight }
+const slide = Vue.directive(
+  'slide', {
+    inserted(el, binding, vnode){      
+      const parentLeft = el.offsetParent.offsetLeft
+      const widthGap = el.offsetParent.offsetWidth - el.offsetWidth     
+      //添加鼠标左键按下事件         
+      function showSlider(e){        
+        el.style.opacity = 1        
+        const startPosition = e.layerX  
+        el.style.transition = ''          
+        //添加鼠标移动事件
+        function slide(e){         
+          let moveDistance = e.pageX - parentLeft - startPosition
+          moveDistance = moveDistance < 0 ? 0 : moveDistance > widthGap ? widthGap : moveDistance     
+          el.style.left = moveDistance + 'px'
+          if(moveDistance >= widthGap){
+            el.style.left = 0      
+            el.style.opacity = 0
+            window.open('http://120.79.214.0/music')
+          }         
+        }
+        el.addEventListener('mousemove', slide)   
+        //添加 鼠标左键抬起 && 鼠标移出滑块 事件       
+        function release(){
+          el.removeEventListener('mousemove', slide)
+          el.removeEventListener('mouseleave', release)
+          el.removeEventListener('mouseup', release)
+          el.style.transition = 'left .5s linear'
+          el.style.left = 0      
+          setTimeout(() => el.style.opacity = 0, 500)                         
+        }
+        el.addEventListener('mouseup', release)   
+        //添加鼠标脱离滑块事件        
+        el.addEventListener('mouseleave', release)     
+      }      
+      el.addEventListener('mousedown', showSlider)
+    }
+  }
+)
+export { focus, highlight, slide }

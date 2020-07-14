@@ -26,8 +26,8 @@ export default {
   name: 'LoginRegister',
   data(){
     return {
-      currentComponent: Register,
-      activeComponent: 'Register'
+      currentComponent: Login,
+      activeComponent: 'Login'
     }
   },
   components: {

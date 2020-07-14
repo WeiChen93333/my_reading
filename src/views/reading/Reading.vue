@@ -2,20 +2,19 @@
   <div id="reading">
     <div id="header">
       <div class="inner">
-        <div class="manual">
-          <a href="http://localhost:3000/#/projects/my-reading"
+        <div class="manual">         
+          <a href="https://weichen93333.github.io/my_notes/#/projects/my-reading"
             target="_blank">使用说明</a>
-          <!-- <a href="https://weichen93333.github.io/my_notes/#/projects/my-reading"
-            target="_blank">使用说明</a> -->
         </div>   
-        <div class="background-music">
+        <div class="background-music" ref="bgmRef">
           <iframe class="iframe"
             name="music" 
-            src="http://192.168.0.107:8081/#/music"          
+            src="http://120.79.214.0/music"          
             frameborder="0" 
             scrolling="no"
             sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 
           ></iframe>
+          <div class="slider" v-slide>|||</div>
         </div>
         <div class="personal-center"
           @mouseover="menuVisible = true"
@@ -58,7 +57,8 @@ export default {
         const {data} = await this.$http('GET', '/userInfo', {params: {userId: userId}})
         this.username = data.username
       }
-    },  
+    },
+    
     //隐藏个人中心菜单
     hideMenu(){
       setTimeout(() => {
@@ -105,6 +105,17 @@ export default {
           bottom 0    
           width 375px
           height 677px
+        .slider 
+          position absolute
+          width 70px
+          height 46px
+          line-height 42px
+          border-radius 5px
+          border 2px solid #efefef
+          background-color green         
+          opacity 0
+          user-select none
+          cursor pointer       
       .personal-center
         position relative
         width 100px    

@@ -38,10 +38,11 @@ const onRequest = (req, res) => {
         SentenceModel.find({sentence: {$regex: eval(`/\\b${word}\\b/ig`)}}, null, { skip: (pagenum-1)*pagesize, limit: parseInt(pagesize) }, function(err, docs){  
           if(!err){
             resData.sentences = docs          
-            return res.end(JSON.stringify(resData)) 
+            res.end(JSON.stringify(resData)) 
           }
         })        
-      })            
+      })  
+      return          
     }
     //获取用户信息
     if(pathname == '/userInfo'){
