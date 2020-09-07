@@ -9,10 +9,12 @@ const onRequest = (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Authorization') 
+  res.setHeader('Access-Control-Max-Age', '3600')  
   const method = req.method   
   if(method == 'OPTIONS'){   
+    console.log('option')
     return res.end()
-  }  
+  }
   if(method == 'PUT'){   
     return res.end('put')
   }  

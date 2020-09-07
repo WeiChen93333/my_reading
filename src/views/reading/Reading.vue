@@ -3,13 +3,13 @@
     <div id="header">
       <div class="inner">
         <div class="manual">         
-          <a href="https://weichen93333.github.io/my_notes/#/projects/my-reading"
+          <a href="https://www.yuque.com/chengziwhy/nuefbh/elmr6q"
             target="_blank">使用说明</a>
         </div>   
         <div class="background-music" ref="bgmRef">
           <iframe class="iframe"
             name="music" 
-            src="http://120.79.214.0/music"          
+            src=""          
             frameborder="0" 
             scrolling="no"
             sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 

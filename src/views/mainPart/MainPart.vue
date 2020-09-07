@@ -45,7 +45,7 @@
     <!-- 点击按钮显示 -->
     <!-- 文本片段输入区 -->
     <text-input-box 
-      v-show="textInputBoxVisible"
+      v-if="textInputBoxVisible"
       v-model="newAdd"></text-input-box>
     <!-- 单词集展示区 -->
     <word-collection v-show="wordCollectionVisible" 

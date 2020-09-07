@@ -1,9 +1,9 @@
 import Vue from 'vue'
 
 const focus = Vue.directive(  
-  'focus', {
-    inserted(el, binding){      
-        if(el.tagName == 'INPUT')  return el.focus()    
+  'focus', {  //文本框聚焦
+    inserted(el, binding){        
+        if(el.tagName == 'INPUT' || el.tagName == 'TEXTAREA')  return el.focus()  
         if(el.tagName == 'FORM'){
           el.firstElementChild.firstElementChild.childNodes.forEach(item =>{
             if(item.tagName == 'INPUT') item.focus()
@@ -14,7 +14,7 @@ const focus = Vue.directive(
 )
 
 const highlight = Vue.directive(  
-  'highlight', {
+  'highlight', {//单词高亮
     inserted(el, binding, vnode){   
       vnode.key = 'unique'
       const keyword = binding.value
@@ -25,8 +25,8 @@ const highlight = Vue.directive(
 )
 
 const slide = Vue.directive(
-  'slide', {
-    inserted(el, binding, vnode){      
+  'slide', {//滑动滑块
+    inserted(el, binding, vnode){   
       const parentLeft = el.offsetParent.offsetLeft
       const widthGap = el.offsetParent.offsetWidth - el.offsetWidth     
       //添加鼠标左键按下事件         

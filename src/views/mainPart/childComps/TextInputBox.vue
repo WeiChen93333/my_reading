@@ -1,9 +1,9 @@
 <template>
   <div id="text-input-box">
-    <textarea cols="30" rows="10" placeholder="在此处贴上文本片段, 然后点击导入或取消"
+    <textarea v-focus cols="30" rows="10" placeholder="在此处贴上文本片段, 然后点击导入或取消"
     :value="value"
     @change="$emit('change', $event.target.value)"></textarea>   
-  </div>  
+  </div>
 </template>
 
 <script>

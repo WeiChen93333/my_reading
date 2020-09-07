@@ -1,11 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import LoginRegister from 'views/loginRegister/LoginRegister'
-import Reading from 'views/reading/Reading'
-import MainPart from 'views/mainPart/MainPart'
 // import ReadingMaterial from 'views/readingMaterial/ReadingMaterial'
-import SentenceCollection from 'views/sentenceCollection/SentenceCollection'
 
 Vue.use(VueRouter)
 
@@ -16,16 +12,16 @@ Vue.use(VueRouter)
   },
   {
     path: '/login',
-    component: LoginRegister
+    component: () => import('views/loginRegister/LoginRegister')
   },
   {
     path: "/reading",
-    component: Reading,
+    component: () => import('views/reading/Reading'),
     redirect: "/main",
     children: [
       {
         path: '/main',
-        component: MainPart
+        component: () => import('views/mainPart/MainPart')
       },  
       // {
       //   path: '/material',
@@ -33,7 +29,7 @@ Vue.use(VueRouter)
       // }, 
       {
         path: '/sentence',
-        component: SentenceCollection
+        component: () => import('views/sentenceCollection/SentenceCollection')
       }
     ]
   }
