@@ -55,7 +55,7 @@ export default {
         pass: 0
       }
     }
-  },
+  }, 
   methods: {   
     typingFinished(payload, userDefined){ // payload 为输入框事件对象     
       //按下 Enter 键或鼠标移出输入框后, 进行合规验证         

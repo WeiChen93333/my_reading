@@ -26,11 +26,11 @@ export default {
     }
   },
   methods: {  
-    typingFinished(event){   
+    typingFinished(event){      
       this.isFocused = false    
       this.$emit('typingFinished', event)  
     }    
-  }
+  } 
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

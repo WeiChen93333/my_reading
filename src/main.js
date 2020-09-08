@@ -27,7 +27,7 @@ import { request } from "./request/request.js"
 Vue.prototype.$http = request
 
 //引入自定义指令
-import { focus, highlight, slide } from './directive/directive.js'
+import { backtotop, focus, highlight, slide } from './directive/directive.js'
 
 //设置事件总线
 Vue.prototype.$bus = new Vue()

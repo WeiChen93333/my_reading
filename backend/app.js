@@ -11,8 +11,7 @@ const onRequest = (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Authorization') 
   res.setHeader('Access-Control-Max-Age', '3600')  
   const method = req.method   
-  if(method == 'OPTIONS'){   
-    console.log('option')
+  if(method == 'OPTIONS'){    
     return res.end()
   }
   if(method == 'PUT'){   

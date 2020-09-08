@@ -19,14 +19,7 @@ export default {
   name: 'WordInfoDisplay',   
   props: {
     wordInfo: Object
-  }, 
-  directives: {
-    backtotop: {
-      componentUpdated(el){       
-        el.scrollTop = 0      
-      }
-    }
-  }  
+  } 
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

@@ -9,7 +9,7 @@
         <div class="background-music" ref="bgmRef">
           <iframe class="iframe"
             name="music" 
-            src=""          
+            src="http://120.79.214.0/music/#/music"          
             frameborder="0" 
             scrolling="no"
             sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 

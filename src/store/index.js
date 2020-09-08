@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: window.localStorage.getItem('state') ? JSON.parse(window.localStorage.getItem('state')): {    
-    readingText: '', //阅读文本
+    readingText: `You are Absolutely Unique
+
+    You do not have to pretend in order to seem more like someone else. You do not have to lie to hide the parts of you that are not like what you see in anyone else. You were meant to be different.
+    `, //阅读文本
     wordCollection: [], //单词集
     searchHistory: [], //查词跳转历史
   },

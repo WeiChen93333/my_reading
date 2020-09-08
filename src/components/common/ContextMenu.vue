@@ -16,13 +16,10 @@
 import { mapState } from 'vuex'
 export default {
   name: 'ContextMenu',  
-  computed: {
-    ...mapState(['wordCollection'])
-  },
   data(){
     return {
       ContextMenuVisible: false,   
-      menu: Object.freeze([
+      menu: this.$deepFreeze([
         {
           content: '清空查词历史',    
           handler: this.clearSearchHistory  
@@ -47,6 +44,9 @@ export default {
       mousePosition: {},
       selectedText: ''    
     }
+  },
+  computed: {
+    ...mapState(['wordCollection'])
   },
   directives:{
     getposition: {

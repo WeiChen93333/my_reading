@@ -115,6 +115,7 @@ export default {
       this.$message.show(message)
       await this.$http('POST', `/userInfo/update/${userId}`, {revisedWordBase: data.wordbase})      
       this.removeSelectedWords()     
+      this.selectedWords = []
     },
 
     //记忆卡片视图操作   

@@ -138,10 +138,12 @@ export default {
     this.$bus.$on('meaningSearch', value=>{
       this.mode = "meaning"
       this.$store.commit('addSearchHistory', value)
+      this.searchThroughDict()
     })
     this.$bus.$on('sentenceSearch', value=>{
       this.mode = "sentence"
       this.$store.commit('addSearchHistory', value)
+      this.searchThroughDict()
     })
     //监听 SentenceDisplay.vue 页面信息变更
     this.$bus.$on('pageInfoChanged', value=>{   
@@ -152,8 +154,8 @@ export default {
   },
   beforeDestroy(){
     this.$bus.$off('meaningSearch')
-    this.$bus.$off('sentenceSearch')
-  },
+    this.$bus.$off('sentenceSearch')    
+  },  
   methods: {
     saveState() {
       window.localStorage.setItem('state', JSON.stringify(this.$store.state))
@@ -161,6 +163,7 @@ export default {
 
     //初始化时从 vuex 获取数据
     init(){
+      console.log(this.readingText)
       this.textStr = this.readingText
       if(this.currentWord) this.searchThroughDict(this.currentWord)
     },
@@ -217,13 +220,13 @@ export default {
         }        
         params.word = word ? word : this.currentWord       
         const {data: meaningData} = await this.$http('GET', '/dict/words', { params }) 
-        this.wordInfo = meaningData     
+        this.wordInfo = this.$deepFreeze(meaningData)     
       }else if(this.mode == 'sentence'){      
         this.queryInfo.word = this.currentWord
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
           params: this.queryInfo
         })                
-        this.sentenceInfo = sentenceData
+        this.sentenceInfo = this.$deepFreeze(sentenceData) 
       }   
     }  
   }

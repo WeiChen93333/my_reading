@@ -2,7 +2,7 @@
   <div id="sentence-display">
     <p class="not-found" v-if="!sentenceInfo.sentences.length">没有匹配的例句</p>
     <template v-else>
-      <div class="sentences">
+      <div class="sentences" v-backtotop>
         <p class="sentence" 
           v-for="(item, index) in sentenceInfo.sentences" :key="index"
           v-highlight="currentWord">{{item.sentence}}</p>

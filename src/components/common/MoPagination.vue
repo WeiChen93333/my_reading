@@ -52,7 +52,7 @@ export default {
     toggleSizeBox(){
       this.sizeBoxVisible = !this.sizeBoxVisible  
     },
-    hideSizeBox(){
+    hideSizeBox(){      
       setTimeout(()=>{
         this.sizeBoxVisible = false
       }, 1500)

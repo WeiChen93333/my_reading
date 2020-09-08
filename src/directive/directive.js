@@ -1,5 +1,13 @@
 import Vue from 'vue'
 
+const backtotop = Vue.directive(  
+  'backtotop', {  //数据发生变化时, 展示框回到顶部
+    componentUpdated(el){       
+      el.scrollTop = 0      
+    }  
+  }
+)
+
 const focus = Vue.directive(  
   'focus', {  //文本框聚焦
     inserted(el, binding){        
@@ -63,4 +71,4 @@ const slide = Vue.directive(
     }
   }
 )
-export { focus, highlight, slide }
+export { backtotop, focus, highlight, slide }
