@@ -3,6 +3,9 @@ import MyReading from './MyReading.vue'
 import router from './router'
 import store from './store'
 
+//引入中英语言切换
+import i18n from "assets/language/i18n.js"
+
 //引入公共样式表
 import 'assets/css/global.stylus'
 
@@ -37,5 +40,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(MyReading)
 }).$mount('#app')

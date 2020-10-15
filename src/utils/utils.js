@@ -14,6 +14,7 @@ function moveFocus(){
     }
   }
 }
+//要做到普遍使用, 将表单 ref 名作为函数参数更好些
 
 // 防抖
 function debounce(fn, delay = 1000){
@@ -44,7 +45,8 @@ function throttle(fn, interval = 1000){
 }
 
 //深冻结
-function deepFreeze(obj){       
+function deepFreeze(obj){     
+  if(typeof obj !== 'object' || obj === null) return obj
   const propNames = Object.getOwnPropertyNames(obj)      
   propNames.forEach((value) => {
     if(typeof obj[value] == 'object' && obj[value] !== null){     

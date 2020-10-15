@@ -15,12 +15,12 @@ Vue.use(VueRouter)
     component: () => import('views/loginRegister/LoginRegister')
   },
   {
-    path: "/reading",
-    component: () => import('views/reading/Reading'),
-    redirect: "/main",
+    path: "/main",
+    component: () => import('views/mainLayout/MainLayout'),
+    redirect: "/reading",
     children: [
       {
-        path: '/main',
+        path: '/reading',
         component: () => import('views/mainPart/MainPart')
       },  
       // {
@@ -40,7 +40,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-// //挂载路由导航守卫
+// //挂载全局前置守卫
 router.beforeEach((to, from, next) => {
   if(to.path == "/login") return next()
   const token = window.sessionStorage.getItem("token")

@@ -162,8 +162,7 @@ export default {
     },    
 
     //初始化时从 vuex 获取数据
-    init(){
-      console.log(this.readingText)
+    init(){     
       this.textStr = this.readingText
       if(this.currentWord) this.searchThroughDict(this.currentWord)
     },
@@ -217,16 +216,16 @@ export default {
       if(this.mode == 'meaning'){
         const params = {
           word: this.currentWord
-        }        
-        params.word = word ? word : this.currentWord       
-        const {data: meaningData} = await this.$http('GET', '/dict/words', { params }) 
-        this.wordInfo = this.$deepFreeze(meaningData)     
+        }       
+        params.word = word ? word.toLowerCase() : this.currentWord       
+        const {data: meaningData} = await this.$http('GET', '/dict/words', { params })        
+        this.wordInfo = this.$deepFreeze(meaningData)       
       }else if(this.mode == 'sentence'){      
         this.queryInfo.word = this.currentWord
         const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
           params: this.queryInfo
         })                
-        this.sentenceInfo = this.$deepFreeze(sentenceData) 
+        this.sentenceInfo = this.$deepFreeze(sentenceData)        
       }   
     }  
   }

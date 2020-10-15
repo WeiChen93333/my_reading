@@ -54,7 +54,7 @@ export default {
       if(data.message !== "success") return this.message = '用户名或密码不正确'
       window.sessionStorage.setItem('userId', data.userId)    
       window.sessionStorage.setItem('token', data.token)
-      this.$router.push('/reading') 
+      this.$router.push('/main') 
     },
     typingFinished(payload){
       if(payload.type === 'keyup') this.$moveFocus()        

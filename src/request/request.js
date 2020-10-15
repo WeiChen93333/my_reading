@@ -1,8 +1,8 @@
 import axios from "axios"
 
-axios.defaults.baseURL = "http://120.79.214.0/api"
+// axios.defaults.baseURL = "http://120.79.214.0/api"
 
-// axios.defaults.baseURL = "http://localhost:3366"
+axios.defaults.baseURL = "http://localhost:3366"
 axios.defaults.withCredentials = true
 axios.interceptors.request.use(config => {
   //为请求头对象, 添加 token 验证的 Authorization 字段  

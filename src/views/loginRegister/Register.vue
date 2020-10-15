@@ -90,7 +90,7 @@ export default {
       //验证成功, 如果是 Enter 事件就切换焦点到下一个输入框     
       if(payload.type === 'keyup') this.$moveFocus()
     },
-    async register(){
+    async register(){         
       if(this.warnings.pass !== 3) return  
       const { data } = await this.$http('POST', '/userInfo/register', this.registerInfo) 
       const message = '恭喜您注册成功!'

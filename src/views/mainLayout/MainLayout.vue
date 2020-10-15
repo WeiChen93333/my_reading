@@ -1,12 +1,12 @@
 <template>
-  <div id="reading">
+  <div id="main-layout">
     <div id="header">
       <div class="inner">
         <div class="manual">         
           <a href="https://www.yuque.com/chengziwhy/nuefbh/elmr6q"
             target="_blank">使用说明</a>
         </div>   
-        <div class="background-music" ref="bgmRef">
+        <!-- <div class="background-music" ref="bgmRef">
           <iframe class="iframe"
             name="music" 
             src="http://120.79.214.0/music/#/music"          
@@ -15,7 +15,7 @@
             sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 
           ></iframe>
           <div class="slider" v-slide>|||</div>
-        </div>
+        </div> -->
         <div class="personal-center"
           @mouseover="menuVisible = true"
           @mouseleave="hideMenu">
@@ -28,16 +28,27 @@
         </div>   
       </div> 
     </div>    
-    <div id="desktop">
-      <router-view></router-view>
+    <div id="main">
+      <div id="links">links</div>
+      <div id="reading-zone">
+        <text-section></text-section>
+        <word-section></word-section>
+<!--  @clickSearch = "searchThroughDict" -->
+      </div>   
     </div>
   </div>
 </template>
 
 <script>
+import TextSection from './childComps/TextSection'
+import WordSection from './childComps/WordSection'
 
 export default {
   name:'Reading',  
+  components: { 
+    TextSection, 
+    WordSection 
+  },
   data(){
     return {
       registerVisible: false,
@@ -82,7 +93,8 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#reading  
+#main-layout 
+  height 80%
   #header
     height 46px
     background-color lightgray
@@ -140,13 +152,21 @@ export default {
             cursor pointer
             &:hover
               background-color lightgray
-  #desktop
-    width 60%
+  #main  
+    display flex
     min-width 880px
-    padding 20px
+    height 100%    
     color green  
     background-color lightblue  
-    margin 0 auto 
+    // margin 0 auto 
     margin-top 5%
+    #links
+      flex 0 0 300px
+      height 100%
+      background-color white
+    #reading-zone 
+      display flex
+      flex 1
+
 
 </style>
