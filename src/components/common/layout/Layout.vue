@@ -1,53 +1,61 @@
 <template>
-  <div id="main-layout">
-    <div id="header">
-      <div class="inner">
-        <div class="manual">         
-          <a href="https://www.yuque.com/chengziwhy/nuefbh/elmr6q"
-            target="_blank">使用说明</a>
-        </div>   
-        <!-- <div class="background-music" ref="bgmRef">
-          <iframe class="iframe"
-            name="music" 
-            src="http://120.79.214.0/music/#/music"          
-            frameborder="0" 
-            scrolling="no"
-            sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 
-          ></iframe>
-          <div class="slider" v-slide>|||</div>
-        </div> -->
-        <div class="personal-center"
-          @mouseover="menuVisible = true"
-          @mouseleave="hideMenu">
-          <span class="username">{{username}}</span> 
-          <ul class="menu" v-show="menuVisible">
-            <!-- <li>资料夹</li> -->
-            <li @click="enterSentenceCollection">句集</li>
-            <li @click="logout">退出</li>
-          </ul>
-        </div>   
-      </div> 
-    </div>    
-    <div id="main">
+  <div id="layout">
+    <el-container>      
+      <el-aside width="200px">     
+      </el-aside>
+      <el-container>
+        <el-header>       
+          <!-- <div class="background-music" ref="bgmRef">
+            <iframe class="iframe"
+              name="music" 
+              src="http://120.79.214.0/music/#/music"          
+              frameborder="0" 
+              scrolling="no"
+              sandbox="allow-same-origin allow-top-navigation allow-forms allow-scripts" 
+            ></iframe>
+            <div class="slider" v-slide>|||</div>
+          </div> -->
+          <div class="personal-center"
+            @mouseover="menuVisible = true"
+            @mouseleave="hideMenu">
+            <span class="username">{{username}}</span> 
+            <!-- <ul class="menu" v-show="menuVisible">         
+              <li @click="enterSentenceCollection">句集</li>
+              <li @click="logout">退出</li>
+            </ul> -->
+          </div>         
+        </el-header>
+        <el-main>
+          <router-view />
+        </el-main>
+        <el-footer>
+          <el-row class="flex-center_all">
+            <el-col class="flex-center_all">            
+              <span class="motto">问渠那得清如许  为有源头活水来</span>
+            </el-col>
+          </el-row>          
+        </el-footer>
+      </el-container>
+    </el-container>
+    <!-- <div id="main">
       <div id="links">links</div>
       <div id="reading-zone">
         <text-section></text-section>
         <word-section></word-section>
-<!--  @clickSearch = "searchThroughDict" -->
       </div>   
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import TextSection from './childComps/TextSection'
-import WordSection from './childComps/WordSection'
+// import TextSection from './childComps/TextSection'
+// import WordSection from './childComps/WordSection'
 
 export default {
   name:'Reading',  
   components: { 
-    TextSection, 
-    WordSection 
+    // TextSection, 
+    // WordSection 
   },
   data(){
     return {
@@ -88,26 +96,27 @@ export default {
       window.sessionStorage.removeItem('userId')
       window.sessionStorage.removeItem('token')
       this.$router.push('/login')
+    },
+    test(){
+      this.$router.push('/reading')
+      console.log(this.$route)
     }
   }
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#main-layout 
-  height 80%
-  #header
-    height 46px
-    background-color lightgray
-    .inner
-      display flex
-      justify-content space-between   
-      margin 0 auto 
-      width 60%
-      min-width 880px      
-      text-align center   
-      .manual
-        width 70px
-        line-height 46px
+#layout 
+  height 100%
+  .el-container
+    height 100%
+    .el-aside
+      background-color blue
+    .el-footer
+      background-color rgb(64, 128, 128)
+      .el-row 
+        height 100%
+    .el-header
+      background-color rgb(64, 128, 128)   
       .background-music    
         position relative
         width 375px      
@@ -152,21 +161,24 @@ export default {
             cursor pointer
             &:hover
               background-color lightgray
-  #main  
-    display flex
-    min-width 880px
-    height 100%    
-    color green  
-    background-color lightblue  
-    // margin 0 auto 
-    margin-top 5%
-    #links
-      flex 0 0 300px
-      height 100%
-      background-color white
-    #reading-zone 
-      display flex
-      flex 1
 
+              
 
+          
+      
+  // #main  
+  //   display flex
+  //   min-width 880px
+  //   height 100%    
+  //   color green  
+  //   background-color lightblue  
+  //   // margin 0 auto 
+  //   margin-top 5%
+  //   #links
+  //     flex 0 0 300px
+  //     height 100%
+  //     background-color white
+  //   #reading-zone 
+  //     display flex
+  //     flex 1
 </style>

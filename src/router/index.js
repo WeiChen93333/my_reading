@@ -8,7 +8,7 @@ Vue.use(VueRouter)
   const routes = [
   {
     path: '/',
-    redirect: '/login' 
+    redirect: '/main' 
   },
   {
     path: '/login',
@@ -16,13 +16,13 @@ Vue.use(VueRouter)
   },
   {
     path: "/main",
-    component: () => import('views/mainLayout/MainLayout'),
+    component: () => import('@/components/common/layout/Layout'),
     redirect: "/reading",
     children: [
       {
         path: '/reading',
-        component: () => import('views/mainPart/MainPart')
-      },  
+        component: () => import('views/reading/Reading')
+      },
       // {
       //   path: '/material',
       //   component: ReadingMaterial

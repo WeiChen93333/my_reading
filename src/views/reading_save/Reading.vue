@@ -1,5 +1,5 @@
-<template>  
-  <div id="main-part">    
+<template>
+    <div id="main-part">    
     <!-- 一直显示 -->  
     <div class="button-box">
       <div class="text">
@@ -55,7 +55,7 @@
     <!-- 单词仓展示区 -->
     <word-base v-if="wordBaseVisible"
       @hideWordBase="toggleWordBase"></word-base>      
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -67,7 +67,7 @@ import WordBase from './childComps/WordBase'
 
 import { mapState } from 'vuex'
 export default {
-  name: 'MainPart',
+  name: 'Reading',
   components: {   
     TextInputBox,
     ReadingZone,

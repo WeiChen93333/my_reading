@@ -12,7 +12,13 @@ import 'assets/css/global.stylus'
 //引入字体图标
 import "assets/css/ali-fonts/iconfont.css"
 //引入全局组件
-import "components/common/globalComps.js"
+import "components/global/globalComps.js"
+
+// 引入 Element
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/display.css' // 额外提供的类名
+Vue.use(ElementUI)
 
 //引入自定义插件-消息弹出框
 import Message from "@/plugins/mo-message.js"
