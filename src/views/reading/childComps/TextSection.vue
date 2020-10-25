@@ -35,7 +35,7 @@
       </el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="inputDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="confirmInput">确 定</el-button>
       </div>
     </el-dialog>
     
@@ -61,16 +61,16 @@ export default {
     return {      
       inputDialogVisible: false,
       clearDialogVisible: false,
-      textStr: 'I love you',  //要展示在阅读区的文本
+      textStr: '',  //要展示在阅读区的文本
       newAdd: '',   //用户每次输入的文本
       confirm: false,  //控制确认框显示隐藏
       timer: null
     }
   },
   computed: {
-    ...mapState(['wordCollection']),
+    ...mapState(['readingText', 'wordCollection']),
     textArr(){      
-      const tempArr = []        
+      const tempArr = []
       this.textStr = this.textStr.trim() + "\n" //文本末尾加一个换行, 同时包含一段和多段的情况   
       const reg = /.+\n/g
       let match      
@@ -81,12 +81,19 @@ export default {
     }   
   },
   watch:{
-    newAdd(){
-      console.log('change')
-    }
-
+    textStr(){     
+      this.$store.commit('changeReadingText', this.textStr)
+    }   
   },
-  methods: {   
+  created(){
+    this.init()
+  },
+  methods: {
+    //初始化时从 vuex 获取文本
+    init(){ 
+      this.textStr = this.readingText
+    },
+
     //按钮区域(四个)
     //控制内容输入对话框
     toggleInputBox(){
@@ -94,7 +101,8 @@ export default {
     },
     confirmInput(){  // 对话内确认按钮      
       this.textStr += this.newAdd
-      this.newAdd = ''      
+      this.newAdd = ''
+      this.inputDialogVisible = false
     },
     //编辑文本内容 (方便存储和导出)
     editText(){
@@ -115,12 +123,12 @@ export default {
     
     //text-display 页面鼠标单双击操作
     // 单击查词    
-    clickSearch(word){    
+    clickSearch(word){      
       clearTimeout(this.timer)
       this.timer = setTimeout(()=>{           
         this.$store.commit('addSearchHistory', word) 
       }, 200)     
-    },    
+    },
     //将单词加入当前单词集
     addToWordCollection(word){
       clearTimeout(this.timer)
@@ -136,15 +144,16 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-#text-section  
+#text-section
+  height 100%
   #text-display
     margin-top 20px
-    max-width 710px
+    height calc(100% - 60px)
     padding 10px
     border 2px solid rgb(64, 128, 128)
     border-right none
-    background-color rgba(255, 255, 255, .5)     
-    overflow-y auto 
+    background-color hsla(0, 0%, 100%, .5)   
+    overflow-y auto
     p 
       margin-bottom 10px
       line-height 22px   

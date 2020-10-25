@@ -209,24 +209,6 @@ export default {
     switchToSentenceMode(){
       this.mode = 'sentence'
       if(this.currentWord) this.searchThroughDict()         
-    },
-    
-    //在词典中查询单词
-    async searchThroughDict(word){ // word 参数仅记忆卡片发送的查词事件携带
-      if(this.mode == 'meaning'){
-        const params = {
-          word: this.currentWord
-        }       
-        params.word = word ? word.toLowerCase() : this.currentWord       
-        const {data: meaningData} = await this.$http('GET', '/dict/words', { params })        
-        this.wordInfo = this.$deepFreeze(meaningData)       
-      }else if(this.mode == 'sentence'){      
-        this.queryInfo.word = this.currentWord
-        const {data: sentenceData} = await this.$http('GET', '/dict/sentences', {
-          params: this.queryInfo
-        })                
-        this.sentenceInfo = this.$deepFreeze(sentenceData)        
-      }   
     }  
   }
 }

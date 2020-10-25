@@ -23,14 +23,10 @@
       </transition>      
     </div>
     <div class="info-display">
-      <word-info-display
-        class="word-info"
-        v-if="mode=='meaning' && searchHistory.length"
-        :wordInfo="wordInfo"></word-info-display>    
-      <sentence-display
-        v-if="mode=='sentence' && searchHistory.length"
-        :sentenceInfo="sentenceInfo"
-        :currentWord="currentWord"></sentence-display>     
+      <component 
+        :is="currentComponent" 
+        :infoData="infoData"
+        :currentWord="currentWord"></component>      
     </div>      
   </div>  
 </template>
@@ -41,38 +37,59 @@ import SentenceDisplay from '../comComps/SentenceDisplay'
 
 import { mapState } from 'vuex'
 export default {
+  name: 'WordSection',
   components: {
     WordInfoDisplay,
     SentenceDisplay
-  }, 
-  name: 'WordInfo',  
-  props: {
-    wordInfo: Object,
-    sentenceInfo: Object
   },  
   data(){
     return {
-      mode: 'Meaning',
+      mode: 'meaning',
       searchBoxVisible: false,
-      inputWord: ''
+      inputWord: '',
+      queryInfo: {
+        word: '',
+        pagenum: 1,
+        pagesize: 5
+      },  
+      infoData: {}  //查到的单词释义/例句
     }
-  },  
+  },
   computed: {
     ...mapState(['wordCollection', 'searchHistory']),
     currentWord(){ //当前要查询/展示的单词
       if(this.searchHistory.length - 1 >= 0)
-        return this.searchHistory[this.searchHistory.length - 1]       
+        return this.searchHistory[this.searchHistory.length - 1]
+    },
+    currentComponent(){ //单词/句子展示组件
+      if(this.searchHistory.length){
+        if(this.mode=='meaning') return WordInfoDisplay
+        return SentenceDisplay
+      }    
     }
   },
+  watch: {
+    searchHistory(){      
+      this.$globalFunc.searchThroughDict(this)
+    }
+  },
+  created(){
+    this.init()
+  },
   methods: {
+    //初始化时从 vuex 获取当前单词
+    init(){    
+      if(this.currentWord) this.$globalFunc.searchThroughDict(this)    
+    },
+
     //切换释义/例句模式
     switchToMeaningMode(){
       this.mode = 'meaning'     
-      if(this.currentWord) this.searchThroughDict()      
+      if(this.currentWord) this.$globalFunc.searchThroughDict(this)   
     },
     switchToSentenceMode(){
       this.mode = 'sentence'
-      if(this.currentWord) this.searchThroughDict()         
+      if(this.currentWord) this.$globalFunc.searchThroughDict(this)     
     },
     //控制搜索框的显示与隐藏
     toggleSearchBox(e){   
@@ -91,11 +108,16 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #word-section
-  .button-group 
+  position relative
+  height 100%
+  .button-group
+    text-align right
     .el-button.active 
-      background-color rgb(0, 28, 28)  
+      background-color #001c1c  
   .search
-    position relative 
+    position absolute
+    top 55px
+    width 100%    
     border-top 2px solid #e1251b
     height 5px
     cursor pointer
@@ -129,6 +151,8 @@ export default {
         background-color rgb(64, 128, 128) 
         border-bottom 2px solid rgb(64, 128, 128)
   .info-display
+    margin-top 20px
+    height calc(100% - 60px)
     padding-left 10px
     padding-right 5px
     border 2px solid rgb(64, 128, 128) 

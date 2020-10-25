@@ -9,6 +9,10 @@ import i18n from "assets/language/i18n.js"
 //引入公共样式表
 import 'assets/css/global.stylus'
 
+//引入公共函数
+import globalFunc from 'assets/js/globalFunc.js'
+Vue.prototype.$globalFunc = globalFunc
+
 //引入字体图标
 import "assets/css/ali-fonts/iconfont.css"
 //引入全局组件
@@ -26,7 +30,7 @@ Vue.use(Message)
 import MessageBox from "@/plugins/mo-messageBox.js"
 Vue.use(MessageBox)
 
-//引入公用函数
+//引入工具函数
 import { moveFocus, deepFreeze } from './utils/utils.js'
 Vue.prototype.$moveFocus = moveFocus
 Vue.prototype.$deepFreeze = deepFreeze

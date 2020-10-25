@@ -106,17 +106,14 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #layout 
-  height 100%
+  height 100%  
   .el-container
     height 100%
     .el-aside
-      background-color blue
-    .el-footer
-      background-color rgb(64, 128, 128)
-      .el-row 
-        height 100%
+      background-color #001c1c   
+      // background-color #fff 
     .el-header
-      background-color rgb(64, 128, 128)   
+      background-color lightgray   
       .background-music    
         position relative
         width 375px      
@@ -160,25 +157,16 @@ export default {
             user-select none
             cursor pointer
             &:hover
-              background-color lightgray
-
-              
-
-          
-      
-  // #main  
-  //   display flex
-  //   min-width 880px
-  //   height 100%    
-  //   color green  
-  //   background-color lightblue  
-  //   // margin 0 auto 
-  //   margin-top 5%
-  //   #links
-  //     flex 0 0 300px
-  //     height 100%
-  //     background-color white
-  //   #reading-zone 
-  //     display flex
-  //     flex 1
+              background-color lightgray    
+  .el-main  
+    display flex
+    overflow hidden
+    min-width 880px
+    height 100%  
+    background-color rgb(64, 128, 128)
+  .el-footer
+      background-color rgb(64, 128, 128)
+      .el-row 
+        height 100%
+        padding-bottom 40px
 </style>

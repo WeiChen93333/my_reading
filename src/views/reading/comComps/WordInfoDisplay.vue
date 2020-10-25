@@ -1,10 +1,10 @@
 <template>
   <div id="word-info-display"  v-backtotop>
-    <p class="not-found" v-if="!wordInfo">查 无 此 词</p>
+    <p class="not-found" v-if="!infoData">查 无 此 词</p>
     <div class="word-info-container" v-else>
-      <div class="word">{{wordInfo.word}}</div>
+      <div class="word">{{infoData.word}}</div>
       <div class="meaning"
-        v-for="(item1, index1) in wordInfo.meanings" :key="index1">
+        v-for="(item1, index1) in infoData.meanings" :key="index1">
         <p class="explanation">{{item1.explanation}}</p>
         <p class="sentence" :class="{property: item2.includes('[part of speech]')}"
           v-for="(item2, index2) in item1.sentences" :key="index2"
@@ -18,7 +18,12 @@
 export default {
   name: 'WordInfoDisplay',   
   props: {
-    wordInfo: Object
+    infoData: {
+      type: Object,
+      default(){
+        return {}
+      }
+    }
   } 
 }
 </script>
