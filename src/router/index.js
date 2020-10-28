@@ -26,10 +26,14 @@ Vue.use(VueRouter)
       // {
       //   path: '/material',
       //   component: ReadingMaterial
-      // }, 
+      // },
+      {
+        path: '/word',
+        component: () => import('views/collection/WordCollection')
+      },
       {
         path: '/sentence',
-        component: () => import('views/sentenceCollection/SentenceCollection')
+        component: () => import('views/collection/SentenceCollection')
       }
     ]
   }

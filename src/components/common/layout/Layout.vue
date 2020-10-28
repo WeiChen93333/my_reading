@@ -1,7 +1,48 @@
 <template>
   <div id="layout">
     <el-container>      
-      <el-aside width="200px">     
+      <el-aside width="200px">
+        <el-row class="happy">
+          <el-col :span="18">悦读</el-col>
+          <el-col :span="6" 
+            :class="[isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"
+            @click.native="isCollapse = !isCollapse"
+          ></el-col>
+        </el-row>
+        <el-menu 
+          :collapse="isCollapse"
+          :router="true">
+          <el-submenu index="workbench">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title">工作台</span>
+            </template>
+            <el-menu-item index="/reading">              
+              <span slot="title">阅读时</span>
+            </el-menu-item>
+          </el-submenu>
+          <el-submenu index="collection">
+            <template slot="title">
+              <i class="el-icon-document"></i>
+              <span slot="title">收藏集</span>
+            </template>
+            <el-menu-item index="/word">              
+              <span slot="title">单词集</span>
+            </el-menu-item>
+            <el-menu-item index="/sentence">              
+              <span slot="title">句集</span>
+            </el-menu-item>
+          </el-submenu>
+          <!-- <el-submenu>
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span slot="title">工作台</span>
+            </template>
+            <el-menu-item>              
+              <span slot="title">阅读时</span>
+            </el-menu-item>
+          </el-submenu>          -->
+        </el-menu>
       </el-aside>
       <el-container>
         <el-header>       
@@ -37,30 +78,16 @@
         </el-footer>
       </el-container>
     </el-container>
-    <!-- <div id="main">
-      <div id="links">links</div>
-      <div id="reading-zone">
-        <text-section></text-section>
-        <word-section></word-section>
-      </div>   
-    </div> -->
-  </div>
+</div>
 </template>
 
 <script>
-// import TextSection from './childComps/TextSection'
-// import WordSection from './childComps/WordSection'
 
 export default {
-  name:'Reading',  
-  components: { 
-    // TextSection, 
-    // WordSection 
-  },
+  name:'Reading',
   data(){
     return {
-      registerVisible: false,
-      loginVisible: false,
+      isCollapse: false,      
       username: '',
       menuVisible: false
     }
@@ -98,8 +125,7 @@ export default {
       this.$router.push('/login')
     },
     test(){
-      this.$router.push('/reading')
-      console.log(this.$route)
+     
     }
   }
 }
@@ -110,8 +136,16 @@ export default {
   .el-container
     height 100%
     .el-aside
-      background-color #001c1c   
-      // background-color #fff 
+      background-color lightblue 
+      .happy
+        height 60px
+        line-height 60px
+        font-size 24px
+        font-weight 700px
+        text-align center
+      .el-icon-s-fold, .el-icon-s-unfold
+        line-height 60px
+        cursor pointer
     .el-header
       background-color lightgray   
       .background-music    

@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import WordInfoDisplay from '../comComps/WordInfoDisplay'
-import SentenceDisplay from '../comComps/SentenceDisplay'
+import WordInfoDisplay from '@/views/components/WordInfoDisplay'
+import SentenceDisplay from '@/views/components/SentenceDisplay'
 
 import { mapState } from 'vuex'
 export default {
@@ -88,6 +88,7 @@ export default {
       if(this.currentWord) this.$globalFunc.searchThroughDict(this)   
     },
     switchToSentenceMode(){
+      debugger
       this.mode = 'sentence'
       if(this.currentWord) this.$globalFunc.searchThroughDict(this)     
     },

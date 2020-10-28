@@ -75,7 +75,8 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 #sentence-collection
-  height 600px
+  width 100%
+  height 100%
   padding 20px
   background-color white
   color black
